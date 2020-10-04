@@ -1,0 +1,34 @@
+<div>
+  <mat-list>
+    <a [routerLink]="''">
+      <mat-list-item class="link"><span>Strona główna</span></mat-list-item>
+    </a>
+    <a [routerLink]="'personal-data'">
+      <mat-list-item class="link"><span>Dane osobowe</span></mat-list-item>
+    </a>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <span>Wnioski</span>
+      </mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-list>
+          <a [routerLink]="'new-request'">
+            <mat-list-item class="link"><span>Stwórz wniosek</span></mat-list-item>
+          </a>
+          <a [routerLink]="'requests-list'">
+            <mat-list-item class="link"><span>Złożone wnioski</span></mat-list-item>
+          </a>
+          <a [routerLink]="'director-panel'">
+            <mat-list-item class="link"><span>Panel dyrektora</span></mat-list-item>
+          </a>
+          <a [routerLink]="'rector-panel'">
+            <mat-list-item class="link"><span>Panel rektora</span></mat-list-item>
+          </a>
+        </mat-list>
+      </mat-panel-title>
+    </mat-expansion-panel>
+    <a [routerLink]="'settings'">
+      <mat-list-item class="link"><span>Ustawienia konta</span></mat-list-item>
+    </a>
+  </mat-list>
+</div>

@@ -1,0 +1,37 @@
+$link-hover-color: #f5f5f5;
+
+mat-list {
+  mat-expansion-panel {
+    box-shadow: none;
+    mat-expansion-panel-header {
+      padding: 0 16px;
+    }
+    mat-expansion-panel-header:hover {
+      background-color: $link-hover-color;
+    }
+  }
+  .link:hover {
+    background-color: $link-hover-color;
+    cursor: pointer;
+  }
+}
+span {
+  font-size: 16px;
+}
+a {
+  text-decoration: none;
+}
+:host::ng-deep {
+  .mat-expansion-panel-body {
+    padding: 0;
+    mat-panel-title {
+      margin: 0;
+      mat-list {
+        width: 100%;
+        .mat-list-item-content {
+          padding-left: 24px;
+        }
+      }
+    }
+  }
+}

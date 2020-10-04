@@ -1,0 +1,14 @@
+$header-height: 56px;
+$footer-height: 80px;
+$menu-width: 240px;
+
+.content {
+  .main-section {
+    .menu {
+      min-width: $menu-width;
+    }
+    .current-page{
+      min-height: calc(100vh - #{$header-height + $footer-height});
+    }
+  }
+}
