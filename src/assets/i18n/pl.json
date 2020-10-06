@@ -1,5 +1,39 @@
 {
+  "HEADER": {
+    "TITLE": "Triss"
+  },
+  "SIDE_MENU": {
+    "MAIN_PAGE": "Strona główna",
+    "PERSONAL_DATA": "Dane osobowe",
+    "REQUESTS": "Wnioski",
+    "NEW_REQUESTS": "Stwórz wniosek",
+    "REQUESTS_LIST": "Złożone wnioski",
+    "DIRECTOR_PANEL": "Panel dyrektora",
+    "RECTOR_PANEL": "Panel rektora",
+    "SETTINGS": "Ustawienia konta"
+  },
+  "FOOTER": {
+    "PUT": "Politechnika Poznańska"
+  },
   "MAIN_VIEW": {
     "HELLO": "Cześć"
+  },
+  "PERSONAL_DATA": {
+
+  },
+  "NEW_REQUEST": {
+
+  },
+  "REQUESTS_LIST": {
+
+  },
+  "DIRECTOR_PANEL": {
+
+  },
+  "RECTOR_PANEL": {
+
+  },
+  "SETTINGS": {
+
   }
 }
