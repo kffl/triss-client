@@ -15,12 +15,19 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { PersonalDataComponent } from './components/pages/personal-data/personal-data.component';
-import { AccountSettingsComponent } from './components/pages/account-settings/account-settings.component';
-import { NewRequestComponent } from './components/pages/requests/new-request/new-request.component';
-import { RequestsListComponent } from './components/pages/requests/requests-list/requests-list.component';
-import { DirectorPanelComponent } from './components/pages/requests/director-panel/director-panel.component';
-import { RectorPanelComponent } from './components/pages/requests/rector-panel/rector-panel.component';
+import {PersonalDataComponent} from './components/pages/personal-data/personal-data.component';
+import {AccountSettingsComponent} from './components/pages/account-settings/account-settings.component';
+import {NewRequestComponent} from './components/pages/requests/new-request/new-request.component';
+import {RequestsListComponent} from './components/pages/requests/requests-list/requests-list.component';
+import {DirectorPanelComponent} from './components/pages/requests/director-panel/director-panel.component';
+import {RectorPanelComponent} from './components/pages/requests/rector-panel/rector-panel.component';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -46,10 +53,20 @@ import { RectorPanelComponent } from './components/pages/requests/rector-panel/r
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
-    MatSidenavModule
+    MatSidenavModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      defaultLanguage: 'en'
+    }),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }
