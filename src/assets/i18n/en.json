@@ -1,6 +1,7 @@
 {
   "HEADER": {
-    "TITLE": "Triss"
+    "TITLE": "Triss",
+    "LANGUAGE": "Change language:"
   },
   "SIDE_MENU": {
     "MAIN_PAGE": "Main page",

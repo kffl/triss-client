@@ -2,7 +2,18 @@
   <mat-toolbar
     [color]="headerColor">
     <button
-      (click)="onMenuButtonClick()" class="menu-button" mat-icon-button><mat-icon class="menu-icon">menu</mat-icon></button>
-    <span>{{'HEADER.TITLE' | translate}}</span>
+      (click)="onMenuButtonClick()" class="menu-button" mat-icon-button><mat-icon class="menu-icon">menu</mat-icon>
+    </button>
+    <div class="toolbar-items-groups">
+      <div class="toolbar-items-group">
+        <span class="title">{{'HEADER.TITLE' | translate}}</span>
+      </div>
+      <div class="toolbar-items-group">
+        <span *ngIf="!belowBreakpoint" class="language-text">{{'HEADER.LANGUAGE' | translate}}</span>
+        <span (click)="changeLanguageToPolish()" class="flag-icon flag-icon-pl"></span>
+        <span (click)="changeLanguageToEnglish()" class="flag-icon flag-icon-gb"></span>
+      </div>
+    </div>
+
   </mat-toolbar>
 </div>
