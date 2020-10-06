@@ -6,6 +6,7 @@ import {PersonalDataComponent} from './components/pages/personal-data/personal-d
 import {NewRequestComponent} from './components/pages/requests/new-request/new-request.component';
 import {RequestsListComponent} from './components/pages/requests/requests-list/requests-list.component';
 import {DirectorPanelComponent} from './components/pages/requests/director-panel/director-panel.component';
+import {RectorPanelComponent} from './components/pages/requests/rector-panel/rector-panel.component';
 
 
 const routes: Routes = [
@@ -14,7 +15,7 @@ const routes: Routes = [
   {path: 'new-request', component: NewRequestComponent},
   {path: 'requests-list', component: RequestsListComponent},
   {path: 'director-panel', component: DirectorPanelComponent},
-  {path: 'rector-panel', component: RequestsListComponent},
+  {path: 'rector-panel', component: RectorPanelComponent},
   {path: 'settings', component: AccountSettingsComponent},
   {path: '**', redirectTo: ''}
 ];
