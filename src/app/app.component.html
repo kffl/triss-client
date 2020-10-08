@@ -1,23 +1,17 @@
-<div>
+<div class="wrapper">
   <div class="content">
     <app-header
-    [sidenav]="sidenav"></app-header>
-    <div class="main-section">
-      <mat-sidenav-container [hasBackdrop]="false">
-        <mat-sidenav
-          #sidenav>
-          <div class="menu">
-            <app-side-menu
-              [sidenav]="sidenav"></app-side-menu>
-          </div>
-        </mat-sidenav>
-        <mat-sidenav-content>
-          <div class="current-page">
-            <router-outlet></router-outlet>
-          </div>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-    </div>
+      [sidenav]="sidenav"></app-header>
+    <mat-sidenav-container [hasBackdrop]="false">
+      <mat-sidenav
+        #sidenav>
+        <app-side-menu
+          [sidenav]="sidenav"></app-side-menu>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </div>
   <app-footer></app-footer>
 </div>

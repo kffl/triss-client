@@ -32,6 +32,11 @@
               "node_modules/flag-icon-css/css/flag-icon.min.css",
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styling"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -98,6 +103,11 @@
               "node_modules/flag-icon-css/css/flag-icon.min.css",
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styling"
+              ]
+            },
             "scripts": []
           }
         },

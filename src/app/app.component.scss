@@ -1,14 +1,21 @@
-$header-height: 56px;
-$footer-height: 80px;
-$menu-width: 240px;
+@import "variables";
 
-.content {
-  .main-section {
-    .menu {
-      min-width: $menu-width;
-    }
-    .current-page{
-      min-height: calc(100vh - #{$header-height + $footer-height});
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .content {
+    flex: 1 0 auto;
+    mat-sidenav-container {
+      min-height: calc(100% - #{$header-height});
+      app-side-menu {
+        min-width: $menu-width;
+        display: block;
+      }
     }
   }
+  app-footer {
+    flex-shrink: 0;
+  }
 }
+
