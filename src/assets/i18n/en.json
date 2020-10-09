@@ -1,0 +1,40 @@
+{
+  "HEADER": {
+    "TITLE": "Triss",
+    "LANGUAGE": "Change language:"
+  },
+  "SIDE_MENU": {
+    "MAIN_PAGE": "Main page",
+    "PERSONAL_DATA": "Personal data",
+    "REQUESTS": "Requests",
+    "NEW_REQUESTS": "New request",
+    "REQUESTS_LIST": "Submitted requests",
+    "DIRECTOR_PANEL": "Director's panel",
+    "RECTOR_PANEL": "Rector's panel",
+    "SETTINGS": "Account settings"
+  },
+  "FOOTER": {
+    "PUT": "Poznan University of Technology"
+  },
+  "MAIN_VIEW": {
+    "HELLO": "Hello"
+  },
+  "PERSONAL_DATA": {
+
+  },
+  "NEW_REQUEST": {
+
+  },
+  "REQUESTS_LIST": {
+
+  },
+  "DIRECTOR_PANEL": {
+
+  },
+  "RECTOR_PANEL": {
+
+  },
+  "SETTINGS": {
+
+  }
+}

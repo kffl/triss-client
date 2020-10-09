@@ -1,0 +1,29 @@
+mat-toolbar {
+  height: 56px;
+}
+.toolbar-items-groups {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  .toolbar-items-group {
+    height: 36px;
+  }
+}
+.title {
+  margin-left: 24px;
+}
+.language-text {
+  font-weight: normal;
+  font-size: 18px;
+  padding: 0 8px;
+}
+.flag-icon {
+  padding: 4px 12px;
+}
+.flag-icon:hover {
+  cursor: pointer;
+  padding: 5px 12px;
+  transition-duration: 0.1s;
+}
+

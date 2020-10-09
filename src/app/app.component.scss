@@ -1,0 +1,21 @@
+@import "variables";
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .content {
+    flex: 1 0 auto;
+    mat-sidenav-container {
+      min-height: calc(100% - #{$header-height});
+      app-side-menu {
+        min-width: $menu-width;
+        display: block;
+      }
+    }
+  }
+  app-footer {
+    flex-shrink: 0;
+  }
+}
+
