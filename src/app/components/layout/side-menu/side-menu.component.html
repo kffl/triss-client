@@ -1,9 +1,9 @@
 <div>
   <mat-list>
-    <a [routerLink]="''">
+    <a [routerLink]="paths[0]">
       <mat-list-item class="link"><span>{{'SIDE_MENU.MAIN_PAGE' | translate}}</span></mat-list-item>
     </a>
-    <a [routerLink]="'personal-data'">
+    <a [routerLink]="paths[1]">
       <mat-list-item class="link"><span>{{'SIDE_MENU.PERSONAL_DATA' | translate}}</span></mat-list-item>
     </a>
     <mat-expansion-panel>
@@ -12,22 +12,22 @@
       </mat-expansion-panel-header>
       <mat-panel-title>
         <mat-list>
-          <a [routerLink]="'new-request'">
+          <a [routerLink]="paths[2]">
             <mat-list-item class="link"><span>{{'SIDE_MENU.NEW_REQUESTS' | translate}}</span></mat-list-item>
           </a>
-          <a [routerLink]="'requests-list'">
+          <a [routerLink]="paths[3]">
             <mat-list-item class="link"><span>{{'SIDE_MENU.REQUESTS_LIST' | translate}}</span></mat-list-item>
           </a>
-          <a [routerLink]="'director-panel'">
+          <a [routerLink]="paths[4]">
             <mat-list-item class="link"><span>{{'SIDE_MENU.DIRECTOR_PANEL' | translate}}</span></mat-list-item>
           </a>
-          <a [routerLink]="'rector-panel'">
+          <a [routerLink]="paths[5]">
             <mat-list-item class="link"><span>{{'SIDE_MENU.RECTOR_PANEL' | translate}}</span></mat-list-item>
           </a>
         </mat-list>
       </mat-panel-title>
     </mat-expansion-panel>
-    <a [routerLink]="'settings'">
+    <a [routerLink]="paths[6]">
       <mat-list-item class="link"><span>{{'SIDE_MENU.SETTINGS' | translate}}</span></mat-list-item>
     </a>
   </mat-list>

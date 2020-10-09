@@ -1,4 +1,5 @@
 import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-side-menu',
@@ -8,12 +9,21 @@ import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
 export class SideMenuComponent implements OnInit, AfterViewInit {
 
   @Input() sidenav;
-  constructor() { }
+  paths: string[] = [];
+
+  constructor(private router: Router) {
+  }
+
 
   ngOnInit(): void {
+    this.router.config.forEach(route => this.paths.push(route.path));
   }
 
   ngAfterViewInit() {
+    this.setOnLinksClickListeners();
+  }
+
+  setOnLinksClickListeners() {
     const links = document.getElementsByClassName('link');
     const that = this;
     Array.from(links).forEach(link => {
