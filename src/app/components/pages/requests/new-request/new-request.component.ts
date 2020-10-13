@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-new-request',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewRequestComponent implements OnInit {
 
-  constructor() { }
+  paths: string[] = [];
+
+  constructor(
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
+    this.router.config.forEach(route => this.paths.push('/' + route.path));
   }
 
 }

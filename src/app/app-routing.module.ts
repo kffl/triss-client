@@ -7,6 +7,8 @@ import {NewRequestComponent} from './components/pages/requests/new-request/new-r
 import {RequestsListComponent} from './components/pages/requests/requests-list/requests-list.component';
 import {DirectorPanelComponent} from './components/pages/requests/director-panel/director-panel.component';
 import {RectorPanelComponent} from './components/pages/requests/rector-panel/rector-panel.component';
+import {RequestComponent} from './components/pages/requests/new-request/request/request.component';
+import {AdvanceComponent} from './components/pages/requests/new-request/advance/advance.component';
 
 
 const routes: Routes = [
@@ -17,6 +19,8 @@ const routes: Routes = [
   {path: 'director-panel', component: DirectorPanelComponent},
   {path: 'rector-panel', component: RectorPanelComponent},
   {path: 'settings', component: AccountSettingsComponent},
+  {path: 'new-request/request', component: RequestComponent},
+  {path: 'new-request/advance', component: AdvanceComponent},
   {path: '**', redirectTo: ''}
 ];
 

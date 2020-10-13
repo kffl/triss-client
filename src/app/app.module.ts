@@ -34,8 +34,10 @@ import { GridRestService } from './components/shared/grid/grid-rest-service';
 import {MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
-import {MatNativeDateModule } from "@angular/material/core"
-import {MatDatepickerModule } from "@angular/material/datepicker"
+import {MatNativeDateModule } from "@angular/material/core";
+import {MatDatepickerModule } from "@angular/material/datepicker";
+import { RequestComponent } from './components/pages/requests/new-request/request/request.component';
+import { AdvanceComponent } from './components/pages/requests/new-request/advance/advance.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -55,6 +57,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     DirectorPanelComponent,
     RectorPanelComponent,
     GridComponent,
+    RectorPanelComponent,
+    RequestComponent,
+    AdvanceComponent
   ],
   imports: [
     MatNativeDateModule,
