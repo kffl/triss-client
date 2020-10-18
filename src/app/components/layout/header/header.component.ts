@@ -1,5 +1,5 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {ThemePalette} from '@angular/material/core';
+import {DateAdapter, ThemePalette} from '@angular/material/core';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -34,7 +34,11 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  constructor(private translateService: TranslateService) {
+  constructor(
+    private translateService: TranslateService,
+    private dateAdapter: DateAdapter<any>
+  ) {
+
   }
 
   ngOnInit(): void {
@@ -53,9 +57,11 @@ export class HeaderComponent implements OnInit {
 
   changeLanguageToPolish() {
     this.translateService.use('pl');
+    this.dateAdapter.setLocale('pl');
   }
 
   changeLanguageToEnglish() {
     this.translateService.use('en');
+    this.dateAdapter.setLocale('en');
   }
 }

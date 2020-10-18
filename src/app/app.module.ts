@@ -31,8 +31,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
-import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from '@angular-material-components/datetime-picker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatTableModule} from '@angular/material/table';
 import { GridComponent } from './components/shared/grid/grid.component';
 import { RestService } from './components/pages/requests/rest-service';
@@ -105,12 +105,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatNativeDateModule,
     MatOptionModule,
     MatSelectModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule,
     MatCheckboxModule
   ],
-  providers: [RestService, GridRestService, MatDatepickerModule],
+  providers: [
+    MatDatepickerModule,
+    RestService
+    GridRestService
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
+  ],
   bootstrap: [AppComponent]
 })
 

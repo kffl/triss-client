@@ -84,12 +84,60 @@
         <mat-label><span>Trasa</span></mat-label>
         <textarea matInput></textarea>
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label><span>Data i godzina wyjazdu</span></mat-label>
-        <input matInput [ngxMatDatetimePicker]="departurePicker" placeholder="Czas wyjazdu">
-        <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #departurePicker></ngx-mat-datetime-picker>
-      </mat-form-field>
+      <div class="datetime">
+        <mat-form-field appearance="outline">
+          <mat-label><span>Minuta wyjazdu</span></mat-label>
+          <mat-select>
+            <mat-option value="option"><span>0</span></mat-option>
+            <mat-option value="option"><span>5</span></mat-option>
+            <mat-option value="option"><span>10</span></mat-option>
+            <mat-option value="option"><span>15</span></mat-option>
+            <mat-option value="option"><span>20</span></mat-option>
+            <mat-option value="option"><span>25</span></mat-option>
+            <mat-option value="option"><span>30</span></mat-option>
+            <mat-option value="option"><span>35</span></mat-option>
+            <mat-option value="option"><span>40</span></mat-option>
+            <mat-option value="option"><span>45</span></mat-option>
+            <mat-option value="option"><span>50</span></mat-option>
+            <mat-option value="option"><span>55</span></mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label><span>Godzina wyjazdu</span></mat-label>
+          <mat-select>
+            <mat-option value="option"><span>0</span></mat-option>
+            <mat-option value="option"><span>1</span></mat-option>
+            <mat-option value="option"><span>2</span></mat-option>
+            <mat-option value="option"><span>3</span></mat-option>
+            <mat-option value="option"><span>4</span></mat-option>
+            <mat-option value="option"><span>5</span></mat-option>
+            <mat-option value="option"><span>6</span></mat-option>
+            <mat-option value="option"><span>7</span></mat-option>
+            <mat-option value="option"><span>8</span></mat-option>
+            <mat-option value="option"><span>9</span></mat-option>
+            <mat-option value="option"><span>10</span></mat-option>
+            <mat-option value="option"><span>11</span></mat-option>
+            <mat-option value="option"><span>12</span></mat-option>
+            <mat-option value="option"><span>13</span></mat-option>
+            <mat-option value="option"><span>14</span></mat-option>
+            <mat-option value="option"><span>15</span></mat-option>
+            <mat-option value="option"><span>16</span></mat-option>
+            <mat-option value="option"><span>17</span></mat-option>
+            <mat-option value="option"><span>18</span></mat-option>
+            <mat-option value="option"><span>19</span></mat-option>
+            <mat-option value="option"><span>20</span></mat-option>
+            <mat-option value="option"><span>21</span></mat-option>
+            <mat-option value="option"><span>22</span></mat-option>
+            <mat-option value="option"><span>23</span></mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Dzień wyjazdu</mat-label>
+          <input matInput [matDatepicker]="departurePicker">
+          <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
+          <mat-datepicker #departurePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
       <mat-form-field appearance="outline">
         <mat-label><span>Przewoźnik</span></mat-label>
         <input matInput>
