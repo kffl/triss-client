@@ -1,1 +1,265 @@
-<p>request works!</p>
+<div class="container">
+
+  <div class="form">
+
+    <div class="title main-title">
+      <span>Wniosek o wyjazd służbowy za granicę</span>
+    </div>
+
+    <div class="form-group basic-info">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Wyjazd do</span></mat-label>
+        <input matInput [placeholder]="'Poznań'">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Termin wyjazdu</span></mat-label>
+        <mat-date-range-input [rangePicker]="abroudPicker">
+          <input matStartDate placeholder="Data wyjazdu">
+          <input matEndDate placeholder="Data przyjazdu">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="abroudPicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #abroudPicker></mat-date-range-picker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Cel wyjazdu</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Nazwa konferencji / Instytucja zapraszająca</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Temat referatu, autorzy</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Termin konferencji</span></mat-label>
+        <mat-date-range-input [rangePicker]="conferencePicker">
+          <input matStartDate placeholder="Początek">
+          <input matEndDate placeholder="Koniec">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="conferencePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #conferencePicker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>Źródło finansowania</span>
+    </div>
+
+    <div class="form-group financial-source">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Konto alokacji</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>MPK</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Źródło finansowania</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Projekt</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>Transport</span>
+    </div>
+
+    <div class="form-group transport">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Rodzaj środka transportu</span></mat-label>
+        <mat-select>
+          <mat-option value="option"><span>Samochód</span></mat-option>
+          <mat-option value="option"><span>Autobus</span></mat-option>
+          <mat-option value="option"><span>Pociąg</span></mat-option>
+          <mat-option value="option"><span>Samolot</span></mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Trasa</span></mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Data i godzina wyjazdu</span></mat-label>
+        <input matInput [ngxMatDatetimePicker]="departurePicker" placeholder="Czas wyjazdu">
+        <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #departurePicker></ngx-mat-datetime-picker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Przewoźnik</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>Ubezpieczenie kosztów leczenia i następstw nieszczęśliwych wypadków</span>
+    </div>
+    <div class="info-text">
+      <span>
+        Jeżeli wniosek na wyjazd służbowy zostanie dostarczony do sekcji Współpracy z Zagranicą później niż 4-5 dni przed wyjazdem, pracownik zobowiązany jest ubezpieczyć się sam.
+      </span>
+    </div>
+
+    <div class="form-group insurance">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Imię i nazwisko</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Data urodzenia</mat-label>
+        <input matInput [matDatepicker]="birthPicker">
+        <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
+        <mat-datepicker #birthPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Kraj wyjazdu</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Okres pobytu za granicą</span></mat-label>
+        <mat-date-range-input [rangePicker]="insurancePicker">
+          <input matStartDate placeholder="Początek">
+          <input matEndDate placeholder="Koniec">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="insurancePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #insurancePicker></mat-date-range-picker>
+      </mat-form-field>
+      <mat-checkbox class="example-margin">Ubezpieczę się sam</mat-checkbox>
+    </div>
+
+    <div class="title subtitle">
+      <span>Wniosek o zaliczkę dewizową</span>
+    </div>
+
+    <div class="form-group advance-payment-request">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Na wyjazd do</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>W terminie</span></mat-label>
+        <mat-date-range-input [rangePicker]="advancePaymentRequestPicker">
+          <input matStartDate placeholder="Początek">
+          <input matEndDate placeholder="Koniec">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="advancePaymentRequestPicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #advancePaymentRequestPicker></mat-date-range-picker>
+      </mat-form-field>
+      <div class="advance-payment-request-list">
+        <mat-form-field appearance="outline">
+          <mat-label><span>Diety pobytowe: liczba</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label><span>Kwota diety</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label><span>Noclegi: liczba</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label><span>Limit/ryczałt</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field class="two-columns-form-field" appearance="outline">
+          <mat-label><span>Dieta dojazdowa</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field class="two-columns-form-field" appearance="outline">
+          <mat-label><span>Koszty dojazdów środkami komunikacji miejscowej</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label><span>Inne wydatki</span></mat-label>
+          <textarea matInput [placeholder]="'Tu opisz inne wydatki'"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label><span>Kwota</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field class="two-columns-form-field" appearance="outline">
+          <mat-label><span>Sumaryczna kwota wnioskowanej zaliczki</span></mat-label>
+          <input matInput>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="title subtitle">
+      <span>Przedpłaty</span>
+    </div>
+    <div class="info-text">
+      <span>
+        Dokonanie przedpłaty jest jednocześnie zobowiązaniem do dostarczenia prawidłowo wystawionej faktury do sekcji Współpracy z Zagranicą najpóźniej w dniu rozliczenia z wyjazdu.
+      </span>
+    </div>
+
+    <div class="form-group advance-payments">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Opłata konferencyjna</span></mat-label>
+        <input matInput [placeholder]="'Tu wpisz wielkość opłaty'">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Forma zapłaty</span></mat-label>
+        <mat-select>
+          <mat-option value="option"><span>Gotówka</span></mat-option>
+          <mat-option value="option"><span>Przelew</span></mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Depozyt hotelowy/zakwaterowanie</span></mat-label>
+        <input matInput [placeholder]="'Tu wpisz wielkość depozytu'">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Forma zapłaty</span></mat-label>
+        <mat-select>
+          <mat-option value="option"><span>Gotówka</span></mat-option>
+          <mat-option value="option"><span>Przelew</span></mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>Seria i numer dokumentu tożsamości wyjeżdzającego za granicę</span>
+    </div>
+
+    <div class="form-group identity-document">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Rodzaj dokumentu</span></mat-label>
+        <mat-select>
+          <mat-option value="option"><span>Dowód osobisty</span></mat-option>
+          <mat-option value="option"><span>Paszport</span></mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label><span>Seria i numer</span></mat-label>
+        <input matInput>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>Uwagi</span>
+    </div>
+
+    <div class="form-group comments">
+      <mat-form-field appearance="outline">
+        <mat-label><span>Tu wpisz swoje uwagi</span></mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="outcome-buttons">
+      <a [routerLink]="'#'"><button mat-flat-button color="primary">
+        <span>Anuluj</span>
+      </button></a>
+      <a [routerLink]="'#'"><button mat-flat-button color="primary">
+        <span>Wyślij wniosek</span>
+      </button></a>
+    </div>
+  </div>
+</div>
