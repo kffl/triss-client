@@ -167,11 +167,11 @@
     <div class="form-group advance-payment-request">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Na wyjazd do</span></mat-label>
-        <input matInput>
+        <input matInput #requestPaymentDestination>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>W terminie</span></mat-label>
-        <mat-date-range-input [rangePicker]="advancePaymentRequestPicker">
+        <mat-date-range-input [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate>
           <input matStartDate placeholder="Początek">
           <input matEndDate placeholder="Koniec">
         </mat-date-range-input>
@@ -181,39 +181,39 @@
       <div class="advance-payment-request-list">
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Diety pobytowe: liczba</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentDays>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Kwota diety</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentDaysAmount>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Noclegi: liczba</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentAccommodation>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Limit/ryczałt</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentAccommodationLimit>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Dieta dojazdowa</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentTravelDiet>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Koszty dojazdów środkami komunikacji miejscowej</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentLocalTransportCosts>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Inne wydatki</span></mat-label>
-          <textarea matInput [placeholder]="'Tu opisz inne wydatki'"></textarea>
+          <textarea matInput [placeholder]="'Tu opisz inne wydatki'" #requestPaymentOtherExpensesDescription></textarea>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Kwota</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentOtherExpensesValue>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Sumaryczna kwota wnioskowanej zaliczki</span></mat-label>
-          <input matInput>
+          <input matInput #requestPaymentSummarizedCosts>
         </mat-form-field>
       </div>
     </div>
@@ -230,24 +230,22 @@
     <div class="form-group advance-payments">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Opłata konferencyjna</span></mat-label>
-        <input matInput [placeholder]="'Tu wpisz wielkość opłaty'">
+        <input matInput [placeholder]="'Tu wpisz wielkość opłaty'" #conferenceFeeValue>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Forma zapłaty</span></mat-label>
-        <mat-select>
-          <mat-option value="option"><span>Gotówka</span></mat-option>
-          <mat-option value="option"><span>Przelew</span></mat-option>
+        <mat-select #conferenceFeePaymentTypeSelect>
+          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType.name}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Depozyt hotelowy/zakwaterowanie</span></mat-label>
-        <input matInput [placeholder]="'Tu wpisz wielkość depozytu'">
+        <input matInput [placeholder]="'Tu wpisz wielkość depozytu'" #depositValue>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Forma zapłaty</span></mat-label>
-        <mat-select>
-          <mat-option value="option"><span>Gotówka</span></mat-option>
-          <mat-option value="option"><span>Przelew</span></mat-option>
+        <mat-select #depositPaymentTypeSelect>
+          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType.name}}</span></mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -259,13 +257,13 @@
     <div class="form-group identity-document">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Rodzaj dokumentu</span></mat-label>
-        <mat-select>
+        <mat-select #identityDocumentTypeSelect>
           <mat-option *ngFor="let identityDocument of identityDocuments" [value]="identityDocument.value"><span>{{identityDocument.name}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Seria i numer</span></mat-label>
-        <input matInput>
+        <input matInput #identityDocumentSerialNumber>
       </mat-form-field>
     </div>
 
@@ -276,7 +274,7 @@
     <div class="form-group comments">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Tu wpisz swoje uwagi</span></mat-label>
-        <textarea matInput></textarea>
+        <textarea matInput #comments></textarea>
       </mat-form-field>
     </div>
 
