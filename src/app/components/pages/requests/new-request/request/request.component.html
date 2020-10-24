@@ -30,9 +30,9 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Termin wyjazdu</span></mat-label>
-        <mat-date-range-input [rangePicker]="abroadPicker" #abroadDate>
-          <input matStartDate placeholder="Data wyjazdu">
-          <input matEndDate placeholder="Data przyjazdu">
+        <mat-date-range-input [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()">
+          <input matStartDate placeholder="Data wyjazdu" readonly>
+          <input matEndDate placeholder="Data przyjazdu" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="abroadPicker"></mat-datepicker-toggle>
         <mat-date-range-picker #abroadPicker></mat-date-range-picker>
@@ -51,9 +51,9 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Termin konferencji</span></mat-label>
-        <mat-date-range-input [rangePicker]="conferencePicker" #conferenceDate>
-          <input matStartDate placeholder="Początek">
-          <input matEndDate placeholder="Koniec">
+        <mat-date-range-input [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()">
+          <input matStartDate placeholder="Początek" readonly>
+          <input matEndDate placeholder="Koniec" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="conferencePicker"></mat-datepicker-toggle>
         <mat-date-range-picker #conferencePicker></mat-date-range-picker>
@@ -113,7 +113,7 @@
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label>Dzień wyjazdu</mat-label>
-          <input matInput [matDatepicker]="departurePicker" #departureDate>
+          <input matInput [matDatepicker]="departurePicker" #departureDate readonly (click)="departurePicker.open()">
           <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
           <mat-datepicker #departurePicker></mat-datepicker>
         </mat-form-field>
@@ -150,9 +150,9 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Okres pobytu za granicą</span></mat-label>
-        <mat-date-range-input [rangePicker]="insurancePicker" #abroadDateInsurance>
-          <input matStartDate placeholder="Początek">
-          <input matEndDate placeholder="Koniec">
+        <mat-date-range-input [rangePicker]="insurancePicker" #abroadDateInsurance (click)="insurancePicker.open()">
+          <input matStartDate placeholder="Początek" readonly>
+          <input matEndDate placeholder="Koniec" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="insurancePicker"></mat-datepicker-toggle>
         <mat-date-range-picker #insurancePicker></mat-date-range-picker>
@@ -171,9 +171,9 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>W terminie</span></mat-label>
-        <mat-date-range-input [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate>
-          <input matStartDate placeholder="Początek">
-          <input matEndDate placeholder="Koniec">
+        <mat-date-range-input [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate (click)="advancePaymentRequestPicker.open()">
+          <input matStartDate placeholder="Początek" readonly>
+          <input matEndDate placeholder="Koniec" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="advancePaymentRequestPicker"></mat-datepicker-toggle>
         <mat-date-range-picker #advancePaymentRequestPicker></mat-date-range-picker>
