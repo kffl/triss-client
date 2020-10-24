@@ -15,6 +15,16 @@ export class RequestComponent implements OnInit, AfterViewInit {
   formFieldsStyle: MatFormFieldAppearance = 'standard';
   hours = Array.from(Array(24).keys());
   minutes = Array.from(Array(60).keys());
+  // TODO getting userInfo from back-end or account settings component
+  userInfo = {
+    firstNameAndSurname: 'Jakub Pietrzak',
+    academicTitle: 'jeszcze bez tytułu',
+    institute: 'instytut pisania najlepszej magisterki',
+    phoneNumber: '+48 123 456 789',
+    birthDate: new Date('1998-03-11'),
+    documentSeriesNumbers: ['AAA 12345', 'AA 12345']
+  };
+  // TODO getting these 3 arrays form back-end
   vehicles = [
     {value: 0, name: 'Samochód'},
     {value: 1, name: 'Autobus'},
@@ -108,14 +118,23 @@ export class RequestComponent implements OnInit, AfterViewInit {
     this.academicTitle.readonly = true;
     this.institute.readonly = true;
     this.phoneNumber.readonly = true;
-    this.firstNameAndSurname.value = 'Jakub Pietrzak';
-    this.academicTitle.value = 'może niedługo inżynier';
-    this.institute.value = 'instytut pisania najlepszej inżynierki';
-    this.phoneNumber.value = '+48 123 456 789';
+    this.firstNameAndSurname.value = this.userInfo.firstNameAndSurname;
+    this.academicTitle.value = this.userInfo.academicTitle;
+    this.institute.value = this.userInfo.institute;
+    this.phoneNumber.value = this.userInfo.phoneNumber;
     this.allocationAccount.disabled = true;
     this.MPK.disabled = true;
     this.financialSource.disabled = true;
     this.project.disabled = true;
+    this.firstNameAndSurnameInsurance.readonly = true;
+    this.birthDate.disabled = true;
+    this.firstNameAndSurnameInsurance.value = this.userInfo.firstNameAndSurname;
+    this.birthDate.value = this.userInfo.birthDate;
+    this.identityDocumentSerialNumber.readonly = true;
+  }
+
+  onIdChange(value: any) {
+    this.identityDocumentSerialNumber.value = this.userInfo.documentSeriesNumbers[value];
   }
 
   submitForm(event: Event) {

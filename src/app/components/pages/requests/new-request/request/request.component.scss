@@ -34,6 +34,9 @@
         display: block;
         padding: 10px;
         min-width: min(425px, calc(100vw - 20px));
+        input {
+          color: black;
+        }
       }
       mat-checkbox {
         padding-left: 50px;

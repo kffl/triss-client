@@ -257,7 +257,7 @@
     <div class="form-group identity-document">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Rodzaj dokumentu</span></mat-label>
-        <mat-select #identityDocumentTypeSelect>
+        <mat-select #identityDocumentTypeSelect (selectionChange)="onIdChange($event.value)">
           <mat-option *ngFor="let identityDocument of identityDocuments" [value]="identityDocument.value"><span>{{identityDocument.name}}</span></mat-option>
         </mat-select>
       </mat-form-field>
