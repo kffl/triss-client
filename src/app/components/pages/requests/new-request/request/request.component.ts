@@ -4,6 +4,7 @@ import {MatInput} from '@angular/material/input';
 import {MatDatepickerInput, MatDateRangeInput} from '@angular/material/datepicker';
 import {MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-request',
@@ -99,18 +100,29 @@ export class RequestComponent implements OnInit, AfterViewInit {
   // comments
   @ViewChild('comments', {read: MatInput}) comments: MatInput;
 
+  integerRegex = '^([0]|[1-9][0-9]*)$';
+  decimalSeparator: string;
+  currencyRegex: string;
+
   constructor(
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private translateService: TranslateService,
   ) {
+    this.setDecimalSeparator(this.translateService.currentLang);
+    this.translateService.onLangChange.subscribe(generator => this.setDecimalSeparator(generator.lang));
   }
 
   ngOnInit(): void {
 
   }
-
   ngAfterViewInit() {
     this.disableAndSetAutocompletingFields();
     this.changeDetectorRef.detectChanges();
+  }
+
+  setDecimalSeparator(lang) {
+    this.decimalSeparator = lang === 'pl' ? ',' : '.';
+    this.currencyRegex = `^([1-9][0-9]*|[0])([${this.decimalSeparator}][0-9]{0,2})?$`;
   }
 
   disableAndSetAutocompletingFields() {
@@ -137,8 +149,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
     this.identityDocumentSerialNumber.value = this.userInfo.documentSeriesNumbers[value];
   }
 
-  submitForm(event: Event) {
-    event.preventDefault();
+  submitForm() {
     const formFields: object = {
       basicInfo: {
         firstNameAndSurname: this.firstNameAndSurname.value,

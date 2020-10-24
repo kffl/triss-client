@@ -1,6 +1,6 @@
 <div class="container">
 
-  <form>
+  <div class="form">
 
     <div class="title main-title">
       <span>Wniosek o wyjazd służbowy za granicę</span>
@@ -181,27 +181,65 @@
       <div class="advance-payment-request-list">
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Diety pobytowe: liczba</span></mat-label>
-          <input matInput #requestPaymentDays>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="integerRegex"
+                 matInput
+                 #requestPaymentDays>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Kwota diety</span></mat-label>
-          <input matInput #requestPaymentDaysAmount>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 matInput
+                 #requestPaymentDaysAmount>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Noclegi: liczba</span></mat-label>
-          <input matInput #requestPaymentAccommodation>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="integerRegex"
+                 matInput
+                 #requestPaymentAccommodation>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Limit/ryczałt</span></mat-label>
-          <input matInput #requestPaymentAccommodationLimit>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 matInput
+                 #requestPaymentAccommodationLimit>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Dieta dojazdowa</span></mat-label>
-          <input matInput #requestPaymentTravelDiet>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 matInput
+                 #requestPaymentTravelDiet>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Koszty dojazdów środkami komunikacji miejscowej</span></mat-label>
-          <input matInput #requestPaymentLocalTransportCosts>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 matInput
+                 #requestPaymentLocalTransportCosts>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Inne wydatki</span></mat-label>
@@ -209,7 +247,14 @@
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Kwota</span></mat-label>
-          <input matInput #requestPaymentOtherExpensesValue>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 matInput
+                 #requestPaymentOtherExpensesValue>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Sumaryczna kwota wnioskowanej zaliczki</span></mat-label>
@@ -230,7 +275,15 @@
     <div class="form-group advance-payments">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Opłata konferencyjna</span></mat-label>
-        <input matInput [placeholder]="'Tu wpisz wielkość opłaty'" #conferenceFeeValue>
+        <input digitOnly
+               type="text"
+               inputmode="numeric"
+               decimal="true"
+               [decimalSeparator]="decimalSeparator"
+               [pattern]="currencyRegex"
+               matInput
+               [placeholder]="'Tu wpisz wielkość opłaty'"
+               #conferenceFeeValue>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Forma zapłaty</span></mat-label>
@@ -240,7 +293,15 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Depozyt hotelowy/zakwaterowanie</span></mat-label>
-        <input matInput [placeholder]="'Tu wpisz wielkość depozytu'" #depositValue>
+        <input digitOnly
+               type="text"
+               inputmode="numeric"
+               decimal="true"
+               [decimalSeparator]="decimalSeparator"
+               [pattern]="currencyRegex"
+               matInput
+               [placeholder]="'Tu wpisz wielkość depozytu'"
+               #depositValue>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Forma zapłaty</span></mat-label>
@@ -282,9 +343,9 @@
       <a><button mat-flat-button color="primary">
         <span>Anuluj</span>
       </button></a>
-      <a><button (click)="submitForm($event)" mat-flat-button color="primary">
+      <a><button (click)="submitForm()" mat-flat-button color="primary">
         <span>Wyślij wniosek</span>
       </button></a>
     </div>
-  </form>
+  </div>
 </div>

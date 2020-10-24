@@ -23,6 +23,7 @@
     "@angular/router": "~10.1.5",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
+    "@uiowa/digit-only": "^2.2.0",
     "flag-icon-css": "^3.5.0",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
