@@ -5,6 +5,7 @@ import {MatDatepickerInput, MatDateRangeInput} from '@angular/material/datepicke
 import {MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-request',
@@ -13,7 +14,7 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class RequestComponent implements OnInit, AfterViewInit {
 
-  formFieldsStyle: MatFormFieldAppearance = 'standard';
+  formFieldsStyle: MatFormFieldAppearance = 'fill';
   hours = Array.from(Array(24).keys());
   minutes = Array.from(Array(60).keys());
   // TODO getting userInfo from back-end or account settings component
@@ -118,7 +119,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit() {
-    this.disableAndSetAutocompletingFields();
+    this.setAutocompletingFields();
     this.changeDetectorRef.detectChanges();
   }
 
@@ -127,24 +128,13 @@ export class RequestComponent implements OnInit, AfterViewInit {
     this.currencyRegex = `^([1-9][0-9]*|[0])([${this.decimalSeparator}][0-9]{0,2})?$`;
   }
 
-  disableAndSetAutocompletingFields() {
-    this.firstNameAndSurname.readonly = true;
-    this.academicTitle.readonly = true;
-    this.institute.readonly = true;
-    this.phoneNumber.readonly = true;
+  setAutocompletingFields() {
     this.firstNameAndSurname.value = this.userInfo.firstNameAndSurname;
     this.academicTitle.value = this.userInfo.academicTitle;
     this.institute.value = this.userInfo.institute;
     this.phoneNumber.value = this.userInfo.phoneNumber;
-    this.allocationAccount.disabled = true;
-    this.MPK.disabled = true;
-    this.financialSource.disabled = true;
-    this.project.disabled = true;
-    this.firstNameAndSurnameInsurance.readonly = true;
-    this.birthDate.disabled = true;
     this.firstNameAndSurnameInsurance.value = this.userInfo.firstNameAndSurname;
     this.birthDate.value = this.userInfo.birthDate;
-    this.identityDocumentSerialNumber.readonly = true;
   }
 
   onIdChange(value: any) {
@@ -154,88 +144,107 @@ export class RequestComponent implements OnInit, AfterViewInit {
   submitForm() {
     const formFields: object = {
       basicInfo: {
-        firstNameAndSurname: this.firstNameAndSurname.value,
-        academicTitle: this.academicTitle.value,
-        institute: this.institute.value,
-        phoneNumber: this.phoneNumber.value,
-        destination: this.destination.value,
+        firstNameAndSurname: this.formatInput(this.firstNameAndSurname.value),
+        academicTitle: this.formatInput(this.academicTitle.value),
+        institute: this.formatInput(this.institute.value),
+        phoneNumber: this.formatInput(this.phoneNumber.value),
+        destination: this.formatInput(this.destination.value),
         abroadStartDate: this.formatDate(this.abroadDate.value.start),
         abroadEndDate: this.formatDate(this.abroadDate.value.end),
-        purpose: this.purpose.value,
-        conference: this.conference.value,
-        subject: this.subject.value,
+        purpose: this.formatInput(this.purpose.value),
+        conference: this.formatInput(this.conference.value),
+        subject: this.formatInput(this.subject.value),
         conferenceStartDate: this.formatDate(this.conferenceDate.value.start),
         conferenceEndDate: this.formatDate(this.conferenceDate.value.end)
       },
       financialSource: {
-        allocationAccount: this.allocationAccount.value,
-        MPK: this.MPK.value,
-        financialSource: this.financialSource.value,
-        project: this.project.value
+        allocationAccount: this.formatInput(this.allocationAccount.value),
+        MPK: this.formatInput(this.MPK.value),
+        financialSource: this.formatInput(this.financialSource.value),
+        project: this.formatInput(this.project.value)
       },
       transport: {
         vehicleSelect: this.formatSelect(this.vehicleSelect.value),
-        route: this.route.value,
+        route: this.formatInput(this.route.value),
         departureMinute: this.formatSelect(this.departureMinuteSelect.value),
         departureHour: this.formatSelect(this.departureMinuteSelect.value),
         departureDay: this.formatDate(this.departureDate.value),
-        carrier: this.carrier.value
+        carrier: this.formatInput(this.carrier.value)
       },
       insurance: {
-        firstNameAndSurnameInsurance: this.firstNameAndSurnameInsurance.value,
+        firstNameAndSurnameInsurance: this.formatInput(this.firstNameAndSurnameInsurance.value),
         birthDate: this.formatDate(this.birthDate.value),
-        departureCountry: this.departureCountry.value,
+        departureCountry: this.formatInput(this.departureCountry.value),
         abroadStartDateInsurance: this.formatDate(this.abroadDateInsurance.value.start),
         abroadEndDateInsurance: this.formatDate(this.abroadDateInsurance.value.end),
         selfInsuredCheckbox: this.selfInsuredCheckbox.checked
       },
       advancePaymentRequest: {
-        requestPaymentDestination: this.requestPaymentDestination.value,
+        requestPaymentDestination: this.formatInput(this.requestPaymentDestination.value),
         requestPaymentStartDate: this.formatDate(this.requestPaymentDate.value.start),
         requestPaymentEndDate: this.formatDate(this.requestPaymentDate.value.end),
-        requestPaymentDays: this.requestPaymentDays.value,
-        requestPaymentDaysAmount: this.requestPaymentDaysAmount.value,
-        requestPaymentAccommodation: this.requestPaymentAccommodation.value,
-        requestPaymentAccommodationLimit: this.requestPaymentAccommodationLimit.value,
-        requestPaymentTravelDiet: this.requestPaymentTravelDiet.value,
-        requestPaymentLocalTransportCosts: this.requestPaymentLocalTransportCosts.value,
-        requestPaymentOtherExpensesDescription: this.requestPaymentOtherExpensesDescription.value,
-        requestPaymentOtherExpensesValue: this.requestPaymentOtherExpensesValue.value,
-        requestPaymentSummarizedCosts: this.requestPaymentSummarizedCosts.value
+        requestPaymentDays: this.getNumberFromInput(this.requestPaymentDays.value),
+        requestPaymentDaysAmount: this.getNumberFromInput(this.requestPaymentDaysAmount.value),
+        requestPaymentAccommodation: this.getNumberFromInput(this.requestPaymentAccommodation.value),
+        requestPaymentAccommodationLimit: this.getNumberFromInput(this.requestPaymentAccommodationLimit.value),
+        requestPaymentTravelDiet: this.getNumberFromInput(this.requestPaymentTravelDiet.value),
+        requestPaymentLocalTransportCosts: this.getNumberFromInput(this.requestPaymentLocalTransportCosts.value),
+        requestPaymentOtherExpensesDescription: this.formatInput(this.requestPaymentOtherExpensesDescription.value),
+        requestPaymentOtherExpensesValue: this.getNumberFromInput(this.requestPaymentOtherExpensesValue.value),
+        requestPaymentDaysAmountSum: this.getNumberFromInput(this.requestPaymentDaysAmountSum.value),
+        requestPaymentAccommodationSum: this.getNumberFromInput(this.requestPaymentAccommodationSum.value),
+        requestPaymentSummarizedCosts: this.getNumberFromInput(this.requestPaymentSummarizedCosts.value)
       },
       advancePayments: {
-        conferenceFeeValue: this.conferenceFeeValue.value,
+        conferenceFeeValue: this.getNumberFromInput(this.conferenceFeeValue.value),
         conferenceFeePaymentTypeSelect: this.formatSelect(this.conferenceFeePaymentTypeSelect.value),
-        depositValue: this.depositValue.value,
+        depositValue: this.getNumberFromInput(this.depositValue.value),
         depositPaymentTypeSelect: this.formatSelect(this.depositPaymentTypeSelect.value),
       },
       identityDocument: {
         identityDocumentTypeSelect: this.formatSelect(this.identityDocumentTypeSelect.value),
-        identityDocumentSerialNumber: this.identityDocumentSerialNumber.value
+        identityDocumentSerialNumber: this.formatInput(this.identityDocumentSerialNumber.value)
       },
       comments: {
-        comments: this.comments.value
+        comments: this.formatInput(this.comments.value)
       }
     };
   }
 
   formatDate(date: Date): string {
     return date ?
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}` : '';
+      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}` : null;
   }
 
-  formatSelect(value: any): any {
+  formatSelect(value: number): number {
     if (value == null) {
-      return '';
+      return null;
     }
     return value;
+  }
+
+  formatInput(str: string): string {
+    if (str === '') {
+      return null;
+    }
+    return str;
+  }
+
+  getNumberFromInput(str: string): number {
+    if (str === '') {
+      return null;
+    }
+    if (str.includes(',') || str.includes('.')) {
+      return parseFloat(str.replace(',', '.'));
+    }
+    return parseInt(str, 10);
   }
 
   setAmountSum(daysString, amountString, resultInput) {
     const days: number = parseInt(daysString, 10);
     const amount: number = parseFloat(amountString.replace(',', '.'));
     if (!isNaN(days) && !isNaN(amount)) {
-      resultInput.value = String((days * amount).toFixed(2)).replace('.', this.decimalSeparator);
+      resultInput.value = (days * amount).toFixed(2).replace('.', this.decimalSeparator);
     } else {
       resultInput.value = '';
     }
@@ -254,6 +263,6 @@ export class RequestComponent implements OnInit, AfterViewInit {
         sum += value;
       }
     }
-    this.requestPaymentSummarizedCosts.value = sum ? String(sum.toFixed(2)).replace('.', this.decimalSeparator) : '';
+    this.requestPaymentSummarizedCosts.value = sum ? sum.toFixed(2).replace('.', this.decimalSeparator) : '';
   }
 }

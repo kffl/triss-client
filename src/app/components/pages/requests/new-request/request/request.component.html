@@ -9,19 +9,19 @@
     <div class="form-group basic-info">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Imię i nazwisko</span></mat-label>
-        <input matInput #firstNameAndSurname>
+        <input matInput #firstNameAndSurname readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Tytuł, stopień naukowy, stanowisko</span></mat-label>
-        <input matInput #academicTitle>
+        <input matInput #academicTitle readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Instytut/katedra/wydział</span></mat-label>
-        <input matInput #institute>
+        <input matInput #institute readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Telefon kontaktowy</span></mat-label>
-        <input matInput #phoneNumber>
+        <input matInput #phoneNumber readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Wyjazd do</span></mat-label>
@@ -67,19 +67,19 @@
     <div class="form-group financial-source">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Konto alokacji</span></mat-label>
-        <input matInput #allocationAccount>
+        <input matInput #allocationAccount disabled>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>MPK</span></mat-label>
-        <input matInput #MPK>
+        <input matInput #MPK disabled>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Źródło finansowania</span></mat-label>
-        <input matInput #financialSource>
+        <input matInput #financialSource disabled>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Projekt</span></mat-label>
-        <input matInput #project>
+        <input matInput #project disabled>
       </mat-form-field>
     </div>
 
@@ -136,13 +136,13 @@
     <div class="form-group insurance">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Imię i nazwisko</span></mat-label>
-        <input matInput #firstNameAndSurnameInsurance>
+        <input matInput #firstNameAndSurnameInsurance readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>Data urodzenia</mat-label>
-        <input matInput [matDatepicker]="birthPicker" #birthDate>
+        <input matInput [matDatepicker]="birthPicker" #birthDate readonly>
         <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
-        <mat-datepicker #birthPicker></mat-datepicker>
+        <mat-datepicker #birthPicker disabled></mat-datepicker>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Kraj wyjazdu</span></mat-label>
@@ -343,7 +343,7 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Seria i numer</span></mat-label>
-        <input matInput #identityDocumentSerialNumber>
+        <input matInput #identityDocumentSerialNumber readonly>
       </mat-form-field>
     </div>
 
