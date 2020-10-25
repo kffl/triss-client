@@ -34,6 +34,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {DigitOnlyModule} from '@uiowa/digit-only';
+import {MatDialogModule} from '@angular/material/dialog';
+import { InfoDialogComponent } from './components/extra/info-dialog/info-dialog.component';
 import {MatTableModule} from '@angular/material/table';
 import { GridComponent } from './components/shared/grid/grid.component';
 import { RestService } from './components/pages/requests/rest-service';
@@ -107,7 +109,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,
-    DigitOnlyModule
+    DigitOnlyModule,
+    MatDialogModule
   ],
   providers: [
     MatDatepickerModule,

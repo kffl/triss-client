@@ -5,7 +5,8 @@ import {MatDatepickerInput, MatDateRangeInput} from '@angular/material/datepicke
 import {MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {InfoDialogComponent} from '../../../../extra/info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-request',
@@ -110,6 +111,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
+    private dialog: MatDialog
   ) {
     this.setDecimalSeparator(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.setDecimalSeparator(generator.lang));
@@ -142,7 +144,54 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   submitForm() {
-    const formFields: object = {
+    const formValues: object = this.getParsedFormData();
+    const isFormValid = this.validateForm(formValues);
+    if (!isFormValid) {
+      const dialogConfig = new MatDialogConfig();
+      this.dialog.open(InfoDialogComponent, dialogConfig);
+    }
+    else {
+      this.sendFormData(formValues);
+    }
+  }
+
+  formatDate(date: Date): string {
+    return date ?
+      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}` : null;
+  }
+
+  formatSelect(value: number): number {
+    if (value == null) {
+      return null;
+    }
+    return value;
+  }
+
+  formatInput(str: string): string {
+    if (str === '') {
+      return null;
+    }
+    return str;
+  }
+
+  getNumberFromInput(str: string): number {
+    let num: number;
+    if (str === '') {
+      return null;
+    }
+    if (str.includes(',') || str.includes('.')) {
+      num = parseFloat(str.replace(',', '.'));
+    } else {
+      num = parseInt(str, 10);
+    }
+    if (isNaN(num)) {
+      return null;
+    }
+    return num;
+  }
+
+  getParsedFormData(): object {
+    return {
       basicInfo: {
         firstNameAndSurname: this.formatInput(this.firstNameAndSurname.value),
         academicTitle: this.formatInput(this.academicTitle.value),
@@ -211,33 +260,19 @@ export class RequestComponent implements OnInit, AfterViewInit {
     };
   }
 
-  formatDate(date: Date): string {
-    return date ?
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}` : null;
+  validateForm(form): boolean {
+    for (const formGroup of ['basicInfo', 'transport', 'insurance', 'advancePaymentRequest', 'advancePayments', 'identityDocument']) {
+      for (const property in form[formGroup]) {
+        if (form[formGroup].hasOwnProperty(property) && form[formGroup][property] === null) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
-  formatSelect(value: number): number {
-    if (value == null) {
-      return null;
-    }
-    return value;
-  }
-
-  formatInput(str: string): string {
-    if (str === '') {
-      return null;
-    }
-    return str;
-  }
-
-  getNumberFromInput(str: string): number {
-    if (str === '') {
-      return null;
-    }
-    if (str.includes(',') || str.includes('.')) {
-      return parseFloat(str.replace(',', '.'));
-    }
-    return parseInt(str, 10);
+  sendFormData(form) {
+  //  TODO sending form data to backend
   }
 
   setAmountSum(daysString, amountString, resultInput) {
