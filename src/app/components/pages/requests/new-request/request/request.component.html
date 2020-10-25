@@ -186,6 +186,7 @@
                  inputmode="numeric"
                  [pattern]="integerRegex"
                  matInput
+                 (input)="setAmountSum(requestPaymentDays.value, requestPaymentDaysAmount.value, requestPaymentDaysAmountSum)"
                  #requestPaymentDays>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
@@ -197,7 +198,14 @@
                  [decimalSeparator]="decimalSeparator"
                  [pattern]="currencyRegex"
                  matInput
+                 (input)="setAmountSum(requestPaymentDays.value, requestPaymentDaysAmount.value, requestPaymentDaysAmountSum)"
                  #requestPaymentDaysAmount>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>Razem</span></mat-label>
+          <input matInput
+                 #requestPaymentDaysAmountSum
+                 readonly>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>Noclegi: liczba</span></mat-label>
@@ -206,6 +214,7 @@
                  inputmode="numeric"
                  [pattern]="integerRegex"
                  matInput
+                 (input)="setAmountSum(requestPaymentAccommodation.value, requestPaymentAccommodationLimit.value, requestPaymentAccommodationSum)"
                  #requestPaymentAccommodation>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
@@ -217,9 +226,16 @@
                  [decimalSeparator]="decimalSeparator"
                  [pattern]="currencyRegex"
                  matInput
+                 (input)="setAmountSum(requestPaymentAccommodation.value, requestPaymentAccommodationLimit.value, requestPaymentAccommodationSum)"
                  #requestPaymentAccommodationLimit>
         </mat-form-field>
-        <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>Razem</span></mat-label>
+          <input matInput
+                 #requestPaymentAccommodationSum
+                 readonly>
+        </mat-form-field>
+        <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Dieta dojazdowa</span></mat-label>
           <input digitOnly
                  type="text"
@@ -227,10 +243,11 @@
                  decimal="true"
                  [decimalSeparator]="decimalSeparator"
                  [pattern]="currencyRegex"
+                 (input)="setRequestPaymentSummarizedCosts()"
                  matInput
                  #requestPaymentTravelDiet>
         </mat-form-field>
-        <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
+        <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Koszty dojazdów środkami komunikacji miejscowej</span></mat-label>
           <input digitOnly
                  type="text"
@@ -238,10 +255,11 @@
                  decimal="true"
                  [decimalSeparator]="decimalSeparator"
                  [pattern]="currencyRegex"
+                 (input)="setRequestPaymentSummarizedCosts()"
                  matInput
                  #requestPaymentLocalTransportCosts>
         </mat-form-field>
-        <mat-form-field [appearance]="formFieldsStyle">
+        <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Inne wydatki</span></mat-label>
           <textarea matInput [placeholder]="'Tu opisz inne wydatki'" #requestPaymentOtherExpensesDescription></textarea>
         </mat-form-field>
@@ -253,12 +271,13 @@
                  decimal="true"
                  [decimalSeparator]="decimalSeparator"
                  [pattern]="currencyRegex"
+                 (input)="setRequestPaymentSummarizedCosts()"
                  matInput
                  #requestPaymentOtherExpensesValue>
         </mat-form-field>
-        <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
+        <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>Sumaryczna kwota wnioskowanej zaliczki</span></mat-label>
-          <input matInput #requestPaymentSummarizedCosts>
+          <input matInput #requestPaymentSummarizedCosts readonly>
         </mat-form-field>
       </div>
     </div>

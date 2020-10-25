@@ -20,7 +20,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   userInfo = {
     firstNameAndSurname: 'Jakub Pietrzak',
     academicTitle: 'jeszcze bez tytułu',
-    institute: 'instytut pisania najlepszej magisterki',
+    institute: 'instytut pisania najlepszej inżynierki',
     phoneNumber: '+48 123 456 789',
     birthDate: new Date('1998-03-11'),
     documentSeriesNumbers: ['AAA 12345', 'AA 12345']
@@ -85,6 +85,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
   @ViewChild('requestPaymentLocalTransportCosts', {read: MatInput}) requestPaymentLocalTransportCosts: MatInput;
   @ViewChild('requestPaymentOtherExpensesDescription', {read: MatInput}) requestPaymentOtherExpensesDescription: MatInput;
   @ViewChild('requestPaymentOtherExpensesValue', {read: MatInput}) requestPaymentOtherExpensesValue: MatInput;
+  @ViewChild('requestPaymentDaysAmountSum', {read: MatInput}) requestPaymentDaysAmountSum: MatInput;
+  @ViewChild('requestPaymentAccommodationSum', {read: MatInput}) requestPaymentAccommodationSum: MatInput;
   @ViewChild('requestPaymentSummarizedCosts', {read: MatInput}) requestPaymentSummarizedCosts: MatInput;
 
   // advance-payments
@@ -229,4 +231,29 @@ export class RequestComponent implements OnInit, AfterViewInit {
     return value;
   }
 
+  setAmountSum(daysString, amountString, resultInput) {
+    const days: number = parseInt(daysString, 10);
+    const amount: number = parseFloat(amountString.replace(',', '.'));
+    if (!isNaN(days) && !isNaN(amount)) {
+      resultInput.value = String((days * amount).toFixed(2)).replace('.', this.decimalSeparator);
+    } else {
+      resultInput.value = '';
+    }
+    this.setRequestPaymentSummarizedCosts();
+  }
+
+  setRequestPaymentSummarizedCosts() {
+    const days: number = parseFloat(this.requestPaymentDaysAmountSum.value.replace(',', '.'));
+    const accommodation: number = parseFloat(this.requestPaymentAccommodationSum.value.replace(',', '.'));
+    const travelDiet: number = parseFloat(this.requestPaymentTravelDiet.value.replace(',', '.'));
+    const transportCosts: number = parseFloat(this.requestPaymentLocalTransportCosts.value.replace(',', '.'));
+    const otherCosts: number = parseFloat(this.requestPaymentOtherExpensesValue.value.replace(',', '.'));
+    let sum = 0;
+    for (const value of [days, accommodation, travelDiet, transportCosts, otherCosts]) {
+      if (!isNaN(value)) {
+        sum += value;
+      }
+    }
+    this.requestPaymentSummarizedCosts.value = sum ? String(sum.toFixed(2)).replace('.', this.decimalSeparator) : '';
+  }
 }
