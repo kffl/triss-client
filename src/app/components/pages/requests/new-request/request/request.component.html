@@ -87,7 +87,8 @@
       <span>Transport</span>
     </div>
 
-    <div class="form-group transport">
+    <div class="form-group transport" *ngFor="let transportMean of transportMeansArray">
+      <div class="info-text transport-enum"><span>Środek transportu nr {{transportMean}}</span></div>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Rodzaj środka transportu</span></mat-label>
         <mat-select #vehicleSelect>
@@ -96,7 +97,7 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>Trasa</span></mat-label>
-        <textarea matInput #route></textarea>
+        <input matInput #route>
       </mat-form-field>
       <div class="datetime">
         <mat-form-field [appearance]="formFieldsStyle">
@@ -122,6 +123,15 @@
         <mat-label><span>Przewoźnik</span></mat-label>
         <input matInput #carrier>
       </mat-form-field>
+    </div>
+
+    <div class="transport-buttons">
+      <button mat-stroked-button (click)="incrementTransportMeansNumber()" [disabled]="transportMeansNumber === 100">
+        <span>Dodaj kolejny środek transportu</span>
+      </button>
+      <button mat-stroked-button (click)="decrementTransportMeansNumber()" [disabled]="transportMeansNumber === 1">
+        <span>Usuń ostatni środek transportu</span>
+      </button>
     </div>
 
     <div class="title subtitle">

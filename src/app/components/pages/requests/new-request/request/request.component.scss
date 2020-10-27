@@ -23,6 +23,12 @@
     .info-text {
       padding: 8px 24px;
     }
+    .transport-enum {
+      width: 100%;
+      span {
+        font-size: 1.1em;
+      }
+    }
     .form-group {
       display: flex;
       flex-wrap: wrap;
@@ -76,6 +82,23 @@
       mat-form-field {
         flex: none;
         min-width: 0;
+      }
+    }
+    .transport-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      align-items: center;
+      padding: 4px;
+      align-self: flex-end;
+      button {
+        flex-basis: 100%;
+        margin: 4px;
+        padding: 4px 16px;
+        max-width: 150px;
+        span {
+          white-space: normal;
+        }
       }
     }
     .outcome-buttons {

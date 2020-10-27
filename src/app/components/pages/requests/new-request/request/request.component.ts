@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatDatepickerInput, MatDateRangeInput} from '@angular/material/datepicker';
@@ -16,6 +16,8 @@ import {InfoDialogComponent} from '../../../../extra/info-dialog/info-dialog.com
 export class RequestComponent implements OnInit, AfterViewInit {
 
   formFieldsStyle: MatFormFieldAppearance = 'fill';
+  transportMeansNumber = 1;
+  transportMeansArray = [1];
   hours = Array.from(Array(24).keys());
   minutes = Array.from(Array(60).keys());
   // TODO getting userInfo from back-end or account settings component
@@ -62,12 +64,12 @@ export class RequestComponent implements OnInit, AfterViewInit {
   @ViewChild('project', {read: MatInput}) project: MatInput;
 
   // transport
-  @ViewChild('vehicleSelect') vehicleSelect: MatSelect;
-  @ViewChild('route', {read: MatInput}) route: MatInput;
-  @ViewChild('departureMinuteSelect') departureMinuteSelect: MatSelect;
-  @ViewChild('departureHourSelect') departureHourSelect: MatSelect;
-  @ViewChild('departureDate', {read: MatDatepickerInput}) departureDate: MatDatepickerInput<Date>;
-  @ViewChild('carrier', {read: MatInput}) carrier: MatInput;
+  @ViewChildren('vehicleSelect') vehicleSelect: QueryList<MatSelect>;
+  @ViewChildren('route', {read: MatInput}) route: QueryList<MatInput>;
+  @ViewChildren('departureMinuteSelect') departureMinuteSelect: QueryList<MatSelect>;
+  @ViewChildren('departureHourSelect') departureHourSelect: QueryList<MatSelect>;
+  @ViewChildren('departureDate', {read: MatDatepickerInput}) departureDate: QueryList<MatDatepickerInput<Date>>;
+  @ViewChildren('carrier', {read: MatInput}) carrier: QueryList<MatInput>;
 
   // insurance
   @ViewChild('firstNameAndSurnameInsurance', {read: MatInput}) firstNameAndSurnameInsurance: MatInput;
@@ -213,12 +215,12 @@ export class RequestComponent implements OnInit, AfterViewInit {
         project: this.formatInput(this.project.value)
       },
       transport: {
-        vehicleSelect: this.formatSelect(this.vehicleSelect.value),
-        route: this.formatInput(this.route.value),
-        departureMinute: this.formatSelect(this.departureMinuteSelect.value),
-        departureHour: this.formatSelect(this.departureMinuteSelect.value),
-        departureDay: this.formatDate(this.departureDate.value),
-        carrier: this.formatInput(this.carrier.value)
+        vehicleSelect: this.vehicleSelect.toArray().map(item => this.formatSelect(item.value)),
+        route: this.route.toArray().map(item => this.formatInput(item.value)),
+        departureMinute: this.departureMinuteSelect.toArray().map(item => this.formatSelect(item.value)),
+        departureHour: this.departureHourSelect.toArray().map(item => this.formatSelect(item.value)),
+        departureDay: this.departureDate.toArray().map(item => this.formatDate(item.value)),
+        carrier: this.carrier.toArray().map(item => this.formatInput(item.value))
       },
       insurance: {
         firstNameAndSurnameInsurance: this.formatInput(this.firstNameAndSurnameInsurance.value),
@@ -261,9 +263,17 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   validateForm(form): boolean {
-    for (const formGroup of ['basicInfo', 'transport', 'insurance', 'advancePaymentRequest', 'advancePayments', 'identityDocument']) {
+    for (const formGroup of ['basicInfo', 'insurance', 'advancePaymentRequest', 'advancePayments', 'identityDocument']) {
       for (const property in form[formGroup]) {
         if (form[formGroup].hasOwnProperty(property) && form[formGroup][property] === null) {
+          return false;
+        }
+      }
+    }
+    for (const property in form.transport) {
+      if (form.transport.hasOwnProperty(property)) {
+        const values: any[] = form.transport[property];
+        if (values.includes(null)) {
           return false;
         }
       }
@@ -299,5 +309,15 @@ export class RequestComponent implements OnInit, AfterViewInit {
       }
     }
     this.requestPaymentSummarizedCosts.value = sum ? sum.toFixed(2).replace('.', this.decimalSeparator) : '';
+  }
+
+  incrementTransportMeansNumber() {
+    this.transportMeansNumber++;
+    this.transportMeansArray.push(this.transportMeansNumber);
+  }
+
+  decrementTransportMeansNumber() {
+    this.transportMeansNumber--;
+    this.transportMeansArray.pop();
   }
 }
