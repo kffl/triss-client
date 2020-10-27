@@ -263,7 +263,11 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   validateForm(form): boolean {
-    for (const formGroup of ['basicInfo', 'insurance', 'advancePaymentRequest', 'advancePayments', 'identityDocument']) {
+    const formGroups = ['basicInfo', /*'advancePaymentRequest', 'advancePayments',*/ 'identityDocument'];
+    if (!this.selfInsuredCheckbox.checked) {
+      formGroups.push('insurance');
+    }
+    for (const formGroup of formGroups) {
       for (const property in form[formGroup]) {
         if (form[formGroup].hasOwnProperty(property) && form[formGroup][property] === null) {
           return false;
@@ -271,7 +275,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
       }
     }
     for (const property in form.transport) {
-      if (form.transport.hasOwnProperty(property)) {
+      if (form.transport.hasOwnProperty(property) && property !== 'carrier') {
         const values: any[] = form.transport[property];
         if (values.includes(null)) {
           return false;
