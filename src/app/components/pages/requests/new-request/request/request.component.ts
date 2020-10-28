@@ -7,6 +7,13 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {InfoDialogComponent} from '../../../../extra/info-dialog/info-dialog.component';
+import {HttpClient} from '@angular/common/http';
+
+interface Enum {
+  value: number;
+  namePl: string;
+  nameEng: string;
+}
 
 @Component({
   selector: 'app-request',
@@ -29,21 +36,6 @@ export class RequestComponent implements OnInit, AfterViewInit {
     birthDate: new Date('1998-03-11'),
     documentSeriesNumbers: ['AAA 12345', 'AA 12345']
   };
-  // TODO getting these 3 arrays form back-end
-  vehicles = [
-    {value: 0, name: 'Samochód'},
-    {value: 1, name: 'Autobus'},
-    {value: 2, name: 'Pociąg'},
-    {value: 3, name: 'Samolot'}
-  ];
-  identityDocuments = [
-    {value: 0, name: 'Dowód osobisty'},
-    {value: 1, name: 'Paszport'}
-  ];
-  paymentTypes = [
-    {value: 0, name: 'Gotówka'},
-    {value: 1, name: 'Przelew'}
-  ];
 
   // basic-info
   @ViewChild('firstNameAndSurname', {read: MatInput}) firstNameAndSurname: MatInput;
@@ -109,26 +101,38 @@ export class RequestComponent implements OnInit, AfterViewInit {
   integerRegex = '^([0]|[1-9][0-9]*)$';
   decimalSeparator: string;
   currencyRegex: string;
+  enumLang: string;
+
+  vehicles: Enum[];
+  identityDocuments: Enum[];
+  paymentTypes: Enum[];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private http: HttpClient
   ) {
-    this.setDecimalSeparator(this.translateService.currentLang);
-    this.translateService.onLangChange.subscribe(generator => this.setDecimalSeparator(generator.lang));
+    this.onLangChange(this.translateService.currentLang);
+    this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
   }
 
   ngOnInit(): void {
-
+    this.getSelectEnums();
   }
   ngAfterViewInit() {
     this.setAutocompletingFields();
     this.changeDetectorRef.detectChanges();
   }
 
-  setDecimalSeparator(lang) {
-    this.decimalSeparator = lang === 'pl' ? ',' : '.';
+  onLangChange(lang) {
+    if (lang === 'pl') {
+      this.decimalSeparator = ',';
+      this.enumLang = 'namePl';
+    } else {
+      this.decimalSeparator = '.';
+      this.enumLang = 'nameEng';
+    }
     this.currencyRegex = `^([1-9][0-9]*|[0])([${this.decimalSeparator}][0-9]{0,2})?$`;
   }
 
@@ -139,6 +143,16 @@ export class RequestComponent implements OnInit, AfterViewInit {
     this.phoneNumber.value = this.userInfo.phoneNumber;
     this.firstNameAndSurnameInsurance.value = this.userInfo.firstNameAndSurname;
     this.birthDate.value = this.userInfo.birthDate;
+  }
+
+  getSelectEnums() {
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/enum`;
+    this.http.get<Enum[]>(`${url}/vehicle`)
+      .subscribe(vehicles => this.vehicles = vehicles);
+    this.http.get<Enum[]>(`${url}/documentType`)
+      .subscribe(identityDocuments => this.identityDocuments = identityDocuments);
+    this.http.get<Enum[]>(`${url}/paymentType`)
+      .subscribe(paymentTypes => this.paymentTypes = paymentTypes);
   }
 
   onIdChange(value: any) {

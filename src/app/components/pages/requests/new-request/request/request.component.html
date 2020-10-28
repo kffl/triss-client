@@ -99,7 +99,7 @@
         <span matPrefix class="asterisk">*</span>
         <mat-label><span>Rodzaj środka transportu</span></mat-label>
         <mat-select #vehicleSelect>
-          <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.value"><span>{{vehicle.name}}</span></mat-option>
+          <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.value"><span>{{vehicle[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
@@ -344,7 +344,7 @@
         <mat-label><span>Forma zapłaty</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-select #conferenceFeePaymentTypeSelect>
-          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType.name}}</span></mat-option>
+          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
@@ -364,7 +364,7 @@
         <mat-label><span>Forma zapłaty</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-select #depositPaymentTypeSelect>
-          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType.name}}</span></mat-option>
+          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -378,7 +378,7 @@
         <mat-label><span>Rodzaj dokumentu</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-select #identityDocumentTypeSelect (selectionChange)="onIdChange($event.value)">
-          <mat-option *ngFor="let identityDocument of identityDocuments" [value]="identityDocument.value"><span>{{identityDocument.name}}</span></mat-option>
+          <mat-option *ngFor="let identityDocument of identityDocuments" [value]="identityDocument.value"><span>{{identityDocument[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
