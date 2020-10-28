@@ -263,7 +263,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   validateForm(form): boolean {
-    const formGroups = ['basicInfo', /*'advancePaymentRequest', 'advancePayments',*/ 'identityDocument'];
+    const formGroups = ['basicInfo', 'advancePaymentRequest', 'advancePayments', 'identityDocument'];
     if (!this.selfInsuredCheckbox.checked) {
       formGroups.push('insurance');
     }
