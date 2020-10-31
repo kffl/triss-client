@@ -38,9 +38,4 @@ export class RequestsListComponent implements OnInit {
     this.pageInfo.pageNumber = 0;
   }
 
-
-  public onRowClick(row: any) {
-    console.log(row);
-  }
-
 }

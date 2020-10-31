@@ -58,7 +58,7 @@ export class GridComponent implements OnInit {
                     .subscribe();
   }
 
-  private onFilterChange(event: any, tableFilter: any) {
+  public onFilterChange(event: any, tableFilter: any) {
     let columnName = tableFilter.replace("Filter", '');
     this.pageInfo.filter[columnName] = event.currentTarget.value;
     this.pageInfo.pageNumber = 0;
@@ -67,13 +67,17 @@ export class GridComponent implements OnInit {
     this.loadCount();
   }
 
-  private onDateFilterChange(event: any, tableFilter: any) {
+  public onDateFilterChange(event: any, tableFilter: any) {
     let columnName = tableFilter.replace("Filter", '');
     this.pageInfo.filter[columnName] = event.value;
     this.pageInfo.pageNumber = 0;
     this.paginator.pageIndex = 0;
     this.loadPage();
     this.loadCount();
+  }
+
+  public onRowClicked(row: any) {
+    this.onRowClick.emit(row);
   }
 
   private prepareInitPageInfo() {
@@ -108,10 +112,6 @@ export class GridComponent implements OnInit {
     this.restService.getMono(this.countRestPath, this.pageInfo).subscribe(result => {
       this.objectCount = result;
     })
-  }
-
-  private onRowClicked(row: any) {
-    this.onRowClick.emit(row);
   }
 
 }
