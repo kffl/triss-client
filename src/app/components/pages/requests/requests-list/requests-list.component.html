@@ -1,1 +1,7 @@
-<p>requests-list works!</p>
+
+<h1 class="header"> Złożone wnioski</h1>
+
+<br/>
+<app-grid  [columnHeader]="headers" (onRowClick) = "onRowClick($event)"
+           [dataRestPath] = 'dataRestPath' [countRestPath] = 'countRestPath' [pageInfo] = "pageInfo"></app-grid>
+<br/>

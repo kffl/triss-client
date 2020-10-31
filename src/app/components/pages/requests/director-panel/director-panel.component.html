@@ -1,1 +1,7 @@
-<p>director-panel works!</p>
+
+<h1 class="header"> Widok dyrektora</h1>
+
+<br/>
+<app-grid  [columnHeader]="headers" (onRowClick) = "onRowClick($event)"
+           [dataRestPath] = 'dataRestPath' [countRestPath] = 'countRestPath' [pageInfo] = "pageInfo"></app-grid>
+<br/>

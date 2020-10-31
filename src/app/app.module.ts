@@ -24,6 +24,18 @@ import {RectorPanelComponent} from './components/pages/requests/rector-panel/rec
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {MatTableModule} from '@angular/material/table';
+import { GridComponent } from './components/shared/grid/grid.component';
+import { RestService } from './components/pages/requests/rest-service';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { GridRestService } from './components/shared/grid/grid-rest-service';
+import {MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatNativeDateModule } from "@angular/material/core"
+import {MatDatepickerModule } from "@angular/material/datepicker"
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -41,14 +53,24 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewRequestComponent,
     RequestsListComponent,
     DirectorPanelComponent,
-    RectorPanelComponent
+    RectorPanelComponent,
+    GridComponent,
   ],
   imports: [
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatInputModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatToolbarModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
     MatListModule,
     MatExpansionModule,
     MatIconModule,
@@ -64,7 +86,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     HttpClientModule
   ],
-  providers: [],
+  providers: [RestService, GridRestService],
   bootstrap: [AppComponent]
 })
 
