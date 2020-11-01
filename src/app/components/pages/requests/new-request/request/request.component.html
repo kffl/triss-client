@@ -3,63 +3,62 @@
   <div class="form">
 
     <div class="title main-title">
-      <span>Wniosek o wyjazd służbowy za granicę</span>
+      <span>{{ 'REQUEST.MAIN_TITLE' | translate }}</span>
     </div>
 
     <div class="form-group basic-info">
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Imię i nazwisko</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.NAME' | translate }}</span></mat-label>
         <input matInput #firstNameAndSurname readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Tytuł, stopień naukowy, stanowisko</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.ACADEMIC_TITLE' | translate }}</span></mat-label>
         <input matInput #academicTitle readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Instytut/katedra/wydział</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.INSTITUTE' | translate }}</span></mat-label>
         <input matInput #institute readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Telefon kontaktowy</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>
         <input matInput #phoneNumber readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Wyjazd do</span></mat-label>
-        <mat-hint align="start"><span>Miejscowość, kraj</span></mat-hint>
+        <mat-label><span>{{ 'REQUEST.DESTINATION' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input matInput #destination>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Termin wyjazdu</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.TRIP_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-date-range-input [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()">
-          <input matStartDate placeholder="Data wyjazdu" readonly>
-          <input matEndDate placeholder="Data przyjazdu" readonly>
+          <input matStartDate placeholder="{{ 'REQUEST.TRIP_DATE_FROM' | translate }}" readonly>
+          <input matEndDate placeholder="{{ 'REQUEST.TRIP_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="abroadPicker"></mat-datepicker-toggle>
         <mat-date-range-picker #abroadPicker></mat-date-range-picker>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Cel wyjazdu</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.PURPOSE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input matInput #purpose>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Nazwa konferencji / Instytucja zapraszająca</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.CONFERENCE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input matInput #conference>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Temat referatu, autorzy</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.SUBJECT' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input matInput #subject>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Termin konferencji</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.CONFERENCE_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-date-range-input [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()">
-          <input matStartDate placeholder="Początek" readonly>
-          <input matEndDate placeholder="Koniec" readonly>
+          <input matStartDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_FROM' | translate }}" readonly>
+          <input matEndDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="conferencePicker"></mat-datepicker-toggle>
         <mat-date-range-picker #conferencePicker></mat-date-range-picker>
@@ -67,63 +66,63 @@
     </div>
 
     <div class="title subtitle">
-      <span>Źródło finansowania</span>
+      <span>{{ 'REQUEST.FINANCIAL_SOURCE_TITLE' | translate }}</span>
     </div>
 
     <div class="form-group financial-source">
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Konto alokacji</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.ALLOCATION_ACCOUNT' | translate }}</span></mat-label>
         <input matInput #allocationAccount disabled>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>MPK</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.MPK' | translate }}</span></mat-label>
         <input matInput #MPK disabled>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Źródło finansowania</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.FINANCIAL_SOURCE' | translate }}</span></mat-label>
         <input matInput #financialSource disabled>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Projekt</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.PROJECT' | translate }}</span></mat-label>
         <input matInput #project disabled>
       </mat-form-field>
     </div>
 
     <div class="title subtitle">
-      <span>Transport</span>
+      <span>{{ 'REQUEST.TRANSPORT_TITLE' | translate }}</span>
     </div>
 
     <div class="form-group transport" *ngFor="let transportMean of transportMeansArray">
-      <div class="info-text transport-enum"><span>Środek transportu nr {{transportMean}}</span></div>
+      <div class="info-text transport-enum"><span>{{ 'REQUEST.TRANSPORT_MEAN_NO' | translate }} {{transportMean}}</span></div>
       <mat-form-field [appearance]="formFieldsStyle">
         <span matPrefix class="asterisk">*</span>
-        <mat-label><span>Rodzaj środka transportu</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.TRANSPORT_MEAN_TYPE' | translate }}</span></mat-label>
         <mat-select #vehicleSelect>
           <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.value"><span>{{vehicle[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Trasa</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.ROUTE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input matInput #route>
       </mat-form-field>
       <div class="datetime">
         <mat-form-field [appearance]="formFieldsStyle">
           <span matPrefix class="asterisk">*</span>
-          <mat-label><span>Minuta wyjazdu</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.DEPARTURE_MINUTE' | translate }}</span></mat-label>
           <mat-select #departureMinuteSelect>
             <mat-option *ngFor="let minute of minutes" [value]="minute"><span>{{minute}}</span></mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
           <span matPrefix class="asterisk">*</span>
-          <mat-label><span>Godzina wyjazdu</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.DEPARTURE_HOUR' | translate }}</span></mat-label>
           <mat-select #departureHourSelect>
             <mat-option *ngFor="let hour of hours" [value]="hour"><span>{{hour}}</span></mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label>Dzień wyjazdu</mat-label>
+          <mat-label>{{ 'REQUEST.DEPARTURE_DATE' | translate }}</mat-label>
           <span matPrefix class="asterisk">*</span>
           <input matInput [matDatepicker]="departurePicker" #departureDate readonly (click)="departurePicker.open()">
           <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
@@ -131,83 +130,81 @@
         </mat-form-field>
       </div>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Przewoźnik</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.CARRIER' | translate }}</span></mat-label>
         <input matInput #carrier>
       </mat-form-field>
     </div>
 
     <div class="transport-buttons">
       <button mat-stroked-button (click)="incrementTransportMeansNumber()" [disabled]="transportMeansNumber === 100">
-        <span>Dodaj kolejny środek transportu</span>
+        <span>{{ 'REQUEST.BUTTON_NEW_TRANSPORT' | translate }}</span>
       </button>
       <button mat-stroked-button (click)="decrementTransportMeansNumber()" [disabled]="transportMeansNumber === 1">
-        <span>Usuń ostatni środek transportu</span>
+        <span>{{ 'REQUEST.BUTTON_DELETE_TRANSPORT' | translate }}</span>
       </button>
     </div>
 
     <div class="title subtitle">
-      <span>Ubezpieczenie kosztów leczenia i następstw nieszczęśliwych wypadków</span>
+      <span>{{ 'REQUEST.INSURANCE_TITLE' | translate }}</span>
     </div>
     <div class="info-text">
-      <span>
-        Jeżeli wniosek na wyjazd służbowy zostanie dostarczony do sekcji Współpracy z Zagranicą później niż 4-5 dni przed wyjazdem, pracownik zobowiązany jest ubezpieczyć się sam.
-      </span>
+      <span>{{ 'REQUEST.INSURANCE_INFO_TEXT' | translate }}</span>
     </div>
 
     <div class="form-group insurance">
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Imię i nazwisko</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.NAME' | translate }}</span></mat-label>
         <input matInput #firstNameAndSurnameInsurance [disabled]="selfInsuredCheckbox.checked" readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label>Data urodzenia</mat-label>
+        <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
         <input matInput [matDatepicker]="birthPicker" #birthDate [disabled]="selfInsuredCheckbox.checked" readonly>
         <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
         <mat-datepicker #birthPicker disabled></mat-datepicker>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Kraj wyjazdu</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.DEPARTURE_COUNTRY' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="!selfInsuredCheckbox.checked">*</span>
         <input matInput #departureCountry [disabled]="selfInsuredCheckbox.checked">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Okres pobytu za granicą</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.TIME_ABROAD' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="!selfInsuredCheckbox.checked">*</span>
         <mat-date-range-input [rangePicker]="insurancePicker" [disabled]="selfInsuredCheckbox.checked" #abroadDateInsurance (click)="insurancePicker.open()">
-          <input matStartDate placeholder="Początek" readonly>
-          <input matEndDate placeholder="Koniec" readonly>
+          <input matStartDate placeholder="{{ 'REQUEST.TIME_ABROAD_FROM' | translate }}" readonly>
+          <input matEndDate placeholder="{{ 'REQUEST.TIME_ABROAD_TO' | translate }}" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="insurancePicker"></mat-datepicker-toggle>
         <mat-date-range-picker #insurancePicker></mat-date-range-picker>
       </mat-form-field>
       <mat-checkbox class="example-margin" #selfInsuredCheckbox>
-        <span>Ubezpieczę się sam</span>
+        <span>{{ 'REQUEST.SELF_INSURED' | translate }}</span>
       </mat-checkbox>
     </div>
 
     <div class="title subtitle">
-      <span>Wniosek o zaliczkę dewizową</span>
+      <span>{{ 'REQUEST.ADVANCE_PAYMENT_REQUEST_TITLE' | translate }}</span>
     </div>
 
     <div class="form-group advance-payment-request">
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Na wyjazd do</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DESTINATION' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input matInput #requestPaymentDestination>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>W terminie</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-date-range-input [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate (click)="advancePaymentRequestPicker.open()">
-          <input matStartDate placeholder="Początek" readonly>
-          <input matEndDate placeholder="Koniec" readonly>
+          <input matStartDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_FROM' | translate }}" readonly>
+          <input matEndDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="advancePaymentRequestPicker"></mat-datepicker-toggle>
         <mat-date-range-picker #advancePaymentRequestPicker></mat-date-range-picker>
       </mat-form-field>
       <div class="advance-payment-request-list">
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label><span>Diety pobytowe: liczba</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DAYS' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
           <input digitOnly
                  type="text"
@@ -218,7 +215,7 @@
                  #requestPaymentDays>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label><span>Kwota diety</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DAYS_AMOUNT' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
           <input digitOnly
                  type="text"
@@ -231,13 +228,13 @@
                  #requestPaymentDaysAmount>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label><span>Razem</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.SUM' | translate }}</span></mat-label>
           <input matInput
                  #requestPaymentDaysAmountSum
                  readonly>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label><span>Noclegi: liczba</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.ACCOMMODATION' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
           <input digitOnly
                  type="text"
@@ -248,7 +245,7 @@
                  #requestPaymentAccommodation>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label><span>Limit/ryczałt</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.LIMIT' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
           <input digitOnly
                  type="text"
@@ -261,13 +258,13 @@
                  #requestPaymentAccommodationLimit>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label><span>Razem</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.SUM' | translate }}</span></mat-label>
           <input matInput
                  #requestPaymentAccommodationSum
                  readonly>
         </mat-form-field>
         <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
-          <mat-label><span>Dieta dojazdowa</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.TRAVEL_DIET' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
           <input digitOnly
                  type="text"
@@ -281,7 +278,7 @@
         </mat-form-field>
         <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
           <span matPrefix class="asterisk">*</span>
-          <mat-label><span>Koszty dojazdów środkami komunikacji miejscowej</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.LOCAL_TRANSPORT_COSTS' | translate }}</span></mat-label>
           <input digitOnly
                  type="text"
                  inputmode="numeric"
@@ -293,12 +290,12 @@
                  #requestPaymentLocalTransportCosts>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
-          <mat-label><span>Inne wydatki</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.OTHER_COSTS' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
-          <textarea matInput [placeholder]="'Tu opisz inne wydatki'" #requestPaymentOtherExpensesDescription></textarea>
+          <textarea matInput placeholder="{{ 'REQUEST.OTHER_COSTS_PLACEHOLDER' | translate }}" #requestPaymentOtherExpensesDescription></textarea>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
-          <mat-label><span>Kwota</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.OTHER_COSTS_AMOUNT' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
           <input digitOnly
                  type="text"
@@ -311,24 +308,22 @@
                  #requestPaymentOtherExpensesValue>
         </mat-form-field>
         <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
-          <mat-label><span>Sumaryczna kwota wnioskowanej zaliczki</span></mat-label>
+          <mat-label><span>{{ 'REQUEST.SUMMARIZED_COSTS' | translate }}</span></mat-label>
           <input matInput #requestPaymentSummarizedCosts readonly>
         </mat-form-field>
       </div>
     </div>
 
     <div class="title subtitle">
-      <span>Przedpłaty</span>
+      <span>{{ 'REQUEST.ADVANCE_PAYMENTS_TITLE' | translate }}</span>
     </div>
     <div class="info-text">
-      <span>
-        Dokonanie przedpłaty jest jednocześnie zobowiązaniem do dostarczenia prawidłowo wystawionej faktury do sekcji Współpracy z Zagranicą najpóźniej w dniu rozliczenia z wyjazdu.
-      </span>
+      <span>{{ 'REQUEST.ADVANCE_PAYMENTS_INFO_TEXT' | translate }}</span>
     </div>
 
     <div class="form-group advance-payments">
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Opłata konferencyjna</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.CONFERENCE_FEE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input digitOnly
                type="text"
@@ -337,18 +332,18 @@
                [decimalSeparator]="decimalSeparator"
                [pattern]="currencyRegex"
                matInput
-               [placeholder]="'Tu wpisz wielkość opłaty'"
+               placeholder="{{ 'REQUEST.CONFERENCE_FEE_PLACEHOLDER' | translate }}"
                #conferenceFeeValue>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Forma zapłaty</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.PAYMENT_FORM' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-select #conferenceFeePaymentTypeSelect>
           <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Depozyt hotelowy/zakwaterowanie</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.DEPOSIT' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <input digitOnly
                type="text"
@@ -357,11 +352,11 @@
                [decimalSeparator]="decimalSeparator"
                [pattern]="currencyRegex"
                matInput
-               [placeholder]="'Tu wpisz wielkość depozytu'"
+               placeholder="{{ 'REQUEST.DEPOSIT_PLACEHOLDER' | translate }}"
                #depositValue>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Forma zapłaty</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.PAYMENT_FORM' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-select #depositPaymentTypeSelect>
           <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType[enumLang]}}</span></mat-option>
@@ -370,40 +365,40 @@
     </div>
 
     <div class="title subtitle">
-      <span>Seria i numer dokumentu tożsamości wyjeżdzającego za granicę</span>
+      <span>{{ 'REQUEST.IDENTITY_DOCUMENTS_TITLE' | translate }}</span>
     </div>
 
     <div class="form-group identity-document">
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Rodzaj dokumentu</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.DOCUMENT_TYPE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-select #identityDocumentTypeSelect (selectionChange)="onIdChange($event.value)">
           <mat-option *ngFor="let identityDocument of identityDocuments" [value]="identityDocument.value"><span>{{identityDocument[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Seria i numer</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.DOCUMENT_SERIAL_NUMBER' | translate }}</span></mat-label>
         <input matInput #identityDocumentSerialNumber readonly>
       </mat-form-field>
     </div>
 
     <div class="title subtitle">
-      <span>Uwagi</span>
+      <span>{{ 'REQUEST.COMMENTS_TITLE' | translate }}</span>
     </div>
 
     <div class="form-group comments">
       <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>Tu wpisz swoje uwagi</span></mat-label>
+        <mat-label><span>{{ 'REQUEST.COMMENTS' | translate }}</span></mat-label>
         <textarea matInput #comments></textarea>
       </mat-form-field>
     </div>
 
     <div class="outcome-buttons">
       <a><button mat-flat-button color="primary">
-        <span>Anuluj</span>
+        <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
       </button></a>
       <a><button (click)="submitForm()" mat-flat-button color="primary">
-        <span>Wyślij wniosek</span>
+        <span>{{ 'REQUEST.BUTTON_SEND' | translate }}</span>
       </button></a>
     </div>
   </div>
