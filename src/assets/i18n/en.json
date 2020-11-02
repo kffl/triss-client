@@ -92,6 +92,13 @@
     "DOCUMENT_SERIAL_NUMBER": "Series and number",
     "COMMENTS": "Type your comments here"
   },
+  "DIALOG": {
+    "REQUEST_VALIDATION_FAILED": {
+      "TITLE": "Error validating the form",
+      "CONTENT": "Not all required fields (with asterisk) have been correctly filled"
+    },
+    "CLOSE": "Close"
+  },
   "REQUESTS_LIST": {
 
   },

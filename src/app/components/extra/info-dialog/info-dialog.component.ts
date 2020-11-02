@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+
+interface DialogData {
+  title: string;
+  content: string;
+}
+
 @Component({
   selector: 'app-info-dialog',
   templateUrl: './info-dialog.component.html',
@@ -8,8 +14,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class InfoDialogComponent implements OnInit {
 
   constructor(
-    public dialogRef: MatDialogRef<InfoDialogComponent>
-  ) { }
+    public dialogRef: MatDialogRef<InfoDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
+  }
 
   ngOnInit(): void {
   }

@@ -92,6 +92,13 @@
     "DOCUMENT_SERIAL_NUMBER": "Seria i numer",
     "COMMENTS": "Tu wpisz swoje uwagi"
   },
+  "DIALOG": {
+    "REQUEST_VALIDATION_FAILED": {
+      "TITLE": "Błąd walidacji formularza",
+      "CONTENT": "Nie wszystkie wymagane pola (z gwiazdką) zostały poprawnie wypełnione"
+    },
+    "CLOSE": "Zamknij"
+  },
   "REQUESTS_LIST": {
 
   },

@@ -164,6 +164,10 @@ export class RequestComponent implements OnInit, AfterViewInit {
     const isFormValid = this.validateForm(formValues);
     if (!isFormValid) {
       const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        title: 'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
+        content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT'
+      };
       this.dialog.open(InfoDialogComponent, dialogConfig);
     }
     else {
@@ -301,6 +305,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   sendFormData(form) {
   //  TODO sending form data to backend
+    console.log(JSON.stringify(form));
   }
 
   setAmountSum(daysString, amountString, resultInput) {
