@@ -197,7 +197,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
     if (str === '') {
       return null;
     }
-    return str;
+    return str.trim();
   }
 
   getNumberFromInput(str: string): number {
