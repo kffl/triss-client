@@ -218,7 +218,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   getNumberLimited(str: string, maxValue: number): string {
     const num = this.getNumberFromInput(str);
-    return String(num > maxValue ? maxValue : num);
+    return num == null ? '' : String(num > maxValue ? maxValue : num);
   }
 
   getParsedFormData(): object {
