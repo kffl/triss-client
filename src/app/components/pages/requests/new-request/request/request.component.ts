@@ -298,8 +298,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
         depositPaymentTypeSelect: this.formatSelect(this.depositPaymentTypeSelect.value),
       },
       identityDocument: {
-        identityDocumentTypeSelect: this.formatSelect(this.identityDocumentTypeSelect.value),
-        identityDocumentSerialNumber: this.formatInput(this.identityDocumentSerialNumber.value)
+        type: this.formatSelect(this.identityDocumentTypeSelect.value),
+        number: this.formatInput(this.identityDocumentSerialNumber.value)
       },
       comments: this.formatInput(this.comments.value)
     };
