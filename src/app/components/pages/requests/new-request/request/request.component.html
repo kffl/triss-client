@@ -7,10 +7,16 @@
     </div>
 
     <div class="form-group basic-info">
-      <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>{{ 'REQUEST.NAME' | translate }}</span></mat-label>
-        <input matInput #firstNameAndSurname readonly>
-      </mat-form-field>
+      <div class="fields-pair">
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
+          <input matInput #firstName readonly>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
+          <input matInput #surname readonly>
+        </mat-form-field>
+      </div>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.ACADEMIC_TITLE' | translate }}</span></mat-label>
         <input matInput #academicTitle readonly>
@@ -101,7 +107,7 @@
           <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.value"><span>{{vehicle[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="route">
+      <div class="fields-pair">
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.ROUTE_FROM' | translate }}</span></mat-label>
           <span matPrefix class="asterisk">*</span>
@@ -159,10 +165,16 @@
     </div>
 
     <div class="form-group insurance">
-      <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>{{ 'REQUEST.NAME' | translate }}</span></mat-label>
-        <input matInput #firstNameAndSurnameInsurance [disabled]="selfInsuredCheckbox.checked" readonly>
-      </mat-form-field>
+      <div class="fields-pair">
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
+          <input matInput #firstNameInsurance [disabled]="selfInsuredCheckbox.checked" readonly>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
+          <input matInput #surnameInsurance [disabled]="selfInsuredCheckbox.checked" readonly>
+        </mat-form-field>
+      </div>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
         <input matInput [matDatepicker]="birthPicker" #birthDate [disabled]="selfInsuredCheckbox.checked" readonly>

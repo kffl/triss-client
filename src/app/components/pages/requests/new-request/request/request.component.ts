@@ -29,7 +29,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
   minutes = Array.from(Array(60).keys());
   // TODO getting userInfo from back-end or account settings component
   userInfo = {
-    firstNameAndSurname: 'Jakub Pietrzak',
+    firstName: 'Jakub',
+    surname: 'Pietrzak',
     academicTitle: 'jeszcze bez tytułu',
     institute: 'instytut pisania najlepszej inżynierki',
     phoneNumber: '+48 123 456 789',
@@ -38,7 +39,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
   };
 
   // basic-info
-  @ViewChild('firstNameAndSurname', {read: MatInput}) firstNameAndSurname: MatInput;
+  @ViewChild('firstName', {read: MatInput}) firstName: MatInput;
+  @ViewChild('surname', {read: MatInput}) surname: MatInput;
   @ViewChild('academicTitle', {read: MatInput}) academicTitle: MatInput;
   @ViewChild('institute', {read: MatInput}) institute: MatInput;
   @ViewChild('phoneNumber', {read: MatInput}) phoneNumber: MatInput;
@@ -65,7 +67,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
   @ViewChildren('carrier', {read: MatInput}) carrier: QueryList<MatInput>;
 
   // insurance
-  @ViewChild('firstNameAndSurnameInsurance', {read: MatInput}) firstNameAndSurnameInsurance: MatInput;
+  @ViewChild('firstNameInsurance', {read: MatInput}) firstNameInsurance: MatInput;
+  @ViewChild('surnameInsurance', {read: MatInput}) surnameInsurance: MatInput;
   @ViewChild('birthDate', {read: MatDatepickerInput}) birthDate: MatDatepickerInput<Date>;
   @ViewChild('departureCountry', {read: MatInput}) departureCountry: MatInput;
   @ViewChild('abroadDateInsurance') abroadDateInsurance: MatDateRangeInput<Date>;
@@ -138,11 +141,13 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   setAutocompletingFields() {
-    this.firstNameAndSurname.value = this.userInfo.firstNameAndSurname;
+    this.firstName.value = this.userInfo.firstName;
+    this.surname.value = this.userInfo.surname;
     this.academicTitle.value = this.userInfo.academicTitle;
     this.institute.value = this.userInfo.institute;
     this.phoneNumber.value = this.userInfo.phoneNumber;
-    this.firstNameAndSurnameInsurance.value = this.userInfo.firstNameAndSurname;
+    this.firstNameInsurance.value = this.userInfo.firstName;
+    this.surnameInsurance.value = this.userInfo.surname;
     this.birthDate.value = this.userInfo.birthDate;
   }
 
@@ -235,7 +240,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
     }
     return {
       basicInfo: {
-        firstNameAndSurname: this.formatInput(this.firstNameAndSurname.value),
+        firstName: this.formatInput(this.firstName.value),
+        surname: this.formatInput(this.surname.value),
         academicTitle: this.formatInput(this.academicTitle.value),
         institute: this.formatInput(this.institute.value),
         phoneNumber: this.formatInput(this.phoneNumber.value),
@@ -256,7 +262,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
       },
       transport: transportParsedArray,
       insurance: {
-        firstNameAndSurnameInsurance: this.formatInput(this.firstNameAndSurnameInsurance.value),
+        firstNameInsurance: this.formatInput(this.firstNameInsurance.value),
+        surnameInsurance: this.formatInput(this.surnameInsurance.value),
         birthDate: this.formatDate(this.birthDate.value),
         departureCountry: this.formatInput(this.departureCountry.value),
         abroadStartDateInsurance: this.formatDate(this.abroadDateInsurance.value.start),
