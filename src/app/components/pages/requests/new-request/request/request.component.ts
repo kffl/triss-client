@@ -42,7 +42,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
   @ViewChild('academicTitle', {read: MatInput}) academicTitle: MatInput;
   @ViewChild('institute', {read: MatInput}) institute: MatInput;
   @ViewChild('phoneNumber', {read: MatInput}) phoneNumber: MatInput;
-  @ViewChild('destination', {read: MatInput}) destination: MatInput;
+  @ViewChild('destinationCountry', {read: MatInput}) destinationCountry: MatInput;
+  @ViewChild('destinationCity', {read: MatInput}) destinationCity: MatInput;
   @ViewChild('abroadDate') abroadDate: MatDateRangeInput<Date>;
   @ViewChild('purpose', {read: MatInput}) purpose: MatInput;
   @ViewChild('conference', {read: MatInput}) conference: MatInput;
@@ -250,7 +251,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
         academicTitle: this.formatInput(this.academicTitle.value),
         institute: this.formatInput(this.institute.value),
         phoneNumber: this.formatInput(this.phoneNumber.value),
-        destination: this.formatInput(this.destination.value),
+        destinationCountry: this.formatInput(this.destinationCountry.value),
+        destinationCity: this.formatInput(this.destinationCity.value),
         abroadStartDate: this.formatDate(this.abroadDate.value.start),
         abroadEndDate: this.formatDate(this.abroadDate.value.end),
         purpose: this.formatInput(this.purpose.value),
@@ -370,5 +372,10 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   validatePaste(element: HTMLInputElement, maxValue: number) {
     element.value = this.getNumberLimited(element.value, maxValue);
+  }
+
+  synchronizeCountryName() {
+    this.requestPaymentDestination.value = this.destinationCountry.value;
+    this.departureCountry.value = this.destinationCountry.value;
   }
 }

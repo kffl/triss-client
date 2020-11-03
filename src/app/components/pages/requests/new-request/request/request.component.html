@@ -29,11 +29,18 @@
         <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>
         <input matInput #phoneNumber readonly>
       </mat-form-field>
-      <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>{{ 'REQUEST.DESTINATION' | translate }}</span></mat-label>
-        <span matPrefix class="asterisk">*</span>
-        <input matInput #destination>
-      </mat-form-field>
+      <div class="fields-pair">
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.DESTINATION_COUNTRY' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput (input)="synchronizeCountryName()" #destinationCountry>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.DESTINATION_CITY' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput #destinationCity>
+        </mat-form-field>
+      </div>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.TRIP_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
@@ -191,8 +198,7 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.DEPARTURE_COUNTRY' | translate }}</span></mat-label>
-        <span matPrefix class="asterisk" *ngIf="!selfInsuredCheckbox.checked">*</span>
-        <input matInput #departureCountry [disabled]="selfInsuredCheckbox.checked">
+        <input matInput #departureCountry [disabled]="selfInsuredCheckbox.checked" readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.TIME_ABROAD' | translate }}</span></mat-label>
@@ -216,8 +222,7 @@
     <div class="form-group advance-payment-request">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DESTINATION' | translate }}</span></mat-label>
-        <span matPrefix class="asterisk">*</span>
-        <input matInput #requestPaymentDestination>
+        <input matInput #requestPaymentDestination readonly>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DATE' | translate }}</span></mat-label>
