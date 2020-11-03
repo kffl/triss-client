@@ -119,27 +119,35 @@
           <input matInput #routeTo>
         </mat-form-field>
       </div>
-      <div class="datetime">
-        <mat-form-field [appearance]="formFieldsStyle">
-          <span matPrefix class="asterisk">*</span>
-          <mat-label><span>{{ 'REQUEST.DEPARTURE_MINUTE' | translate }}</span></mat-label>
-          <mat-select #departureMinuteSelect>
-            <mat-option *ngFor="let minute of minutes" [value]="minute"><span>{{minute}}</span></mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field [appearance]="formFieldsStyle">
-          <span matPrefix class="asterisk">*</span>
-          <mat-label><span>{{ 'REQUEST.DEPARTURE_HOUR' | translate }}</span></mat-label>
-          <mat-select #departureHourSelect>
-            <mat-option *ngFor="let hour of hours" [value]="hour"><span>{{hour}}</span></mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div class="fields-triple">
         <mat-form-field [appearance]="formFieldsStyle">
           <mat-label>{{ 'REQUEST.DEPARTURE_DATE' | translate }}</mat-label>
           <span matPrefix class="asterisk">*</span>
           <input matInput [matDatepicker]="departurePicker" #departureDate readonly (click)="departurePicker.open()">
           <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
           <mat-datepicker #departurePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.DEPARTURE_HOUR' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput
+                 digitOnly
+                 (paste)="validatePaste(departureHour, 23)"
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="hourRegex"
+                 #departureHour>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.DEPARTURE_MINUTE' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput
+                 digitOnly
+                 (paste)="validatePaste(departureMinute, 59)"
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="minuteRegex"
+                 #departureMinute>
         </mat-form-field>
       </div>
       <mat-form-field [appearance]="formFieldsStyle">

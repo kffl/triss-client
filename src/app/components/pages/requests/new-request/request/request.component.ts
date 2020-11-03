@@ -25,8 +25,6 @@ export class RequestComponent implements OnInit, AfterViewInit {
   formFieldsStyle: MatFormFieldAppearance = 'fill';
   transportMeansNumber = 1;
   transportMeansArray = [1];
-  hours = Array.from(Array(24).keys());
-  minutes = Array.from(Array(60).keys());
   // TODO getting userInfo from back-end or account settings component
   userInfo = {
     firstName: 'Jakub',
@@ -61,9 +59,9 @@ export class RequestComponent implements OnInit, AfterViewInit {
   @ViewChildren('vehicleSelect') vehicleSelect: QueryList<MatSelect>;
   @ViewChildren('routeFrom', {read: MatInput}) routeFrom: QueryList<MatInput>;
   @ViewChildren('routeTo', {read: MatInput}) routeTo: QueryList<MatInput>;
-  @ViewChildren('departureMinuteSelect') departureMinuteSelect: QueryList<MatSelect>;
-  @ViewChildren('departureHourSelect') departureHourSelect: QueryList<MatSelect>;
   @ViewChildren('departureDate', {read: MatDatepickerInput}) departureDate: QueryList<MatDatepickerInput<Date>>;
+  @ViewChildren('departureHour', {read: MatInput}) departureHour: QueryList<MatInput>;
+  @ViewChildren('departureMinute', {read: MatInput}) departureMinute: QueryList<MatInput>;
   @ViewChildren('carrier', {read: MatInput}) carrier: QueryList<MatInput>;
 
   // insurance
@@ -102,7 +100,9 @@ export class RequestComponent implements OnInit, AfterViewInit {
   // comments
   @ViewChild('comments', {read: MatInput}) comments: MatInput;
 
-  integerRegex = '^([0]|[1-9][0-9]*)$';
+  integerRegex = '^(0|[1-9][0-9]*)$';
+  hourRegex = '^([0-9]|[0-1][0-9]|2[0-3])$';
+  minuteRegex = '^([0-9]|[0-5][0-9])$';
   decimalSeparator: string;
   currencyRegex: string;
   enumLang: string;
@@ -137,7 +137,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
       this.decimalSeparator = '.';
       this.enumLang = 'nameEng';
     }
-    this.currencyRegex = `^([1-9][0-9]*|[0])([${this.decimalSeparator}][0-9]{0,2})?$`;
+    this.currencyRegex = `^([1-9][0-9]*|0)([${this.decimalSeparator}][0-9]{0,2})?$`;
   }
 
   setAutocompletingFields() {
@@ -216,14 +216,19 @@ export class RequestComponent implements OnInit, AfterViewInit {
     return num;
   }
 
+  getNumberLimited(str: string, maxValue: number): string {
+    const num = this.getNumberFromInput(str);
+    return String(num > maxValue ? maxValue : num);
+  }
+
   getParsedFormData(): object {
     const transportArrays = {
       vehicleSelect: this.vehicleSelect.toArray().map(item => this.formatSelect(item.value)),
       routeFrom: this.routeFrom.toArray().map(item => this.formatInput(item.value)),
       routeTo: this.routeTo.toArray().map(item => this.formatInput(item.value)),
-      departureMinute: this.departureMinuteSelect.toArray().map(item => this.formatSelect(item.value)),
-      departureHour: this.departureHourSelect.toArray().map(item => this.formatSelect(item.value)),
       departureDay: this.departureDate.toArray().map(item => this.formatDate(item.value)),
+      departureHour: this.departureHour.toArray().map(item => this.getNumberFromInput(item.value)),
+      departureMinute: this.departureMinute.toArray().map(item => this.getNumberFromInput(item.value)),
       carrier: this.carrier.toArray().map(item => this.formatInput(item.value))
     };
     const transportParsedArray = [];
@@ -232,9 +237,9 @@ export class RequestComponent implements OnInit, AfterViewInit {
         vehicleSelect: transportArrays.vehicleSelect[i],
         routeFrom: transportArrays.routeFrom[i],
         routeTo: transportArrays.routeTo[i],
-        departureMinute: transportArrays.departureMinute[i],
-        departureHour: transportArrays.departureHour[i],
         departureDay: transportArrays.departureDay[i],
+        departureHour: transportArrays.departureHour[i],
+        departureMinute: transportArrays.departureMinute[i],
         carrier: transportArrays.carrier[i],
       });
     }
@@ -361,5 +366,9 @@ export class RequestComponent implements OnInit, AfterViewInit {
   decrementTransportMeansNumber() {
     this.transportMeansNumber--;
     this.transportMeansArray.pop();
+  }
+
+  validatePaste(element: HTMLInputElement, maxValue: number) {
+    element.value = this.getNumberLimited(element.value, maxValue);
   }
 }
