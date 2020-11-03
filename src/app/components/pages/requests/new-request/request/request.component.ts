@@ -289,9 +289,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
         identityDocumentTypeSelect: this.formatSelect(this.identityDocumentTypeSelect.value),
         identityDocumentSerialNumber: this.formatInput(this.identityDocumentSerialNumber.value)
       },
-      comments: {
-        comments: this.formatInput(this.comments.value)
-      }
+      comments: this.formatInput(this.comments.value)
     };
   }
 
