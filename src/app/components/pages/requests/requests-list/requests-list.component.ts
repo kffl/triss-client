@@ -11,16 +11,16 @@ import { RestService } from '../rest-service';
 export class RequestsListComponent implements OnInit {
 
   headers = {
-    'country': {description: 'Kraj', type: 'text'},
-    'city': {description: 'Miasto', type: 'text'}, 
-    'abroadStartDate': {description: 'Data wyjazdu', type: 'date'}, 
-    'abroadEndDate': {description: 'Data powrotu', type: 'date'},
-    'status': {description: 'Status', type: 'text'}};
+    country: {description: 'Kraj', type: 'text'},
+    city: {description: 'Miasto', type: 'text'}, 
+    abroadStartDate: {description: 'Data wyjazdu', type: 'date'}, 
+    abroadEndDate: {description: 'Data powrotu', type: 'date'},
+    status: {description: 'Status', type: 'text'}};
   data: any[]
 
   pageInfo: PageInfo;
-  dataRestPath: string = 'http://localhost:8080/application/get';
-  countRestPath: string = 'http://localhost:8080/application/count';
+  dataRestPath: string = `${window.location.protocol}//${window.location.hostname}:8080/application/get`;
+  countRestPath: string = `${window.location.protocol}//${window.location.hostname}:8080/application/count`;
 
   constructor(private restSerivce: RestService) {
 

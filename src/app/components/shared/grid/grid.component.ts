@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, SimpleChanges, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, SimpleChanges, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatInput } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,7 +16,7 @@ import { GridRestService } from './grid-rest-service';
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.scss']
 })
-export class GridComponent implements OnInit {
+export class GridComponent implements OnInit, AfterViewInit {
   @Input() columnHeader;
   @Input() source;
   @Input() pageInfo: PageInfo
@@ -39,8 +39,6 @@ export class GridComponent implements OnInit {
   ngOnInit() {
     this.prepareInitPageInfo();
     this.loadCount();
-    // this.columnFilters = this.columnHeader.map(element => element + "Filter");
-    // this.columnFilters = this.objectKeys(this.columnHeader).map(element => element + "Filter");
     for(let filter in this.columnHeader) {
        this.columnFilters[filter + "Filter"] = this.columnHeader[filter];
     }
