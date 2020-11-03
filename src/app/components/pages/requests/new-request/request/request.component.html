@@ -101,11 +101,18 @@
           <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.value"><span>{{vehicle[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field [appearance]="formFieldsStyle">
-        <mat-label><span>{{ 'REQUEST.ROUTE' | translate }}</span></mat-label>
-        <span matPrefix class="asterisk">*</span>
-        <input matInput #route>
-      </mat-form-field>
+      <div class="route">
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.ROUTE_FROM' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput #routeFrom>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.ROUTE_TO' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput #routeTo>
+        </mat-form-field>
+      </div>
       <div class="datetime">
         <mat-form-field [appearance]="formFieldsStyle">
           <span matPrefix class="asterisk">*</span>

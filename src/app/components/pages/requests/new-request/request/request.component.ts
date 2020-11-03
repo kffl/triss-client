@@ -57,7 +57,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   // transport
   @ViewChildren('vehicleSelect') vehicleSelect: QueryList<MatSelect>;
-  @ViewChildren('route', {read: MatInput}) route: QueryList<MatInput>;
+  @ViewChildren('routeFrom', {read: MatInput}) routeFrom: QueryList<MatInput>;
+  @ViewChildren('routeTo', {read: MatInput}) routeTo: QueryList<MatInput>;
   @ViewChildren('departureMinuteSelect') departureMinuteSelect: QueryList<MatSelect>;
   @ViewChildren('departureHourSelect') departureHourSelect: QueryList<MatSelect>;
   @ViewChildren('departureDate', {read: MatDatepickerInput}) departureDate: QueryList<MatDatepickerInput<Date>>;
@@ -234,7 +235,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
       },
       transport: {
         vehicleSelect: this.vehicleSelect.toArray().map(item => this.formatSelect(item.value)),
-        route: this.route.toArray().map(item => this.formatInput(item.value)),
+        routeFrom: this.routeFrom.toArray().map(item => this.formatInput(item.value)),
+        routeTo: this.routeTo.toArray().map(item => this.formatInput(item.value)),
         departureMinute: this.departureMinuteSelect.toArray().map(item => this.formatSelect(item.value)),
         departureHour: this.departureHourSelect.toArray().map(item => this.formatSelect(item.value)),
         departureDay: this.departureDate.toArray().map(item => this.formatDate(item.value)),
