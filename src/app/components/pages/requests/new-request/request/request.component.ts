@@ -212,6 +212,27 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   getParsedFormData(): object {
+    const transportArrays = {
+      vehicleSelect: this.vehicleSelect.toArray().map(item => this.formatSelect(item.value)),
+      routeFrom: this.routeFrom.toArray().map(item => this.formatInput(item.value)),
+      routeTo: this.routeTo.toArray().map(item => this.formatInput(item.value)),
+      departureMinute: this.departureMinuteSelect.toArray().map(item => this.formatSelect(item.value)),
+      departureHour: this.departureHourSelect.toArray().map(item => this.formatSelect(item.value)),
+      departureDay: this.departureDate.toArray().map(item => this.formatDate(item.value)),
+      carrier: this.carrier.toArray().map(item => this.formatInput(item.value))
+    };
+    const transportParsedArray = [];
+    for (const i of Object.keys(this.transportMeansArray)) {
+      transportParsedArray.push({
+        vehicleSelect: transportArrays.vehicleSelect[i],
+        routeFrom: transportArrays.routeFrom[i],
+        routeTo: transportArrays.routeTo[i],
+        departureMinute: transportArrays.departureMinute[i],
+        departureHour: transportArrays.departureHour[i],
+        departureDay: transportArrays.departureDay[i],
+        carrier: transportArrays.carrier[i],
+      });
+    }
     return {
       basicInfo: {
         firstNameAndSurname: this.formatInput(this.firstNameAndSurname.value),
@@ -233,15 +254,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
         financialSource: this.formatInput(this.financialSource.value),
         project: this.formatInput(this.project.value)
       },
-      transport: {
-        vehicleSelect: this.vehicleSelect.toArray().map(item => this.formatSelect(item.value)),
-        routeFrom: this.routeFrom.toArray().map(item => this.formatInput(item.value)),
-        routeTo: this.routeTo.toArray().map(item => this.formatInput(item.value)),
-        departureMinute: this.departureMinuteSelect.toArray().map(item => this.formatSelect(item.value)),
-        departureHour: this.departureHourSelect.toArray().map(item => this.formatSelect(item.value)),
-        departureDay: this.departureDate.toArray().map(item => this.formatDate(item.value)),
-        carrier: this.carrier.toArray().map(item => this.formatInput(item.value))
-      },
+      transport: transportParsedArray,
       insurance: {
         firstNameAndSurnameInsurance: this.formatInput(this.firstNameAndSurnameInsurance.value),
         birthDate: this.formatDate(this.birthDate.value),
@@ -294,10 +307,9 @@ export class RequestComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    for (const property in form.transport) {
-      if (form.transport.hasOwnProperty(property) && property !== 'carrier') {
-        const values: any[] = form.transport[property];
-        if (values.includes(null)) {
+    for (const transportMean of form.transport) {
+      for (const property in transportMean) {
+        if (transportMean.hasOwnProperty(property) && property !== 'carrier' && transportMean[property] === null) {
           return false;
         }
       }
