@@ -93,7 +93,8 @@
     "DEPOSIT_PLACEHOLDER": "Type here the value of deposit",
     "DOCUMENT_TYPE": "Document type",
     "DOCUMENT_SERIAL_NUMBER": "Series and number",
-    "COMMENTS": "Type your comments here"
+    "COMMENTS": "Type your comments here",
+    "REQUIRED_FIELD": "This field is required"
   },
   "DIALOG": {
     "REQUEST_VALIDATION_FAILED": {

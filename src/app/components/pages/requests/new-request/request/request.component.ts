@@ -108,6 +108,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
   currencyRegex: string;
   enumLang: string;
 
+  validationFailed = false;
+
   vehicles: Enum[];
   identityDocuments: Enum[];
   paymentTypes: Enum[];
@@ -125,6 +127,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getSelectEnums();
   }
+
   ngAfterViewInit() {
     this.setAutocompletingFields();
     this.changeDetectorRef.detectChanges();
@@ -170,14 +173,14 @@ export class RequestComponent implements OnInit, AfterViewInit {
     const formValues: object = this.getParsedFormData();
     const isFormValid = this.validateForm(formValues);
     if (!isFormValid) {
+      this.validationFailed = true;
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
         title: 'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
         content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT'
       };
       this.dialog.open(InfoDialogComponent, dialogConfig);
-    }
-    else {
+    } else {
       this.sendFormData(formValues);
     }
   }
@@ -330,8 +333,18 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   sendFormData(form) {
-  //  TODO sending form data to backend
-    console.log(JSON.stringify(form));
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/`; // todo end of url
+    this.http.post(url, form).subscribe(
+      success => {
+
+      },
+      error => {
+
+      },
+      () => {
+
+      }
+    );
   }
 
   setAmountSum(daysString, amountString, resultInput) {
@@ -377,5 +390,9 @@ export class RequestComponent implements OnInit, AfterViewInit {
   synchronizeCountryName() {
     this.requestPaymentDestination.value = this.destinationCountry.value;
     this.departureCountry.value = this.destinationCountry.value;
+  }
+
+  isObjectEmpty(object): boolean {
+    return object == null ? true : !Object.values(object).some(x => (x !== null && x !== ''));
   }
 }

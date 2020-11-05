@@ -93,7 +93,8 @@
     "DEPOSIT_PLACEHOLDER": "Tu wpisz wielkość depozytu",
     "DOCUMENT_TYPE": "Rodzaj dokumentu",
     "DOCUMENT_SERIAL_NUMBER": "Seria i numer",
-    "COMMENTS": "Tu wpisz swoje uwagi"
+    "COMMENTS": "Tu wpisz swoje uwagi",
+    "REQUIRED_FIELD": "To pole jest wymagane"
   },
   "DIALOG": {
     "REQUEST_VALIDATION_FAILED": {

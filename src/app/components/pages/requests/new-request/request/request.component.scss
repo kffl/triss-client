@@ -48,6 +48,10 @@
           margin-right: 12px;
           color: red;
         }
+        mat-hint {
+          color: red;
+          display: none;
+        }
       }
       .fields-pair {
         display: flex;
@@ -143,6 +147,26 @@
         }
       }
     }
+  }
+}
+.invalid-field {
+  ::ng-deep {
+    .mat-focused .mat-form-field-label {
+      color: red !important;
+    }
+    .mat-form-field-underline {
+      background-color: red !important;
+    }
+    .mat-form-field-ripple {
+      background-color: red !important;
+    }
+  }
+  mat-label {
+    color: red !important;
+  }
+  mat-hint {
+    display: inline !important;
+    color: red;
   }
 }
 
