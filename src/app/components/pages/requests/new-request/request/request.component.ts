@@ -198,10 +198,11 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   formatInput(str: string): string {
-    if (str === '') {
+    const trimmed = str.trim();
+    if (trimmed === '') {
       return null;
     }
-    return str.trim();
+    return trimmed;
   }
 
   getNumberFromInput(str: string): number {
