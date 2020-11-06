@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 interface DialogData {
   title: string;
   content: string;
+  showCloseButton: boolean;
 }
 
 @Component({
@@ -17,6 +18,7 @@ export class InfoDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<InfoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
+    dialogRef.disableClose = !data.showCloseButton;
   }
 
   ngOnInit(): void {

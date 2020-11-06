@@ -99,7 +99,15 @@
   "DIALOG": {
     "REQUEST_VALIDATION_FAILED": {
       "TITLE": "Błąd walidacji formularza",
-      "CONTENT": "Nie wszystkie wymagane pola (z gwiazdką) zostały poprawnie wypełnione"
+      "CONTENT": "Nie wszystkie wymagane pola zostały poprawnie wypełnione"
+    },
+    "REQUEST_SENT": {
+      "TITLE": "Wniosek został wysłany",
+      "CONTENT": "Za chwilę zostaniesz przeniesiony do ekranu głównego"
+    },
+    "REQUEST_NOT_SENT": {
+      "TITLE": "Błąd komunikacji z serwerem",
+      "CONTENT": "Kod błędu: "
     },
     "CLOSE": "Zamknij"
   },

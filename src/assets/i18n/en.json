@@ -99,7 +99,15 @@
   "DIALOG": {
     "REQUEST_VALIDATION_FAILED": {
       "TITLE": "Error validating the form",
-      "CONTENT": "Not all required fields (with asterisk) have been correctly filled"
+      "CONTENT": "Not all required fields have been correctly filled"
+    },
+    "REQUEST_SENT": {
+      "TITLE": "The request has been sent",
+      "CONTENT": "You will be taken to the home screen in a moment"
+    },
+    "REQUEST_NOT_SENT": {
+      "TITLE": "Communication error with the server",
+      "CONTENT": "Error code: "
     },
     "CLOSE": "Close"
   },

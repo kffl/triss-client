@@ -6,8 +6,9 @@ import {MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {InfoDialogComponent} from '../../../../extra/info-dialog/info-dialog.component';
-import {HttpClient} from '@angular/common/http';
+import {InfoDialogComponent} from '../../../extra/info-dialog/info-dialog.component';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 interface Enum {
   value: number;
@@ -118,7 +119,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
     private dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
@@ -177,7 +179,8 @@ export class RequestComponent implements OnInit, AfterViewInit {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
         title: 'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
-        content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT'
+        content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT',
+        showCloseButton: true
       };
       this.dialog.open(InfoDialogComponent, dialogConfig);
     } else {
@@ -265,12 +268,12 @@ export class RequestComponent implements OnInit, AfterViewInit {
         conferenceStartDate: this.formatDate(this.conferenceDate.value.start),
         conferenceEndDate: this.formatDate(this.conferenceDate.value.end)
       },
-      financialSource: {
-        allocationAccount: this.formatInput(this.allocationAccount.value),
-        MPK: this.formatInput(this.MPK.value),
-        financialSource: this.formatInput(this.financialSource.value),
-        project: this.formatInput(this.project.value)
-      },
+      // financialSource: {
+      //   allocationAccount: this.formatInput(this.allocationAccount.value),
+      //   MPK: this.formatInput(this.MPK.value),
+      //   financialSource: this.formatInput(this.financialSource.value),
+      //   project: this.formatInput(this.project.value)
+      // },
       transport: transportParsedArray,
       insurance: {
         firstNameInsurance: this.formatInput(this.firstNameInsurance.value),
@@ -334,17 +337,31 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   sendFormData(form) {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/`; // todo end of url
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/application/create`;
     this.http.post(url, form).subscribe(
-      success => {
-
-      },
-      error => {
-
-      },
       () => {
-
-      }
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          title: 'DIALOG.REQUEST_SENT.TITLE',
+          content: 'DIALOG.REQUEST_SENT.CONTENT',
+          showCloseButton: false
+        };
+        this.dialog.open(InfoDialogComponent, dialogConfig);
+        setTimeout(() => {
+          this.router.navigateByUrl(window.location.origin).then(() => this.dialog.closeAll());
+        }, 2000);
+      },
+      (error: HttpErrorResponse) => {
+        this.translateService.get('DIALOG.REQUEST_NOT_SENT.CONTENT').subscribe(content => {
+          const dialogConfig = new MatDialogConfig();
+          dialogConfig.data = {
+            title: 'DIALOG.REQUEST_NOT_SENT.TITLE',
+            content: `${content} ${error.status} ${error.statusText}`,
+            showCloseButton: true
+          };
+          this.dialog.open(InfoDialogComponent, dialogConfig);
+        });
+      },
     );
   }
 
@@ -395,5 +412,9 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   isObjectEmpty(object): boolean {
     return object == null ? true : !Object.values(object).some(x => (x !== null && x !== ''));
+  }
+
+  cancelForm() {
+    this.router.navigateByUrl(window.location.origin);
   }
 }
