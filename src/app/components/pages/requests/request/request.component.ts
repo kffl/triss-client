@@ -210,7 +210,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   getNumberFromInput(str: string): number {
     let num: number;
-    if (str === '') {
+    if (!str || str.length === 0) {
       return null;
     }
     if (str.includes(',') || str.includes('.')) {
