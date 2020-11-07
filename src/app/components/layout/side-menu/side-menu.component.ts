@@ -16,7 +16,7 @@ export class SideMenuComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-    this.router.config.forEach(route => this.paths.push(route.path));
+    this.router.config.forEach(route => this.paths.push('/' + route.path));
   }
 
   ngAfterViewInit() {
