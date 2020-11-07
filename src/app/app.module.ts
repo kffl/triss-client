@@ -42,13 +42,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { GridRestService } from './components/shared/grid/grid-rest-service';
-import {MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatNativeDateModule } from "@angular/material/core";
-import {MatDatepickerModule } from "@angular/material/datepicker";
-import { RequestComponent } from './components/pages/requests/new-request/request/request.component';
-import { AdvanceComponent } from './components/pages/requests/new-request/advance/advance.component';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -69,7 +64,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     GridComponent,
     RectorPanelComponent,
     RequestComponent,
-    AdvanceComponent
+    AdvanceComponent,
+    InfoDialogComponent
   ],
   imports: [
     MatNativeDateModule,
@@ -112,8 +108,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     MatDatepickerModule,
-    RestService
-    GridRestService
+    RestService,
+    GridRestService,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent]
