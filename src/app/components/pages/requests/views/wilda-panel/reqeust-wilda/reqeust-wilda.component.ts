@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UseCaseEnum} from '../../../../../../extra/use-case-enum/use-case-enum';
 import {FormData} from '../../../../../../extra/request-interface/request-interface';
 import {RequestDataService} from '../../../../../../services/request-data.service';
@@ -20,9 +20,13 @@ export class ReqeustWildaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.useCase = UseCaseEnum.WildaApprove;
     this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
       this.form = formWithStatus.form;
+      if (formWithStatus.status === 'WaitingForWilda') {
+        this.useCase = UseCaseEnum.WildaApprove;
+      } else {
+        this.useCase = UseCaseEnum.WildaAfterRector;
+      }
     });
   }
 

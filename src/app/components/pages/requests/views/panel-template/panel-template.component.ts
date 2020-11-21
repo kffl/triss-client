@@ -8,7 +8,6 @@ import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {FormData, FormWithStatus} from '../../../../../extra/request-interface/request-interface';
-import {AppRoutes} from '../../../../../extra/routes/appRoutes';
 
 @Component({
   selector: 'app-panel-template',
@@ -19,6 +18,9 @@ export class PanelTemplateComponent implements OnInit {
 
   @Input() pageTitle: string;
   @Input() linkToSingleRequest: string;
+  @Input() filter: any;
+  @Input() orderBy: string;
+  @Input() desc: boolean;
 
   headers = {
     country: {description: 'Kraj', type: 'text'},
@@ -47,9 +49,9 @@ export class PanelTemplateComponent implements OnInit {
 
   private initializePageInfo() {
     this.pageInfo = new PageInfo();
-    this.pageInfo.filter = {}; // employeeId: 1
-    this.pageInfo.orderBy = 'id';
-    this.pageInfo.desc = false;
+    this.pageInfo.filter = this.filter || {};
+    this.pageInfo.orderBy = this.orderBy || 'id';
+    this.pageInfo.desc = this.desc || false;
     this.pageInfo.pageNumber = 0;
   }
 

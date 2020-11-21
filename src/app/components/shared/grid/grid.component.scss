@@ -1,8 +1,7 @@
 @import "variables";
 
-.mainContainer {
-  width: 90%;
-  margin: auto;
+.main-container {
+  width: 100%;
   table {
     width: 100%;
     .table-row:hover {
@@ -10,9 +9,12 @@
       background-color: $link-hover-color;
     }
     .filter {
-      width: 90%;
-      margin-right: 1px;
-      margin-top: 15px
+      width: calc(100% - 16px);
+      margin-right: 4px;
+      margin-top: 16px
+    }
+    input {
+      font-size: 16px;
     }
   }
   //.spinner {
