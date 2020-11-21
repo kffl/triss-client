@@ -21,8 +21,8 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {UseCaseEnum} from '../../../../../extra/use-case-enum/use-case-enum';
 import {FormData} from '../../../../../extra/request-interface/request-interface';
-import {RequestDataService} from '../../../../../services/request-data.service';
 import {AppRoutes} from '../../../../../extra/routes/appRoutes';
+import {Location} from '@angular/common';
 
 interface Enum {
   value: number;
@@ -146,7 +146,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
-    private requestDataService: RequestDataService
+    private location: Location
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
@@ -319,15 +319,15 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
-  acceptForm() {
+  sendToWilda() {
     // TODO director to wilda
   }
 
-  approveForm() {
+  sendToRector() {
     // TODO wilda to rector
   }
 
-  agreeForm() {
+  sendBackToWilda() {
     // TODO rector to wilda
   }
 
@@ -555,7 +555,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   cancelForm() {
-    this.router.navigateByUrl(AppRoutes.home);
+    this.location.back();
   }
 
   removeDisableClassFromSelects() {

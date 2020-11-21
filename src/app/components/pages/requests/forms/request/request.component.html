@@ -483,13 +483,13 @@
       <a *ngIf="useCase === 1"><button (click)="submitForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_SEND' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 2"><button (click)="acceptForm()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 2"><button (click)="sendToWilda()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 3"><button (click)="approveForm()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 3"><button (click)="sendToRector()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_APPROVE' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 4"><button (click)="agreeForm()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 4"><button (click)="sendBackToWilda()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
       </button></a>
     </div>
