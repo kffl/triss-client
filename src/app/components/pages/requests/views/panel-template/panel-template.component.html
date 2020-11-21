@@ -1,0 +1,5 @@
+<div class="list">
+  <h1 class="header">{{pageTitle}}</h1>
+  <app-grid  [columnHeader]="headers"
+             [dataRestPath] = 'dataRestPath' [countRestPath] = 'countRestPath' [pageInfo] = "pageInfo" (onRowClick)="onListRowClicked($event)"></app-grid>
+</div>

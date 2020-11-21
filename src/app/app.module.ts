@@ -17,14 +17,14 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {PersonalDataComponent} from './components/pages/personal-data/personal-data.component';
 import {AccountSettingsComponent} from './components/pages/account-settings/account-settings.component';
-import {RequestsListComponent} from './components/pages/requests/requests-list/requests-list.component';
-import {DirectorPanelComponent} from './components/pages/requests/director-panel/director-panel.component';
-import {RectorPanelComponent} from './components/pages/requests/rector-panel/rector-panel.component';
+import {RequestsListComponent} from './components/pages/requests/views/requests-list/requests-list.component';
+import {DirectorPanelComponent} from './components/pages/requests/views/director-panel/director-panel.component';
+import {RectorPanelComponent} from './components/pages/requests/views/rector-panel/rector-panel.component';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {RequestComponent} from './components/pages/requests/request/request.component';
-import {AdvanceComponent} from './components/pages/requests/advance/advance.component';
+import {RequestComponent} from './components/pages/requests/forms/request/request.component';
+import {AdvanceComponent} from './components/pages/requests/forms/advance/advance.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -34,16 +34,22 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {DigitOnlyModule} from '@uiowa/digit-only';
 import {MatDialogModule} from '@angular/material/dialog';
-import { InfoDialogComponent } from './components/extra/info-dialog/info-dialog.component';
+import { InfoDialogComponent } from './components/shared/info-dialog/info-dialog.component';
 import {MatTableModule} from '@angular/material/table';
 import { GridComponent } from './components/shared/grid/grid.component';
-import { RestService } from './components/pages/requests/rest-service';
+import { RestService } from './services/rest-service';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { GridRestService } from './components/shared/grid/grid-rest-service';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { CreateRequestComponent } from './components/pages/requests/views/create-request/create-request.component';
+import { RequestEmployeeReadComponent } from './components/pages/requests/views/requests-list/request-employee-read/request-employee-read.component';
+import { WildaPanelComponent } from './components/pages/requests/views/wilda-panel/wilda-panel.component';
+import { PanelTemplateComponent } from './components/pages/requests/views/panel-template/panel-template.component';
+import { ReqeustDirectorComponent } from './components/pages/requests/views/director-panel/reqeust-director/reqeust-director.component';
+import { ReqeustWildaComponent } from './components/pages/requests/views/wilda-panel/reqeust-wilda/reqeust-wilda.component';
+import { RequestRectorComponent } from './components/pages/requests/views/rector-panel/request-rector/request-rector.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -65,7 +71,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     RectorPanelComponent,
     RequestComponent,
     AdvanceComponent,
-    InfoDialogComponent
+    InfoDialogComponent,
+    CreateRequestComponent,
+    RequestEmployeeReadComponent,
+    WildaPanelComponent,
+    PanelTemplateComponent,
+    ReqeustDirectorComponent,
+    ReqeustWildaComponent,
+    RequestRectorComponent
   ],
   imports: [
     MatNativeDateModule,
@@ -112,7 +125,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     GridRestService,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [InfoDialogComponent]
 })
 
 export class AppModule {
