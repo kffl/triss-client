@@ -27,33 +27,32 @@ export interface FormData {
     abroadEndDateInsurance: string
     abroadStartDate: string
     abroadStartDateInsurance: string
-    advanceRequestId: number
+    academicDegree: string
+    advanceApplicationId: number
+    birthDate: string
     comments: string
     conference: string
     conferenceEndDate: string
     conferenceStartDate: string
     createdOn: string
+    directorComments: string
     employeeId: number
     financialSourceId: number
+    firstName: string
     id: number
-    identityDocumentID: number
+    identityDocumentNumber: string
+    identityDocumentType: string
     instituteId: number
+    phoneNumber: string
     placeId: number
     prepaymentId: number
     purpose: string
-    selfInsured: false
+    rectorComments: string
+    selfInsured: boolean
     status: string
     subject: string
-  };
-  employee: {
-    academicDegree: string
-    birthDate: string
-    employeeTypeID: number
-    firstName: string
-    id: number
-    instituteID: number
-    phoneNumber: string
     surname: string
+    wildaComments: string
   };
   financialSource: {
     allocationAccount: string
@@ -71,6 +70,7 @@ export interface FormData {
   institute: {
     id: number;
     name: string;
+    active: boolean;
   };
   place: {
     city: string

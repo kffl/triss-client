@@ -241,13 +241,13 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   loadFormData() {
     if (this.useCase !== UseCaseEnum.Create) {
       // basic-info
-      this.firstName.value = this.formData.employee.firstName;
-      this.surname.value = this.formData.employee.surname;
-      this.academicTitle.value = this.formData.employee.academicDegree;
+      this.firstName.value = this.formData.application.firstName;
+      this.surname.value = this.formData.application.surname;
+      this.academicTitle.value = this.formData.application.academicDegree;
       this.institute.value = this.formData.institute.name;
-      this.phoneNumber.value = this.formData.employee.phoneNumber;
-      this.firstNameInsurance.value = this.formData.employee.firstName;
-      this.surnameInsurance.value = this.formData.employee.surname;
+      this.phoneNumber.value = this.formData.application.phoneNumber;
+      this.firstNameInsurance.value = this.formData.application.firstName;
+      this.surnameInsurance.value = this.formData.application.surname;
       this.destinationCountry.value = this.formData.place.country;
       this.destinationCity.value = this.formData.place.city;
       this.abroadDateStart.writeValue(new Date(this.formData.application.abroadStartDate));
@@ -265,9 +265,9 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         this.project.value = this.formData.financialSource.project;
       }
       // insurance
-      this.firstNameInsurance.value = this.formData.employee.firstName;
-      this.surnameInsurance.value = this.formData.employee.surname;
-      this.birthDate.value = new Date(this.formData.employee.birthDate);
+      this.firstNameInsurance.value = this.formData.application.firstName;
+      this.surnameInsurance.value = this.formData.application.surname;
+      this.birthDate.value = new Date(this.formData.application.birthDate);
       this.departureCountry.value = this.formData.place.country;
       this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
       this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
@@ -395,19 +395,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       });
     }
     return {
-      employee: {
+      application: {
         firstName: this.formatInput(this.firstName.value),
         surname: this.formatInput(this.surname.value),
-        academicTitle: this.formatInput(this.academicTitle.value),
-      },
-      institute: {
-        name: this.formatInput(this.institute.value)
-      },
-      place: {
-        city: this.formatInput(this.destinationCity.value),
-        country: this.formatInput(this.destinationCountry.value),
-      },
-      application: {
+        academicDegree: this.formatInput(this.academicTitle.value),
         abroadStartDate: this.formatDate(this.abroadDate.value.start),
         abroadEndDate: this.formatDate(this.abroadDate.value.end),
         purpose: this.formatInput(this.purpose.value),
@@ -415,19 +406,25 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         subject: this.formatInput(this.subject.value),
         conferenceStartDate: this.formatDate(this.conferenceDate.value.start),
         conferenceEndDate: this.formatDate(this.conferenceDate.value.end),
+        birthDate: this.formatDate(this.birthDate.value),
         abroadStartDateInsurance: this.formatDate(this.abroadDateInsurance.value.start),
         abroadEndDateInsurance: this.formatDate(this.abroadDateInsurance.value.end),
         selfInsured: this.selfInsuredCheckbox.checked,
         comments: this.formatInput(this.comments.value)
       },
-      financialSource: null,
-      transport: transportParsedArray,
+      institute: {
+        name: this.formatInput(this.institute.value)
+      },
+      place: {
+        country: this.formatInput(this.destinationCountry.value),
+        city: this.formatInput(this.destinationCity.value),
+      },
       advanceApplication: {
         startDate: this.formatDate(this.requestPaymentDate.value.start),
         endDate: this.formatDate(this.requestPaymentDate.value.end),
         residenceDietQuantity: this.getNumberFromInput(this.requestPaymentDays.value),
         residenceDietAmount: this.getNumberFromInput(this.requestPaymentDaysAmount.value),
-        accommodationQuantity: this.getNumberFromInput(this.requestPaymentAccommodation.value),
+        accommodationQuantity: this.getNumberFromInput(this.requestPaymentDays.value),
         accommodationLimit: this.getNumberFromInput(this.requestPaymentAccommodationLimit.value),
         travelDietAmount: this.getNumberFromInput(this.requestPaymentTravelDiet.value),
         travelCosts: this.getNumberFromInput(this.requestPaymentLocalTransportCosts.value),
@@ -437,42 +434,43 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         accommodationSum: this.getNumberFromInput(this.requestPaymentAccommodationSum.value),
         advanceSum: this.getNumberFromInput(this.requestPaymentSummarizedCosts.value)
       },
-      advancePayments: {
-        conferenceFeeValue: this.getNumberFromInput(this.conferenceFeeValue.value),
-        conferenceFeePaymentTypeSelect: this.formatSelect(this.conferenceFeePaymentTypeSelect.value),
-        accommodationFeeValue: this.getNumberFromInput(this.depositValue.value),
-        accommodationFeeTypeSelect: this.formatSelect(this.depositPaymentTypeSelect.value),
-      },
       identityDocument: {
         type: this.formatSelect(this.identityDocumentTypeSelect.value),
         number: this.formatInput(this.identityDocumentSerialNumber.value)
-      }
+      },
+      advancePayments: {
+        accommodationFeeTypeSelect: this.formatSelect(this.depositPaymentTypeSelect.value),
+        accommodationFeeValue: this.getNumberFromInput(this.depositValue.value),
+        conferenceFeePaymentTypeSelect: this.formatSelect(this.conferenceFeePaymentTypeSelect.value),
+        conferenceFeeValue: this.getNumberFromInput(this.conferenceFeeValue.value)
+      },
+      transport: transportParsedArray
     };
   }
 
-  validateForm(form): boolean {
-    for (const property in form.application) {
-      if (form.application.hasOwnProperty(property) && form.application[property] === null) {
-        if (!(property === 'comments' || (!this.selfInsuredCheckbox.checked && (property === 'abroadStartDateInsurance' || property === 'abroadEndDateInsurance')))) {
-          return false;
-        }
-      }
-    }
-    const formGroups = ['employee', 'institute', 'place', 'advanceApplication', 'advancePayments', 'identityDocument'];
-    for (const formGroup of formGroups) {
-      for (const property in form[formGroup]) {
-        if (form[formGroup].hasOwnProperty(property) && form[formGroup][property] === null) {
-          return false;
-        }
-      }
-    }
-    for (const transportMean of form.transport) {
-      for (const property in transportMean) {
-        if (transportMean.hasOwnProperty(property) && property !== 'carrier' && transportMean[property] === null) {
-          return false;
-        }
-      }
-    }
+  validateForm(form: object): boolean { // TODO after getting to know which fields are required
+    // for (const property in form.application) {
+    //   if (form.application.hasOwnProperty(property) && form.application[property] === null) {
+    //     if (!(property === 'comments' || (!this.selfInsuredCheckbox.checked && (property === 'abroadStartDateInsurance' || property === 'abroadEndDateInsurance')))) {
+    //       return false;
+    //     }
+    //   }
+    // }
+    // const formGroups = ['employee', 'institute', 'place', 'advanceApplication', 'advancePayments', 'identityDocument'];
+    // for (const formGroup of formGroups) {
+    //   for (const property in form[formGroup]) {
+    //     if (form[formGroup].hasOwnProperty(property) && form[formGroup][property] === null) {
+    //       return false;
+    //     }
+    //   }
+    // }
+    // for (const transportMean of form.transport) {
+    //   for (const property in transportMean) {
+    //     if (transportMean.hasOwnProperty(property) && property !== 'carrier' && transportMean[property] === null) {
+    //       return false;
+    //     }
+    //   }
+    // }
     return true;
   }
 
