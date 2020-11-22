@@ -7,7 +7,6 @@ export class AppRoutes {
   static requestsListDirector = 'director-panel';
   static requestsListWilda = 'wilda-panel';
   static requestsListRector = 'rector-panel';
-  static settings = 'settings';
   static viewRequestEmployee = `${AppRoutes.requestsListEmployee}/${AppRoutes.request}`;
   static viewRequestDirector = `${AppRoutes.requestsListDirector}/${AppRoutes.request}`;
   static viewRequestWilda = `${AppRoutes.requestsListWilda}/${AppRoutes.request}`;

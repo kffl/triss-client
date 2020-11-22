@@ -16,7 +16,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {PersonalDataComponent} from './components/pages/personal-data/personal-data.component';
-import {AccountSettingsComponent} from './components/pages/account-settings/account-settings.component';
 import {RequestsListComponent} from './components/pages/requests/views/requests-list/requests-list.component';
 import {DirectorPanelComponent} from './components/pages/requests/views/director-panel/director-panel.component';
 import {RectorPanelComponent} from './components/pages/requests/views/rector-panel/rector-panel.component';
@@ -63,7 +62,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     SideMenuComponent,
     PersonalDataComponent,
-    AccountSettingsComponent,
     RequestsListComponent,
     DirectorPanelComponent,
     RectorPanelComponent,

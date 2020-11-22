@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainViewComponent} from './components/pages/main-view/main-view.component';
-import {AccountSettingsComponent} from './components/pages/account-settings/account-settings.component';
 import {PersonalDataComponent} from './components/pages/personal-data/personal-data.component';
 import {RequestsListComponent} from './components/pages/requests/views/requests-list/requests-list.component';
 import {DirectorPanelComponent} from './components/pages/requests/views/director-panel/director-panel.component';
@@ -22,12 +21,11 @@ const routes: Routes = [
   {path: AppRoutes.requestsListDirector, component: DirectorPanelComponent},
   {path: AppRoutes.requestsListWilda, component: WildaPanelComponent},
   {path: AppRoutes.requestsListRector, component: RectorPanelComponent},
-  {path: AppRoutes.settings, component: AccountSettingsComponent},
   {path: AppRoutes.viewRequestEmployee, component: RequestEmployeeReadComponent},
   {path: AppRoutes.viewRequestDirector, component: ReqeustDirectorComponent},
   {path: AppRoutes.viewRequestWilda, component: ReqeustWildaComponent},
   {path: AppRoutes.viewRequestRector, component: RequestRectorComponent},
-  {path: '**', redirectTo: ''}
+  {path: '**', redirectTo: AppRoutes.home}
 ];
 
 @NgModule({
