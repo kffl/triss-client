@@ -17,9 +17,9 @@ export interface FormData {
     travelDietAmount: number
   };
   advancePayments: {
-    accommodationFeePaymentTypeSelect: string
+    accommodationFeePaymentTypeSelect: number
     accommodationFeeValue: number
-    conferenceFeePaymentTypeSelect: string
+    conferenceFeePaymentTypeSelect: number
     conferenceFeeValue: number
   };
   application: {
@@ -41,7 +41,7 @@ export interface FormData {
     firstName: string
     id: number
     identityDocumentNumber: string
-    identityDocumentType: string
+    identityDocumentType: number
     instituteId: number
     phoneNumber: string
     placeId: number
@@ -60,12 +60,6 @@ export interface FormData {
     id: number
     mpk: string
     project: string
-  };
-  identityDocument: {
-    employeeID: number
-    id: number
-    number: string
-    type: number
   };
   institute: {
     id: number;
@@ -88,7 +82,7 @@ interface Transport {
   destinationFrom: string;
   destinationTo: string;
   id: number;
-  vehicleSelect: string;
+  vehicleSelect: number;
 }
 
 export interface FormWithStatus {

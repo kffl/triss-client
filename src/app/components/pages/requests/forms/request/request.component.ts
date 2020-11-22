@@ -159,13 +159,12 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   ngAfterViewInit() {
     this.setAutocompletingFields();
     this.setTransportQuantity();
+    this.loadFormData();
     this.changeDetectorRef.detectChanges();
   }
 
   ngAfterViewChecked() {
     this.removeDisableClassFromSelects();
-    this.loadFormData();
-    this.changeDetectorRef.detectChanges();
   }
 
   onLangChange(lang) {
@@ -202,6 +201,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.http.get<Enum[]>(`${url}/documentType`)
       .subscribe(identityDocuments => {
         this.identityDocuments = identityDocuments;
+        this.loadIdentityDocument();
       });
     this.http.get<Enum[]>(`${url}/paymentType`)
       .subscribe(paymentTypes => {
@@ -287,9 +287,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.requestPaymentDaysAmountSum.value = String(this.formData.advanceApplication.residenceDietSum);
       this.requestPaymentAccommodationSum.value = String(this.formData.advanceApplication.accommodationSum);
       this.requestPaymentSummarizedCosts.value = String(this.formData.advanceApplication.advanceSum);
-      // identity-document
-      this.identityDocumentTypeSelect.value = this.formData.identityDocument.type;
-      this.identityDocumentSerialNumber.value = this.formData.identityDocument.number;
       // comments
       this.comments.value = this.formData.application.comments;
     }
@@ -298,18 +295,20 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   loadPaymentTypes() {
     if (this.useCase !== UseCaseEnum.Create) {
       this.conferenceFeeValue.value = String(this.formData.advancePayments.conferenceFeeValue);
-      this.conferenceFeePaymentTypeSelect.value = this.paymentTypes.find(type =>
-        type.nameEng === this.formData.advancePayments.conferenceFeePaymentTypeSelect).value;
+      this.conferenceFeePaymentTypeSelect.value = this.formData.advancePayments.conferenceFeePaymentTypeSelect;
       this.depositValue.value = String(this.formData.advancePayments.accommodationFeeValue);
-      this.depositPaymentTypeSelect.value = this.paymentTypes.find(type =>
-        type.nameEng === this.formData.advancePayments.accommodationFeePaymentTypeSelect).value;
+      this.depositPaymentTypeSelect.value = this.formData.advancePayments.accommodationFeePaymentTypeSelect;
     }
+  }
+
+  loadIdentityDocument() {
+    this.identityDocumentTypeSelect.value = this.formData.application.identityDocumentType;
+    this.identityDocumentSerialNumber.value = this.formData.application.identityDocumentNumber;
   }
 
   loadTransportData() {
     if (this.useCase !== UseCaseEnum.Create) {
-      this.vehicleSelect.toArray().map((item, i) => item.value = this.vehicles.find(vehicle =>
-        vehicle.nameEng === this.formData.transport[i].vehicleSelect).value);
+      this.vehicleSelect.toArray().map((item, i) => item.value = this.formData.transport[i].vehicleSelect);
       this.routeFrom.toArray().map((item, i) => item.value = this.formData.transport[i].destinationFrom);
       this.routeTo.toArray().map((item, i) => item.value = this.formData.transport[i].destinationTo);
       this.departureDate.toArray().map((item, i) => item.value = new Date(this.formData.transport[i].departureDay));
@@ -318,6 +317,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.carrier.toArray().map((item, i) => item.value = this.formData.transport[i].carrier);
     }
   }
+
+
 
   sendToWilda() {
     // TODO director to wilda

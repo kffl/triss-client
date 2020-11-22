@@ -356,20 +356,16 @@
                  matInput
                  [readonly]="useCase > 1"
                  #requestPaymentLocalTransportCosts>
-          <mat-hint *ngIf="!requestPaymentLocalTransportCosts.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
         </mat-form-field>
-        <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentOtherExpensesDescription.value && validationFailed">
+        <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.OTHER_COSTS' | translate }}</span></mat-label>
-          <span matPrefix class="asterisk">*</span>
           <textarea matInput
                     placeholder="{{ 'REQUEST.OTHER_COSTS_PLACEHOLDER' | translate }}"
                     [readonly]="useCase > 1"
                     #requestPaymentOtherExpensesDescription></textarea>
-          <mat-hint *ngIf="!requestPaymentOtherExpensesDescription.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
         </mat-form-field>
-        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentOtherExpensesValue.value && validationFailed">
+        <mat-form-field [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.OTHER_COSTS_AMOUNT' | translate }}</span></mat-label>
-          <span matPrefix class="asterisk">*</span>
           <input digitOnly
                  type="text"
                  inputmode="numeric"
@@ -380,7 +376,6 @@
                  matInput
                  [readonly]="useCase > 1"
                  #requestPaymentOtherExpensesValue>
-          <mat-hint *ngIf="!requestPaymentOtherExpensesValue.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
         </mat-form-field>
         <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.SUMMARIZED_COSTS' | translate }}</span></mat-label>
