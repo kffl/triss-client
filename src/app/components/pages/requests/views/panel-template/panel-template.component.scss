@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .list {
+    width: min(100%, 1400px);
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    .item {
+      padding: 0 20px 0;
+    }
+    .header {
+      padding-top: 16px;
+      line-height: 1.25;
+      font-size: 24px;
+    }
+    .grid {
+      padding-top: 8px;
+    }
+  }
+}
+

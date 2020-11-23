@@ -1,5 +1,6 @@
 import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
 import {Router} from '@angular/router';
+import {AppRoutes} from '../../../extra/routes/appRoutes';
 
 @Component({
   selector: 'app-side-menu',
@@ -9,14 +10,14 @@ import {Router} from '@angular/router';
 export class SideMenuComponent implements OnInit, AfterViewInit {
 
   @Input() sidenav;
-  paths: string[] = [];
+  appRoutes = AppRoutes;
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
 
   ngOnInit(): void {
-    this.router.config.forEach(route => this.paths.push('/' + route.path));
+
   }
 
   ngAfterViewInit() {

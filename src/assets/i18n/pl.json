@@ -10,8 +10,8 @@
     "NEW_REQUESTS": "Stwórz wniosek",
     "REQUESTS_LIST": "Złożone wnioski",
     "DIRECTOR_PANEL": "Panel dyrektora",
-    "RECTOR_PANEL": "Panel rektora",
-    "SETTINGS": "Ustawienia konta"
+    "WILDA_PANEL": "Panel Wildy",
+    "RECTOR_PANEL": "Panel rektora"
   },
   "FOOTER": {
     "PUT": "Politechnika Poznańska"
@@ -37,6 +37,8 @@
     "BUTTON_DELETE_TRANSPORT": "Usuń ostatni środek transportu",
     "BUTTON_CANCEL": "Anuluj",
     "BUTTON_SEND": "Wyślij wniosek",
+    "BUTTON_APPROVE": "Oznacz jako zweryfikowany",
+    "BUTTON_ACCEPT": "Zaakceptuj wniosek",
     "FIRST_NAME": "Imię",
     "SURNAME": "Nazwisko",
     "ACADEMIC_TITLE": "Tytuł/stopień naukowy/stanowisko",

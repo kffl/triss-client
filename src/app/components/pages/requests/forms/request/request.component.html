@@ -1,0 +1,492 @@
+<div class="container">
+
+  <div class="form">
+
+    <div class="title main-title">
+      <span>{{ 'REQUEST.MAIN_TITLE' | translate }}</span>
+    </div>
+
+    <div class="form-group basic-info">
+      <div class="fields-pair">
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
+          <input matInput #firstName readonly>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
+          <input matInput #surname readonly>
+        </mat-form-field>
+      </div>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.ACADEMIC_TITLE' | translate }}</span></mat-label>
+        <input matInput #academicTitle readonly>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.INSTITUTE' | translate }}</span></mat-label>
+        <input matInput #institute readonly>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>
+        <input matInput #phoneNumber readonly>
+      </mat-form-field>
+      <div class="fields-pair">
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!destinationCountry.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.DESTINATION_COUNTRY' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput (input)="synchronizeCountryName()"  #destinationCountry [readonly]="useCase > 1">
+          <mat-hint *ngIf="!destinationCountry.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!destinationCity.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.DESTINATION_CITY' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput #destinationCity [readonly]="useCase > 1">
+          <mat-hint *ngIf="!destinationCity.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+      </div>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(abroadDate.value) && validationFailed">
+        <mat-label><span>{{ 'REQUEST.TRIP_DATE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <mat-date-range-input [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()">
+          <input #abroadDateStart matStartDate placeholder="{{ 'REQUEST.TRIP_DATE_FROM' | translate }}" readonly>
+          <input #abroadDateEnd matEndDate placeholder="{{ 'REQUEST.TRIP_DATE_TO' | translate }}" readonly>
+        </mat-date-range-input>
+        <mat-hint *ngIf="isObjectEmpty(abroadDate.value)">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="abroadPicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #abroadPicker [disabled]="useCase > 1"></mat-date-range-picker>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!purpose.value && validationFailed">
+        <mat-label><span>{{ 'REQUEST.PURPOSE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <input matInput #purpose [readonly]="useCase > 1">
+        <mat-hint *ngIf="!purpose.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!conference.value && validationFailed">
+        <mat-label><span>{{ 'REQUEST.CONFERENCE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <input matInput #conference [readonly]="useCase > 1">
+        <mat-hint *ngIf="!conference.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!subject.value && validationFailed">
+        <mat-label><span>{{ 'REQUEST.SUBJECT' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <input matInput #subject [readonly]="useCase > 1">
+        <mat-hint *ngIf="!subject.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(conferenceDate.value) && validationFailed">
+        <mat-label><span>{{ 'REQUEST.CONFERENCE_DATE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <mat-date-range-input [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()">
+          <input #conferenceDateStart matStartDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_FROM' | translate }}" readonly>
+          <input #conferenceDateEnd matEndDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_TO' | translate }}" readonly>
+        </mat-date-range-input>
+        <mat-hint *ngIf="isObjectEmpty(conferenceDate.value)">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="conferencePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #conferencePicker [disabled]="useCase > 1"></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle" *ngIf="useCase > 1 && useCase <= 5">
+      <span>{{ 'REQUEST.FINANCIAL_SOURCE_TITLE' | translate }}</span>
+    </div>
+
+    <div class="form-group financial-source" *ngIf="useCase > 1 && useCase <= 5">
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!allocationAccount.value && validationFailed">
+        <span matPrefix class="asterisk">*</span>
+        <mat-label><span>{{ 'REQUEST.ALLOCATION_ACCOUNT' | translate }}</span></mat-label>
+        <input matInput #allocationAccount [readonly]="useCase > 2">
+        <mat-hint *ngIf="!allocationAccount.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!MPK.value && validationFailed">
+        <span matPrefix class="asterisk">*</span>
+        <mat-label><span>{{ 'REQUEST.MPK' | translate }}</span></mat-label>
+        <input matInput #MPK [readonly]="useCase > 2">
+        <mat-hint *ngIf="!MPK.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!financialSource.value && validationFailed">
+        <span matPrefix class="asterisk">*</span>
+        <mat-label><span>{{ 'REQUEST.FINANCIAL_SOURCE' | translate }}</span></mat-label>
+        <input matInput #financialSource [readonly]="useCase > 2">
+        <mat-hint *ngIf="!financialSource.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!project.value && validationFailed">
+        <span matPrefix class="asterisk">*</span>
+        <mat-label><span>{{ 'REQUEST.PROJECT' | translate }}</span></mat-label>
+        <input matInput #project [readonly]="useCase > 2">
+        <mat-hint *ngIf="!project.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>{{ 'REQUEST.TRANSPORT_TITLE' | translate }}</span>
+    </div>
+
+    <div class="form-group transport" *ngFor="let transportMean of transportMeansArray">
+      <div class="info-text transport-enum"><span>{{ 'REQUEST.TRANSPORT_MEAN_NO' | translate }} {{transportMean}}</span></div>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="vehicleSelect.value == null && validationFailed">
+        <span matPrefix class="asterisk">*</span>
+        <mat-label><span>{{ 'REQUEST.TRANSPORT_MEAN_TYPE' | translate }}</span></mat-label>
+        <mat-select #vehicleSelect [disabled]="useCase > 1">
+          <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.value"><span>{{vehicle[enumLang]}}</span></mat-option>
+        </mat-select>
+        <mat-hint *ngIf="vehicleSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <div class="fields-pair">
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!routeFrom.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.ROUTE_FROM' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput #routeFrom [readonly]="useCase > 1">
+          <mat-hint *ngIf="!routeFrom.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!routeTo.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.ROUTE_TO' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput #routeTo [readonly]="useCase > 1">
+          <mat-hint *ngIf="!routeTo.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="fields-triple">
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!departureDate.value && validationFailed">
+          <mat-label>{{ 'REQUEST.DEPARTURE_DATE' | translate }}</mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput [matDatepicker]="departurePicker" #departureDate readonly (click)="departurePicker.open()">
+          <mat-hint *ngIf="!departureDate.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
+          <mat-datepicker #departurePicker [disabled]="useCase > 1"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!departureHour.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.DEPARTURE_HOUR' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput
+                 digitOnly
+                 (paste)="validatePaste(departureHour, 23)"
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="hourRegex"
+                 [readonly]="useCase > 1"
+                 #departureHour>
+          <mat-hint *ngIf="!departureHour.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!departureMinute.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.DEPARTURE_MINUTE' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input matInput
+                 digitOnly
+                 (paste)="validatePaste(departureMinute, 59)"
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="minuteRegex"
+                 [readonly]="useCase > 1"
+                 #departureMinute>
+          <mat-hint *ngIf="!departureMinute.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+      </div>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.CARRIER' | translate }}</span></mat-label>
+        <input matInput #carrier [readonly]="useCase > 1">
+      </mat-form-field>
+    </div>
+
+    <div class="transport-buttons" *ngIf="useCase === 1">
+      <button mat-stroked-button (click)="incrementTransportMeansNumber()" [disabled]="transportMeansNumber === 100">
+        <span>{{ 'REQUEST.BUTTON_NEW_TRANSPORT' | translate }}</span>
+      </button>
+      <button mat-stroked-button (click)="decrementTransportMeansNumber()" [disabled]="transportMeansNumber === 1">
+        <span>{{ 'REQUEST.BUTTON_DELETE_TRANSPORT' | translate }}</span>
+      </button>
+    </div>
+
+    <div class="title subtitle">
+      <span>{{ 'REQUEST.INSURANCE_TITLE' | translate }}</span>
+    </div>
+    <div class="info-text">
+      <span>{{ 'REQUEST.INSURANCE_INFO_TEXT' | translate }}</span>
+    </div>
+
+    <div class="form-group insurance">
+      <div class="fields-pair">
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
+          <input matInput #firstNameInsurance [disabled]="selfInsuredCheckbox.checked" readonly>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
+          <input matInput #surnameInsurance [disabled]="selfInsuredCheckbox.checked" readonly>
+        </mat-form-field>
+      </div>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
+        <input matInput [matDatepicker]="birthPicker" #birthDate [disabled]="selfInsuredCheckbox.checked" readonly>
+        <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
+        <mat-datepicker #birthPicker disabled></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.DEPARTURE_COUNTRY' | translate }}</span></mat-label>
+        <input matInput #departureCountry [disabled]="selfInsuredCheckbox.checked" readonly>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(abroadDateInsurance.value) && validationFailed">
+        <mat-label><span>{{ 'REQUEST.TIME_ABROAD' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk" *ngIf="!selfInsuredCheckbox.checked">*</span>
+        <mat-date-range-input [rangePicker]="insurancePicker" [disabled]="selfInsuredCheckbox.checked" #abroadDateInsurance (click)="insurancePicker.open()">
+          <input #abroadDateInsuranceStart matStartDate placeholder="{{ 'REQUEST.TIME_ABROAD_FROM' | translate }}" readonly>
+          <input #abroadDateInsuranceEnd matEndDate placeholder="{{ 'REQUEST.TIME_ABROAD_TO' | translate }}" readonly>
+        </mat-date-range-input>
+        <mat-hint *ngIf="isObjectEmpty(abroadDateInsurance.value) && !selfInsuredCheckbox.checked">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="insurancePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #insurancePicker [disabled]="useCase > 1"></mat-date-range-picker>
+      </mat-form-field>
+      <mat-checkbox class="example-margin" #selfInsuredCheckbox [disabled]="useCase > 1">
+        <span>{{ 'REQUEST.SELF_INSURED' | translate }}</span>
+      </mat-checkbox>
+    </div>
+
+    <div class="title subtitle">
+      <span>{{ 'REQUEST.ADVANCE_PAYMENT_REQUEST_TITLE' | translate }}</span>
+    </div>
+
+    <div class="form-group advance-payment-request">
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DESTINATION' | translate }}</span></mat-label>
+        <input matInput #requestPaymentDestination readonly>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(requestPaymentDate.value) && validationFailed">
+        <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DATE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <mat-date-range-input [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate (click)="advancePaymentRequestPicker.open()">
+          <input #requestPaymentDateStart matStartDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_FROM' | translate }}" readonly>
+          <input #requestPaymentDateEnd matEndDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_TO' | translate }}" readonly>
+        </mat-date-range-input>
+        <mat-hint *ngIf="isObjectEmpty(requestPaymentDate.value)">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="advancePaymentRequestPicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #advancePaymentRequestPicker [disabled]="useCase > 1"></mat-date-range-picker>
+      </mat-form-field>
+      <div class="advance-payment-request-list">
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentDays.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DAYS' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="integerRegex"
+                 matInput
+                 (input)="setAmountSum(requestPaymentDays.value, requestPaymentDaysAmount.value, requestPaymentDaysAmountSum)"
+                 [readonly]="useCase > 1"
+                 #requestPaymentDays>
+          <mat-hint *ngIf="!requestPaymentDays.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentDaysAmount.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DAYS_AMOUNT' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 matInput
+                 [readonly]="useCase > 1"
+                 (input)="setAmountSum(requestPaymentDays.value, requestPaymentDaysAmount.value, requestPaymentDaysAmountSum)"
+                 #requestPaymentDaysAmount>
+          <mat-hint *ngIf="!requestPaymentDaysAmount.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.SUM' | translate }}</span></mat-label>
+          <input matInput
+                 #requestPaymentDaysAmountSum
+                 readonly>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentAccommodation.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.ACCOMMODATION' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 [pattern]="integerRegex"
+                 matInput
+                 [readonly]="useCase > 1"
+                 (input)="setAmountSum(requestPaymentAccommodation.value, requestPaymentAccommodationLimit.value, requestPaymentAccommodationSum)"
+                 #requestPaymentAccommodation>
+          <mat-hint *ngIf="!requestPaymentAccommodation.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentAccommodationLimit.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.LIMIT' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 matInput
+                 [readonly]="useCase > 1"
+                 (input)="setAmountSum(requestPaymentAccommodation.value, requestPaymentAccommodationLimit.value, requestPaymentAccommodationSum)"
+                 #requestPaymentAccommodationLimit>
+          <mat-hint *ngIf="!requestPaymentAccommodationLimit.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.SUM' | translate }}</span></mat-label>
+          <input matInput
+                 #requestPaymentAccommodationSum
+                 readonly>
+        </mat-form-field>
+        <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentTravelDiet.value && validationFailed">
+          <mat-label><span>{{ 'REQUEST.TRAVEL_DIET' | translate }}</span></mat-label>
+          <span matPrefix class="asterisk">*</span>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 (input)="setRequestPaymentSummarizedCosts()"
+                 matInput
+                 [readonly]="useCase > 1"
+                 #requestPaymentTravelDiet>
+          <mat-hint *ngIf="!requestPaymentTravelDiet.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentLocalTransportCosts.value && validationFailed">
+          <span matPrefix class="asterisk">*</span>
+          <mat-label><span>{{ 'REQUEST.LOCAL_TRANSPORT_COSTS' | translate }}</span></mat-label>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 (input)="setRequestPaymentSummarizedCosts()"
+                 matInput
+                 [readonly]="useCase > 1"
+                 #requestPaymentLocalTransportCosts>
+        </mat-form-field>
+        <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.OTHER_COSTS' | translate }}</span></mat-label>
+          <textarea matInput
+                    placeholder="{{ 'REQUEST.OTHER_COSTS_PLACEHOLDER' | translate }}"
+                    [readonly]="useCase > 1"
+                    #requestPaymentOtherExpensesDescription></textarea>
+        </mat-form-field>
+        <mat-form-field [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.OTHER_COSTS_AMOUNT' | translate }}</span></mat-label>
+          <input digitOnly
+                 type="text"
+                 inputmode="numeric"
+                 decimal="true"
+                 [decimalSeparator]="decimalSeparator"
+                 [pattern]="currencyRegex"
+                 (input)="setRequestPaymentSummarizedCosts()"
+                 matInput
+                 [readonly]="useCase > 1"
+                 #requestPaymentOtherExpensesValue>
+        </mat-form-field>
+        <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
+          <mat-label><span>{{ 'REQUEST.SUMMARIZED_COSTS' | translate }}</span></mat-label>
+          <input matInput #requestPaymentSummarizedCosts readonly>
+          <mat-hint *ngIf="!requestPaymentSummarizedCosts.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="title subtitle">
+      <span>{{ 'REQUEST.ADVANCE_PAYMENTS_TITLE' | translate }}</span>
+    </div>
+    <div class="info-text">
+      <span>{{ 'REQUEST.ADVANCE_PAYMENTS_INFO_TEXT' | translate }}</span>
+    </div>
+
+    <div class="form-group advance-payments">
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!conferenceFeeValue.value && validationFailed">
+        <mat-label><span>{{ 'REQUEST.CONFERENCE_FEE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <input digitOnly
+               type="text"
+               inputmode="numeric"
+               decimal="true"
+               [decimalSeparator]="decimalSeparator"
+               [pattern]="currencyRegex"
+               matInput
+               [readonly]="useCase > 1"
+               placeholder="{{ 'REQUEST.CONFERENCE_FEE_PLACEHOLDER' | translate }}"
+               #conferenceFeeValue>
+        <mat-hint *ngIf="!conferenceFeeValue.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="conferenceFeePaymentTypeSelect.value == null && validationFailed">
+        <mat-label><span>{{ 'REQUEST.PAYMENT_FORM' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <mat-select #conferenceFeePaymentTypeSelect [disabled]="useCase > 1">
+          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType[enumLang]}}</span></mat-option>
+        </mat-select>
+        <mat-hint *ngIf="!conferenceFeePaymentTypeSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!depositValue.value && validationFailed">
+        <mat-label><span>{{ 'REQUEST.DEPOSIT' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <input digitOnly
+               type="text"
+               inputmode="numeric"
+               decimal="true"
+               [decimalSeparator]="decimalSeparator"
+               [pattern]="currencyRegex"
+               matInput
+               [readonly]="useCase > 1"
+               placeholder="{{ 'REQUEST.DEPOSIT_PLACEHOLDER' | translate }}"
+               #depositValue>
+        <mat-hint *ngIf="!depositValue.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="depositPaymentTypeSelect.value == null && validationFailed">
+        <mat-label><span>{{ 'REQUEST.PAYMENT_FORM' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <mat-select #depositPaymentTypeSelect [disabled]="useCase > 1">
+          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.value"><span>{{paymentType[enumLang]}}</span></mat-option>
+        </mat-select>
+        <mat-hint *ngIf="depositPaymentTypeSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>{{ 'REQUEST.IDENTITY_DOCUMENTS_TITLE' | translate }}</span>
+    </div>
+
+    <div class="form-group identity-document" [class.invalid-field]="identityDocumentTypeSelect.value == null && validationFailed">
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.DOCUMENT_TYPE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk">*</span>
+        <mat-select #identityDocumentTypeSelect (selectionChange)="onIdChange($event.value)" [disabled]="useCase > 1">
+          <mat-option *ngFor="let identityDocument of identityDocuments" [value]="identityDocument.value"><span>{{identityDocument[enumLang]}}</span></mat-option>
+        </mat-select>
+        <mat-hint *ngIf="identityDocumentTypeSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.DOCUMENT_SERIAL_NUMBER' | translate }}</span></mat-label>
+        <input matInput #identityDocumentSerialNumber readonly>
+      </mat-form-field>
+    </div>
+
+    <div class="title subtitle">
+      <span>{{ 'REQUEST.COMMENTS_TITLE' | translate }}</span>
+    </div>
+
+    <div class="form-group comments">
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label *ngIf="useCase === 1"><span>{{ 'REQUEST.COMMENTS' | translate }}</span></mat-label>
+        <textarea [readonly]="useCase > 1" matInput #comments></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="outcome-buttons">
+      <a><button (click)="cancelForm()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
+      </button></a>
+      <a *ngIf="useCase === 1"><button (click)="submitForm()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_SEND' | translate }}</span>
+      </button></a>
+      <a *ngIf="useCase === 2"><button (click)="sendToWilda()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
+      </button></a>
+      <a *ngIf="useCase === 3"><button (click)="sendToRector()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_APPROVE' | translate }}</span>
+      </button></a>
+      <a *ngIf="useCase === 4"><button (click)="sendBackToWilda()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
+      </button></a>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,12 @@
-import { Component, OnInit, Input, ViewChild, SimpleChanges, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { merge, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { PageInfo } from '../../pages/requests/models';
-import { CustomDataSource } from './data-source';
-import { GridRestService } from './grid-rest-service';
-
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {merge} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {PageInfo} from '../../../extra/app-grid-models/models';
+import {CustomDataSource} from './data-source';
+import {GridRestService} from './grid-rest-service';
+import {Row} from '../../../extra/app-grid-models/row';
 
 @Component({
   selector: 'app-grid',
@@ -19,22 +16,24 @@ import { GridRestService } from './grid-rest-service';
 export class GridComponent implements OnInit, AfterViewInit {
   @Input() columnHeader;
   @Input() source;
-  @Input() pageInfo: PageInfo
+  @Input() pageInfo: PageInfo;
   @Input() pageSizeOptions = [10, 25, 50];
   @Input() dataRestPath: string;
   @Input() countRestPath: string;
 
-  @Output() onRowClick = new EventEmitter<any>();
+  @Output() onRowClick = new EventEmitter<Row>();
 
   objectKeys = Object.keys;
   dataSource: CustomDataSource;
 
-  objectCount: number = 100;
+  objectCount = 100;
   columnFilters: any = {};
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private restService: GridRestService) { }
+  constructor(
+    private restService: GridRestService
+  ) { }
 
   ngOnInit() {
     this.prepareInitPageInfo();
@@ -57,7 +56,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   }
 
   public onFilterChange(event: any, tableFilter: any) {
-    let columnName = tableFilter.replace("Filter", '');
+    const columnName = tableFilter.replace("Filter", '');
     this.pageInfo.filter[columnName] = event.currentTarget.value;
     this.pageInfo.pageNumber = 0;
     this.paginator.pageIndex = 0;
@@ -66,7 +65,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   }
 
   public onDateFilterChange(event: any, tableFilter: any) {
-    let columnName = tableFilter.replace("Filter", '');
+    const columnName = tableFilter.replace("Filter", '');
     this.pageInfo.filter[columnName] = event.value;
     this.pageInfo.pageNumber = 0;
     this.paginator.pageIndex = 0;
@@ -74,7 +73,7 @@ export class GridComponent implements OnInit, AfterViewInit {
     this.loadCount();
   }
 
-  public onRowClicked(row: any) {
+  public onRowClicked(row: Row) {
     this.onRowClick.emit(row);
   }
 
@@ -83,7 +82,7 @@ export class GridComponent implements OnInit, AfterViewInit {
       this.pageInfo = new PageInfo();
     }
     if (this.pageInfo.filter == undefined) {
-      this.pageInfo.filter = {}; 
+      this.pageInfo.filter = {};
     }
     if (this.pageInfo.orderBy == undefined) {
       this.pageInfo.orderBy = "id";
@@ -99,7 +98,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   private loadPage() {
     this.pageInfo.pageNumber = this.paginator.pageIndex;
     this.pageInfo.pageSize = this.paginator.pageSize;
-    this.pageInfo.desc = this.sort.direction != "asc" 
+    this.pageInfo.desc = this.sort.direction != "asc"
     if (this.sort.active != undefined) {
       this.pageInfo.orderBy = this.sort.active
     }
@@ -109,7 +108,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   private loadCount() {
     this.restService.getMono(this.countRestPath, this.pageInfo).subscribe(result => {
       this.objectCount = result;
-    })
+    });
   }
 
 }

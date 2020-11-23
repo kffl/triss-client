@@ -1,9 +1,9 @@
 <div>
   <mat-list>
-    <a [routerLink]="paths[0]">
+    <a [routerLink]="appRoutes.home">
       <mat-list-item class="link"><span>{{'SIDE_MENU.MAIN_PAGE' | translate}}</span></mat-list-item>
     </a>
-    <a [routerLink]="paths[1]">
+    <a [routerLink]="appRoutes.personalData">
       <mat-list-item class="link"><span>{{'SIDE_MENU.PERSONAL_DATA' | translate}}</span></mat-list-item>
     </a>
     <mat-expansion-panel>
@@ -12,23 +12,23 @@
       </mat-expansion-panel-header>
       <mat-panel-title>
         <mat-list>
-          <a [routerLink]="paths[2]">
+          <a [routerLink]="appRoutes.createRequest">
             <mat-list-item class="link"><span>{{'SIDE_MENU.NEW_REQUESTS' | translate}}</span></mat-list-item>
           </a>
-          <a [routerLink]="paths[3]">
+          <a [routerLink]="appRoutes.requestsListEmployee">
             <mat-list-item class="link"><span>{{'SIDE_MENU.REQUESTS_LIST' | translate}}</span></mat-list-item>
           </a>
-          <a [routerLink]="paths[4]">
+          <a [routerLink]="appRoutes.requestsListDirector">
             <mat-list-item class="link"><span>{{'SIDE_MENU.DIRECTOR_PANEL' | translate}}</span></mat-list-item>
           </a>
-          <a [routerLink]="paths[5]">
+          <a [routerLink]="appRoutes.requestsListWilda">
+            <mat-list-item class="link"><span>{{'SIDE_MENU.WILDA_PANEL' | translate}}</span></mat-list-item>
+          </a>
+          <a [routerLink]="appRoutes.requestsListRector">
             <mat-list-item class="link"><span>{{'SIDE_MENU.RECTOR_PANEL' | translate}}</span></mat-list-item>
           </a>
         </mat-list>
       </mat-panel-title>
     </mat-expansion-panel>
-    <a [routerLink]="paths[6]">
-      <mat-list-item class="link"><span>{{'SIDE_MENU.SETTINGS' | translate}}</span></mat-list-item>
-    </a>
   </mat-list>
 </div>
