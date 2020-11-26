@@ -1,1 +1,50 @@
-<p>personal-data works!</p>
+<div class="page">
+  <div class="container">
+    <div class="title item">Dane osobowe</div>
+    <div class="form item">
+
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
+        <input matInput #firstName readonly>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
+        <input matInput #surname readonly>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
+        <input matInput [matDatepicker]="birthPicker" #birthDate readonly>
+        <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
+        <mat-datepicker #birthPicker disabled></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>
+        <input matInput #phoneNumber [readonly]="!isEditing">
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.ACADEMIC_TITLE' | translate }}</span></mat-label>
+        <input matInput #academicTitle [readonly]="!isEditing">
+      </mat-form-field>
+      <mat-form-field [appearance]="formFieldsStyle">
+        <mat-label><span>{{ 'REQUEST.INSTITUTE' | translate }}</span></mat-label>
+        <mat-select #instituteSelect [disabled]="!isEditing">
+          <mat-option *ngFor="let institute of allInstitutes" [value]="institute.id" [disabled]="!institute.active">
+            <span>{{institute.name}}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <div class="buttons item">
+      <a><button *ngIf="!isEditing" (click)="onEditButton()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_EDIT' | translate }}</span>
+      </button></a>
+      <a><button *ngIf="isEditing" (click)="onCancelButton()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
+      </button></a>
+      <a><button *ngIf="isEditing" (click)="onSaveButton()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_SAVE' | translate }}</span>
+      </button></a>
+    </div>
+  </div>
+</div>

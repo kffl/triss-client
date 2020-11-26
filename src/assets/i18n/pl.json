@@ -96,7 +96,9 @@
     "DOCUMENT_TYPE": "Rodzaj dokumentu",
     "DOCUMENT_SERIAL_NUMBER": "Seria i numer",
     "COMMENTS": "Tu wpisz swoje uwagi",
-    "REQUIRED_FIELD": "To pole jest wymagane"
+    "REQUIRED_FIELD": "To pole jest wymagane",
+    "BUTTON_EDIT": "Edytuj dane",
+    "BUTTON_SAVE": "Zapisz dane"
   },
   "DIALOG": {
     "REQUEST_VALIDATION_FAILED": {
