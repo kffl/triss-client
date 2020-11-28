@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, AfterViewChecked, ViewChild} from '@angular/core';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
 import {MatInput} from '@angular/material/input';
 import {MatSelect} from '@angular/material/select';
@@ -8,6 +8,8 @@ import {MatDatepickerInput} from '@angular/material/datepicker';
 import {InstituteInterface} from '../../../extra/institute-interface/institute.interface';
 import {BehaviorSubject} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {InfoDialogComponent} from '../../shared/info-dialog/info-dialog.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-personal-data',
@@ -30,7 +32,8 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   @ViewChild('instituteSelect') instituteSelect: MatSelect;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -99,10 +102,25 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
       employeeType: this.personalData.employeeType,
       id: this.personalData.id
     };
+    const dialogConfig = new MatDialogConfig();
     const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/update`;
     this.http.post<PersonalDataInterface>(url, newPersonalData).subscribe(
       () => {
-        console.log('ok');
+        dialogConfig.data = {
+          title: 'Zapisano pomyślnie',
+          content: 'Dane zostały pomyślnie zapisane',
+          showCloseButton: true
+        };
+      },
+      (error: HttpErrorResponse) => {
+        dialogConfig.data = {
+          title: 'Błąd',
+          content: 'Nie udało się zapisać danych',
+          showCloseButton: true
+        };
+      },
+      () => {
+        this.dialog.open(InfoDialogComponent, dialogConfig);
       });
   }
 
