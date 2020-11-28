@@ -13,9 +13,9 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
-        <input matInput [matDatepicker]="birthPicker" #birthDate readonly>
+        <input matInput [matDatepicker]="birthPicker" #birthDate readonly (click)="birthPicker.open()">
         <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
-        <mat-datepicker #birthPicker disabled></mat-datepicker>
+        <mat-datepicker #birthPicker [disabled]="!isEditing"></mat-datepicker>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>

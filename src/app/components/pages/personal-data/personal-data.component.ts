@@ -92,7 +92,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
     const newPersonalData: PersonalDataInterface = {
       firstName: this.personalData.firstName,
       surname: this.personalData.surname,
-      birthDate: this.personalData.birthDate,
+      birthDate: this.formatDate(this.birthDate.value),
       phoneNumber: this.phoneNumber.value,
       academicDegree: this.academicTitle.value,
       instituteID: this.formatSelect(this.instituteSelect.value),
