@@ -23,6 +23,8 @@ import {UseCaseEnum} from '../../../../../extra/use-case-enum/use-case-enum';
 import {FormData} from '../../../../../extra/request-interface/request-interface';
 import {AppRoutes} from '../../../../../extra/routes/appRoutes';
 import {Location} from '@angular/common';
+import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
+import {InstituteInterface} from '../../../../../extra/institute-interface/institute.interface';
 
 interface Enum {
   value: number;
@@ -43,16 +45,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   formFieldsStyle: MatFormFieldAppearance = 'fill';
   transportMeansNumber = 1;
   transportMeansArray = [1];
-  // TODO getting userInfo from back-end or account settings component
-  userInfo = {
-    firstName: 'Jakub',
-    surname: 'Pietrzak',
-    academicTitle: 'jeszcze bez tytułu',
-    institute: 'instytut pisania najlepszej inżynierki',
-    phoneNumber: '+48 123 456 789',
-    birthDate: new Date('1998-03-11'),
-    documentSeriesNumbers: ['AAA 12345', 'AA 12345']
-  };
 
   // basic-info
   @ViewChild('firstName', {read: MatInput}) firstName: MatInput;
@@ -180,14 +172,20 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   setAutocompletingFields() {
     if (this.useCase === UseCaseEnum.Create) {
-      this.firstName.value = this.userInfo.firstName;
-      this.surname.value = this.userInfo.surname;
-      this.academicTitle.value = this.userInfo.academicTitle;
-      this.institute.value = this.userInfo.institute;
-      this.phoneNumber.value = this.userInfo.phoneNumber;
-      this.firstNameInsurance.value = this.userInfo.firstName;
-      this.surnameInsurance.value = this.userInfo.surname;
-      this.birthDate.value = this.userInfo.birthDate;
+      const userDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
+      this.http.post<PersonalDataInterface>(userDataUrl, {}).subscribe(personalData => {
+        const instituteDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/institute/all`;
+        this.http.get<InstituteInterface[]>(instituteDataUrl).subscribe(institutes => {
+          this.institute.value = institutes.find(institute => personalData.instituteID === institute.id).name;
+        });
+        this.firstName.value = personalData.firstName;
+        this.surname.value = personalData.surname;
+        this.academicTitle.value = personalData.academicDegree;
+        this.phoneNumber.value = personalData.phoneNumber;
+        this.firstNameInsurance.value = personalData.firstName;
+        this.surnameInsurance.value = personalData.surname;
+        this.birthDate.value = new Date(personalData.birthDate);
+      });
     }
   }
 
@@ -208,10 +206,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         this.paymentTypes = paymentTypes;
         this.loadPaymentTypes();
       });
-  }
-
-  onIdChange(value: any) {
-    this.identityDocumentSerialNumber.value = this.userInfo.documentSeriesNumbers[value];
   }
 
   submitForm() {

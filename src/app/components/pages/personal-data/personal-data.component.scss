@@ -1,0 +1,54 @@
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: min(1200px, 100%);
+    .item {
+      padding: 10px 20px 10px;
+    }
+    .title {
+      padding-top: 16px;
+      line-height: 1.25;
+      font-size: 24px;
+    }
+    .form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      mat-form-field {
+        flex: 1 1 0;
+        display: block;
+        padding: 10px;
+        min-width: min(425px, calc(100vw - 20px));
+        input {
+          color: black;
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      align-items: center;
+      padding: 16px;
+      align-self: flex-end;
+      button {
+        flex-basis: 100%;
+        margin: 8px;
+        padding: 8px 24px;
+        span {
+          white-space: normal;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+}

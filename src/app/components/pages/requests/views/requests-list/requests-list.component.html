@@ -1,7 +1,9 @@
 <app-panel-template
   [pageTitle]="'Złożone wioski'"
   [linkToSingleRequest]="appRoutes.viewRequestEmployee"
-  [filter]="{employeeId: 1}"
+  [filter]="{}"
   [orderBy]="'id'"
   [desc]="false"
+  [dataPath]="'user/application/get'"
+  [countPath]="'user/application/count'"
 ></app-panel-template>
