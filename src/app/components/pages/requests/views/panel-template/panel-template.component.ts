@@ -21,6 +21,8 @@ export class PanelTemplateComponent implements OnInit {
   @Input() filter: any;
   @Input() orderBy: string;
   @Input() desc: boolean;
+  @Input() dataPath: string;
+  @Input() countPath: string;
 
   headers = {
     country: {description: 'Kraj', type: 'text'},
@@ -31,8 +33,8 @@ export class PanelTemplateComponent implements OnInit {
   data: any[];
 
   pageInfo: PageInfo;
-  dataRestPath = `${window.location.protocol}//${window.location.hostname}:8080/application/get`;
-  countRestPath = `${window.location.protocol}//${window.location.hostname}:8080/application/count`;
+  dataRestPath: string;
+  countRestPath: string;
 
   constructor(
     private http: HttpClient,
@@ -40,10 +42,11 @@ export class PanelTemplateComponent implements OnInit {
     private dialog: MatDialog,
     private translateService: TranslateService,
     private requestDataService: RequestDataService,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.dataRestPath = `${window.location.protocol}//${window.location.hostname}:8080/${this.dataPath}`;
+    this.countRestPath = `${window.location.protocol}//${window.location.hostname}:8080/${this.countPath}`;
     this.initializePageInfo();
   }
 
