@@ -100,6 +100,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
       academicDegree: this.academicTitle.value,
       instituteID: this.formatSelect(this.instituteSelect.value),
       employeeType: this.personalData.employeeType,
+      employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
     const dialogConfig = new MatDialogConfig();
