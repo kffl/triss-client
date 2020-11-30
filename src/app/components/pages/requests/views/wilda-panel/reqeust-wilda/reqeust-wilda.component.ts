@@ -13,6 +13,7 @@ export class ReqeustWildaComponent implements OnInit {
 
   useCase: UseCaseEnum;
   form: FormData;
+  status: string;
 
   constructor(
     private requestDataService: RequestDataService
@@ -22,7 +23,8 @@ export class ReqeustWildaComponent implements OnInit {
   ngOnInit(): void {
     this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
       this.form = formWithStatus.form;
-      if (formWithStatus.status === 'WaitingForWilda') {
+      this.status = formWithStatus.status;
+      if (formWithStatus.status === 'WaitingForWilda') { // TODO change WaitingForWilda
         this.useCase = UseCaseEnum.WildaApprove;
       } else {
         this.useCase = UseCaseEnum.WildaAfterRector;

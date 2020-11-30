@@ -13,6 +13,7 @@ export class RequestEmployeeReadComponent implements OnInit {
 
   useCase: UseCaseEnum;
   form: FormData;
+  status: string;
 
   constructor(
     private requestDataService: RequestDataService
@@ -23,6 +24,7 @@ export class RequestEmployeeReadComponent implements OnInit {
     this.useCase = UseCaseEnum.EmployeeRead;
     this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
       this.form = formWithStatus.form;
+      this.status = formWithStatus.status;
     });
   }
 

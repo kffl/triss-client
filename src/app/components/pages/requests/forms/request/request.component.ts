@@ -41,6 +41,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   @Input() useCase: UseCaseEnum;
   @Input() formData: FormData;
+  @Input() status: string;
 
   formFieldsStyle: MatFormFieldAppearance = 'fill';
   transportMeansNumber = 1;
@@ -316,14 +317,27 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   sendToWilda() {
     // TODO director to wilda
+    this.formData.financialSource.allocationAccount = this.allocationAccount.value;
+    this.formData.financialSource.mpk = this.MPK.value;
+    this.formData.financialSource.financialSource = this.financialSource.value;
+    this.formData.financialSource.project = this.project.value;
+    this.formData.application.status = String(this.status + 1);
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/director/application/approve`;
+    this.http.post(url, this.formData).subscribe(result => console.log(result));
   }
 
   sendToRector() {
     // TODO wilda to rector
+    this.formData.application.status = String(this.status + 1);
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/wilda/application/approve`;
+    this.http.post(url, this.formData).subscribe(result => console.log(result));
   }
 
   sendBackToWilda() {
     // TODO rector to wilda
+    this.formData.application.status = String(this.status + 1);
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/rector/application/approve`;
+    this.http.post(url, this.formData).subscribe(result => console.log(result));
   }
 
   formatDate(date: Date): string {

@@ -23,6 +23,7 @@ export class PanelTemplateComponent implements OnInit {
   @Input() desc: boolean;
   @Input() dataPath: string;
   @Input() countPath: string;
+  @Input() singleRequestPath: string;
 
   headers = {
     country: {description: 'Kraj', type: 'text'},
@@ -59,7 +60,7 @@ export class PanelTemplateComponent implements OnInit {
   }
 
   onListRowClicked(row: Row) {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/application/getFull`;
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/${this.singleRequestPath}`;
     this.http.post<object>(url, row.id).subscribe(
       (form: FormData) => {
         // this.requestDataService.setCurrentForm(form, row.status);
