@@ -121,6 +121,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
           content: 'Nie udało się zapisać danych',
           showCloseButton: true
         };
+        this.dialog.open(InfoDialogComponent, dialogConfig);
       },
       () => {
         this.dialog.open(InfoDialogComponent, dialogConfig);
