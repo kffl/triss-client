@@ -10,6 +10,7 @@ import {BehaviorSubject} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {InfoDialogComponent} from '../../shared/info-dialog/info-dialog.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {RequestDataService} from '../../../services/request-data.service';
 
 @Component({
   selector: 'app-personal-data',
@@ -34,6 +35,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
+    private requestService: RequestDataService
   ) { }
 
   ngOnInit(): void {
@@ -95,10 +97,10 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
     const newPersonalData: PersonalDataInterface = {
       firstName: this.personalData.firstName,
       surname: this.personalData.surname,
-      birthDate: this.formatDate(this.birthDate.value),
+      birthDate: this.requestService.formatDate(this.birthDate.value),
       phoneNumber: this.phoneNumber.value,
       academicDegree: this.academicTitle.value,
-      instituteID: this.formatSelect(this.instituteSelect.value),
+      instituteID: this.requestService.formatSelect(this.instituteSelect.value),
       employeeType: this.personalData.employeeType,
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
@@ -119,6 +121,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
           content: 'Nie udało się zapisać danych',
           showCloseButton: true
         };
+        this.dialog.open(InfoDialogComponent, dialogConfig);
       },
       () => {
         this.dialog.open(InfoDialogComponent, dialogConfig);
@@ -134,17 +137,5 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
     for (const i of Array(selects.length).keys()) {
       selects.item(i).classList.remove('mat-select-disabled');
     }
-  }
-
-  formatDate(date: Date): string {
-    return date ?
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}` : null;
-  }
-
-  formatSelect(value: number): number {
-    if (value == null) {
-      return null;
-    }
-    return value;
   }
 }

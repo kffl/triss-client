@@ -87,5 +87,5 @@ interface Transport {
 
 export interface FormWithStatus {
   form: FormData;
-  status: string;
+  status: number;
 }
