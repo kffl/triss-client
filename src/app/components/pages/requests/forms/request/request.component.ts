@@ -41,7 +41,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   @Input() useCase: UseCaseEnum;
   @Input() formData: FormData;
-  @Input() status: string;
+  @Input() status: number;
 
   formFieldsStyle: MatFormFieldAppearance = 'fill';
   transportMeansNumber = 1;

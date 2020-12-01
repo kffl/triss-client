@@ -13,7 +13,7 @@ export class ReqeustWildaComponent implements OnInit {
 
   useCase: UseCaseEnum;
   form: FormData;
-  status: string;
+  status: number;
 
   constructor(
     private requestDataService: RequestDataService
@@ -24,7 +24,7 @@ export class ReqeustWildaComponent implements OnInit {
     this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
       this.form = formWithStatus.form;
       this.status = formWithStatus.status;
-      if (formWithStatus.status === 'WaitingForWilda') { // TODO change WaitingForWilda
+      if (formWithStatus.status === 1) {
         this.useCase = UseCaseEnum.WildaApprove;
       } else {
         this.useCase = UseCaseEnum.WildaAfterRector;

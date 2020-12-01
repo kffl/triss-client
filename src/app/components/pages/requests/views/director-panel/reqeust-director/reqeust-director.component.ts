@@ -13,7 +13,7 @@ export class ReqeustDirectorComponent implements OnInit {
 
   useCase: UseCaseEnum;
   form: FormData;
-  status: string;
+  status: number;
 
   constructor(
     private requestDataService: RequestDataService
