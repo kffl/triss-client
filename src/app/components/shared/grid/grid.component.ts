@@ -7,6 +7,7 @@ import {PageInfo} from '../../../extra/app-grid-models/models';
 import {CustomDataSource} from './data-source';
 import {GridRestService} from './grid-rest-service';
 import {Row} from '../../../extra/app-grid-models/row';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-grid',
@@ -43,8 +44,6 @@ export class GridComponent implements OnInit, AfterViewInit {
     }
     this.dataSource = new CustomDataSource(this.restService);
     this.dataSource.loadData(this.dataRestPath, this.pageInfo);
-
-
   }
 
   ngAfterViewInit() {
