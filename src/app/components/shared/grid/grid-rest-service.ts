@@ -16,23 +16,23 @@ export class GridRestService {
 
 
     getFlux(url: string, pageInfo: PageInfo): Observable<any[]> {
-      // const httpOptions = {
-      //     headers: new HttpHeaders({
-      //       Accept:  'application/stream+json',
-      //       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-      //     })
-      // };
-      return this.http.post<any[]>(url, pageInfo);
+      const httpOptions = {
+          headers: new HttpHeaders({
+            Accept:  'application/stream+json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          })
+      };
+      return this.http.post<any[]>(url, pageInfo, httpOptions);
     }
 
     getMono(url: string, pageInfo: PageInfo): Observable<any> {
-        // const httpOptions = {
-        //     headers: new HttpHeaders({
-        //       Accept:  'application/stream+json',
-        //       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-        //     })
-        // };
-        return this.http.post<any>(url, pageInfo);
+        const httpOptions = {
+            headers: new HttpHeaders({
+              Accept:  'application/stream+json',
+              Authorization: 'Bearer ' + localStorage.getItem('access_token')
+            })
+        };
+        return this.http.post<any>(url, pageInfo, httpOptions);
     }
 
 }

@@ -21,12 +21,12 @@ export class MainViewComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
 
       let mode = params['state'];
-      if (mode != undefined) { //we are on localhost:4200
+      if (mode !== undefined) { //we are on localhost:4200
         this.document.location.href = 'http://localhost:' + port + '/?access_token=' +
                                        params['access_token'].toString() +
-                                       '&token_type=' + 
-                                       params['token_type'].toString() + 
-                                       '&expires_in=' + 
+                                       '&token_type=' +
+                                       params['token_type'].toString() +
+                                       '&expires_in=' +
                                        params['expires_in'].toString();
       }
       let token = params['access_token'];
@@ -39,11 +39,11 @@ export class MainViewComponent implements OnInit {
     let token = localStorage.getItem('access_token'); //get token
 
     if (production) {         //if we are on production
-      if (token == 'undefined') {  //if we are not logged
-        this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl'  
+      if (token == null) {  //if we are not logged
+        this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl';
       }
     } else {    //if we are not on production
-      if (token == 'undefined') { //if we are not logged
+      if (token == null) { //if we are not logged
         this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl&additional_data=dev';  
       }
     }

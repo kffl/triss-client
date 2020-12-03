@@ -31,8 +31,10 @@ export class CustomDataSource implements DataSource<any> {
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false))
         ).subscribe(rows => {
-            this.rowSubject.next(rows);
-            console.log(rows);
+          const currentValue = this.rowSubject.value;
+          const updatedValue = [...currentValue, rows];
+          this.rowSubject.next(updatedValue);
+          console.log(rows);
         });
     }
 }
