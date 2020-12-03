@@ -49,6 +49,8 @@ import { PanelTemplateComponent } from './components/pages/requests/views/panel-
 import { ReqeustDirectorComponent } from './components/pages/requests/views/director-panel/reqeust-director/reqeust-director.component';
 import { ReqeustWildaComponent } from './components/pages/requests/views/wilda-panel/reqeust-wilda/reqeust-wilda.component';
 import { RequestRectorComponent } from './components/pages/requests/views/rector-panel/request-rector/request-rector.component';
+import {SecurityService} from './components/shared/security/SecurityService';
+import {SafeHttpClient} from './components/shared/security/SafeHtppClient';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -121,6 +123,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
     RestService,
     GridRestService,
+    SecurityService,
+    SafeHttpClient,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],

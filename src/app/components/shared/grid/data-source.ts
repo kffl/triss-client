@@ -1,12 +1,12 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {catchError, finalize} from 'rxjs/operators';
+import {BehaviorSubject, EMPTY, Observable, of} from 'rxjs';
+import {catchError, finalize, map} from 'rxjs/operators';
 import {PageInfo} from '../../../extra/app-grid-models/models';
 import {GridRestService} from './grid-rest-service';
 
 export class CustomDataSource implements DataSource<any> {
 
-    private rowSubject = new BehaviorSubject<any[]>([]);
+  private rowSubject = new BehaviorSubject<any[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
 
     public loading$ = this.loadingSubject.asObservable();
@@ -26,6 +26,8 @@ export class CustomDataSource implements DataSource<any> {
         if (url === undefined) {
           return;
         }
+        //this.rowSubject.next([]);
+
         this.loadingSubject.next(true);
         this.restService.getFlux(url, pageInfo).pipe(
                 catchError(() => of([])),

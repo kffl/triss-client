@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageInfo } from '../../../extra/app-grid-models/models';
+import {SafeHttpClient} from '../security/SafeHtppClient';
 
 
 
@@ -9,9 +10,8 @@ import { PageInfo } from '../../../extra/app-grid-models/models';
 @Injectable()
 export class GridRestService {
 
-    constructor(private http: HttpClient) {
-
-    }
+    constructor(private http: SafeHttpClient)
+    {}
 
 
 
