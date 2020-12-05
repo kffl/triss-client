@@ -2,7 +2,8 @@
   <mat-toolbar
     [color]="headerColor">
     <button
-      (click)="onMenuButtonClick()" class="menu-button" mat-icon-button><mat-icon class="menu-icon">menu</mat-icon>
+      (click)="onMenuButtonClick()" class="menu-button" mat-icon-button>
+      <mat-icon class="menu-icon">menu</mat-icon>
     </button>
     <div class="toolbar-items-groups">
       <div class="toolbar-items-group">
@@ -12,8 +13,13 @@
         <span *ngIf="!belowBreakpoint" class="language-text">{{'HEADER.LANGUAGE' | translate}}</span>
         <span (click)="changeLanguageToPolish()" class="flag-icon flag-icon-pl"></span>
         <span (click)="changeLanguageToEnglish()" class="flag-icon flag-icon-gb"></span>
+        <button mat-button (click)="logout()">
+            <span class="material-icons">
+              power_settings_new
+            </span>
+          Wyloguj się
+        </button>
       </div>
     </div>
-
   </mat-toolbar>
 </div>

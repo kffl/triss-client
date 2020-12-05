@@ -51,6 +51,7 @@ import { ReqeustWildaComponent } from './components/pages/requests/views/wilda-p
 import { RequestRectorComponent } from './components/pages/requests/views/rector-panel/request-rector/request-rector.component';
 import {SecurityService} from './components/shared/security/SecurityService';
 import {SafeHttpClient} from './components/shared/security/SafeHtppClient';
+import {LoginService} from './components/shared/security/LoginService';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -125,6 +126,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     GridRestService,
     SecurityService,
     SafeHttpClient,
+    LoginService,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],

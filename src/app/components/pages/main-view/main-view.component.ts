@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import {SecurityService} from '../../shared/security/SecurityService';
+import {LoginService} from '../../shared/security/LoginService';
 
 @Component({
   selector: 'app-main-view',
@@ -11,7 +12,8 @@ import {SecurityService} from '../../shared/security/SecurityService';
 export class MainViewComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
-              private securityService: SecurityService) { }
+              private securityService: SecurityService,
+              private loginService: LoginService) { }
 
   ngOnInit(): void {
 
@@ -24,6 +26,8 @@ export class MainViewComponent implements OnInit {
 
     if (token == null) {
       this.securityService.redirectToELogin();
+    } else {
+      //this.loginService.login();
     }
   }
 

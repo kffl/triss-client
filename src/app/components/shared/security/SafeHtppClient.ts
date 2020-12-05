@@ -4,7 +4,9 @@ import {Observable} from 'rxjs';
 import {SecurityService} from './SecurityService';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+  })
 export class SafeHttpClient {
 
   constructor(private http: HttpClient,
@@ -44,6 +46,33 @@ export class SafeHttpClient {
     // });
     //
     const result = this.http.post<T>(url, body, options);
+    result.subscribe(
+      (data) => {
+        console.log(data);
+      },
+      (error) => {
+        if (error.status === 0 || error.status === 401) {
+          this.securityService.redirectToELogin();
+        }
+        console.log(error.status);
+      });
+    return result;
+  }
+
+  get<T>(url: string, options?: {
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    observe?: 'body';
+    params?: HttpParams | {
+      [param: string]: string | string[];
+    };
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
+  }): Observable<T> {
+
+    const result = this.http.get<T>(url, options);
     result.subscribe(
       (data) => {
         console.log(data);

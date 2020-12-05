@@ -1,18 +1,20 @@
 import {Inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Params} from '@angular/router';
 import {DOCUMENT} from '@angular/common';
+import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
+import {SafeHttpClient} from './SafeHtppClient';
 
 
 
 const production = false; // TODO this should be true on master!!!
-const port = '4200'
+const port = '4200';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class SecurityService {
 
-  constructor( private http: HttpClient,
-               @Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
 
   public processParams(params: Params): void {

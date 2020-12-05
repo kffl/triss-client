@@ -31,8 +31,7 @@ export class CustomDataSource implements DataSource<any> {
         this.restService.getFlux(url, pageInfo).pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)),
-        )
-          .subscribe(rows => {
+        ).subscribe(rows => {
           this.rowSubject.next(rows);
         });
     }

@@ -26,6 +26,7 @@ import {Location} from '@angular/common';
 import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
 import {InstituteInterface} from '../../../../../extra/institute-interface/institute.interface';
 import {RequestDataService} from '../../../../../services/request-data.service';
+import {SafeHttpClient} from '../../../../shared/security/SafeHtppClient';
 
 interface Enum {
   value: number;
@@ -138,7 +139,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
     private dialog: MatDialog,
-    private http: HttpClient,
+    private http: SafeHttpClient,
     private router: Router,
     private location: Location,
     private requestService: RequestDataService
@@ -180,6 +181,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         const instituteDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/institute/all`;
         this.http.get<InstituteInterface[]>(instituteDataUrl).subscribe(institutes => {
           this.institute.value = institutes.find(institute => personalData.instituteID === institute.id).name;
+          // TODO this is awful,
+          //  I don't like it,
+          //  althought we create another endpoint which will return institute name by institute id
+          //  or we will get this name when we want to get employee
         });
         this.firstName.value = personalData.firstName;
         this.surname.value = personalData.surname;
