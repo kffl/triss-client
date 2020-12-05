@@ -77,19 +77,19 @@ export class GridComponent implements OnInit, AfterViewInit {
   }
 
   private prepareInitPageInfo() {
-    if (this.pageInfo == undefined) {
+    if (this.pageInfo === undefined) {
       this.pageInfo = new PageInfo();
     }
-    if (this.pageInfo.filter == undefined) {
+    if (this.pageInfo.filter === undefined) {
       this.pageInfo.filter = {};
     }
-    if (this.pageInfo.orderBy == undefined) {
-      this.pageInfo.orderBy = "id";
+    if (this.pageInfo.orderBy === undefined) {
+      this.pageInfo.orderBy = 'id';
     }
-    if (this.pageInfo.desc == undefined) {
+    if (this.pageInfo.desc === undefined) {
       this.pageInfo.desc = false;
     }
-      if (this.pageInfo.pageSize == undefined) {
+    if (this.pageInfo.pageSize === undefined) {
       this.pageInfo.pageSize = this.pageSizeOptions[0];;
     }
   }
@@ -97,9 +97,9 @@ export class GridComponent implements OnInit, AfterViewInit {
   private loadPage() {
     this.pageInfo.pageNumber = this.paginator.pageIndex;
     this.pageInfo.pageSize = this.paginator.pageSize;
-    this.pageInfo.desc = this.sort.direction != "asc"
-    if (this.sort.active != undefined) {
-      this.pageInfo.orderBy = this.sort.active
+    this.pageInfo.desc = this.sort.direction !== 'asc';
+    if (this.sort.active !== undefined) {
+      this.pageInfo.orderBy = this.sort.active;
     }
     this.dataSource.loadData(this.dataRestPath, this.pageInfo);
   }
