@@ -49,7 +49,7 @@ export interface FormData {
     purpose: string
     rectorComments: string
     selfInsured: boolean
-    status: string
+    status: number
     subject: string
     surname: string
     wildaComments: string
@@ -73,7 +73,7 @@ export interface FormData {
   };
   transport: Transport[];
 }
-interface Transport {
+export interface Transport {
   applicationID: number;
   carrier: string;
   departureDay: string;

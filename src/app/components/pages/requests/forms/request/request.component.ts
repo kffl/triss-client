@@ -20,7 +20,7 @@ import {InfoDialogComponent} from '../../../../shared/info-dialog/info-dialog.co
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {UseCaseEnum} from '../../../../../extra/use-case-enum/use-case-enum';
-import {FormData} from '../../../../../extra/request-interface/request-interface';
+import {FormData, Transport} from '../../../../../extra/request-interface/request-interface';
 import {AppRoutes} from '../../../../../extra/routes/appRoutes';
 import {Location} from '@angular/common';
 import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
@@ -134,6 +134,9 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   identityDocuments: Enum[];
   paymentTypes: Enum[];
 
+  employeeId: number = null;
+  employeeInstitute: InstituteInterface = null;
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
@@ -179,7 +182,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.http.post<PersonalDataInterface>(userDataUrl, {}).subscribe(personalData => {
         const instituteDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/institute/all`;
         this.http.get<InstituteInterface[]>(instituteDataUrl).subscribe(institutes => {
-          this.institute.value = institutes.find(institute => personalData.instituteID === institute.id).name;
+          this.employeeInstitute = institutes.find(institute => personalData.instituteID === institute.id);
+          this.institute.value = this.employeeInstitute.name;
         });
         this.firstName.value = personalData.firstName;
         this.surname.value = personalData.surname;
@@ -188,6 +192,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         this.firstNameInsurance.value = personalData.firstName;
         this.surnameInsurance.value = personalData.surname;
         this.birthDate.value = new Date(personalData.birthDate);
+        this.employeeId = personalData.employeeId;
       });
     }
   }
@@ -212,7 +217,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   submitForm() {
-    const formValues: object = this.getParsedFormData();
+    const formValues: FormData = this.getParsedFormData();
     const isFormValid = this.validateForm(formValues);
     if (!isFormValid) {
       this.validationFailed = true;
@@ -322,19 +327,19 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.formData.financialSource.mpk = this.MPK.value;
     this.formData.financialSource.financialSource = this.financialSource.value;
     this.formData.financialSource.project = this.project.value;
-    this.formData.application.status = String(this.status + 1);
+    this.formData.application.status = this.status + 1;
     const url = `${window.location.protocol}//${window.location.hostname}:8080/director/application/approve`;
     this.approveForm(url);
   }
 
   sendToRector() {
-    this.formData.application.status = String(this.status + 1);
+    this.formData.application.status = this.status + 1;
     const url = `${window.location.protocol}//${window.location.hostname}:8080/wilda/application/approve`;
     this.approveForm(url);
   }
 
   sendBackToWilda() {
-    this.formData.application.status = String(this.status + 1);
+    this.formData.application.status = this.status + 1;
     const url = `${window.location.protocol}//${window.location.hostname}:8080/rector/application/approve`;
     this.approveForm(url);
   }
@@ -362,13 +367,13 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         dialog.afterOpened().subscribe( () => {
           setTimeout(() => this.location.back(), 3000);
           dialog.beforeClosed().subscribe(() => this.location.back());
-          });
+        });
       });
   }
 
 
 
-  getParsedFormData(): object {
+  getParsedFormData(): FormData {
     const transportArrays = {
       vehicleSelect: this.vehicleSelect.toArray().map(item => this.requestService.formatSelect(item.value)),
       routeFrom: this.routeFrom.toArray().map(item => this.requestService.formatInput(item.value)),
@@ -378,67 +383,86 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       departureMinute: this.departureMinute.toArray().map(item => this.requestService.getNumberFromInput(item.value)),
       carrier: this.carrier.toArray().map(item => this.requestService.formatInput(item.value))
     };
-    const transportParsedArray = [];
+    const transportParsedArray: Transport[] = [];
     for (const i of Object.keys(this.transportMeansArray)) {
       transportParsedArray.push({
+        applicationID: null,
         vehicleSelect: transportArrays.vehicleSelect[i],
-        routeFrom: transportArrays.routeFrom[i],
-        routeTo: transportArrays.routeTo[i],
+        destinationFrom: transportArrays.routeFrom[i],
+        destinationTo: transportArrays.routeTo[i],
         departureDay: transportArrays.departureDay[i],
         departureHour: transportArrays.departureHour[i],
         departureMinute: transportArrays.departureMinute[i],
         carrier: transportArrays.carrier[i],
+        id: null
       });
     }
     return {
-      application: {
-        firstName: this.requestService.formatInput(this.firstName.value),
-        surname: this.requestService.formatInput(this.surname.value),
-        academicDegree: this.requestService.formatInput(this.academicTitle.value),
-        abroadStartDate: this.requestService.formatDate(this.abroadDate.value.start),
-        abroadEndDate: this.requestService.formatDate(this.abroadDate.value.end),
-        purpose: this.requestService.formatInput(this.purpose.value),
-        conference: this.requestService.formatInput(this.conference.value),
-        subject: this.requestService.formatInput(this.subject.value),
-        conferenceStartDate: this.requestService.formatDate(this.conferenceDate.value.start),
-        conferenceEndDate: this.requestService.formatDate(this.conferenceDate.value.end),
-        birthDate: this.requestService.formatDate(this.birthDate.value),
-        abroadStartDateInsurance: this.requestService.formatDate(this.abroadDateInsurance.value.start),
-        abroadEndDateInsurance: this.requestService.formatDate(this.abroadDateInsurance.value.end),
-        selfInsured: this.selfInsuredCheckbox.checked,
-        comments: this.requestService.formatInput(this.comments.value)
-      },
-      institute: {
-        name: this.requestService.formatInput(this.institute.value)
-      },
-      place: {
-        country: this.requestService.formatInput(this.destinationCountry.value),
-        city: this.requestService.formatInput(this.destinationCity.value),
-      },
       advanceApplication: {
-        startDate: this.requestService.formatDate(this.requestPaymentDate.value.start),
-        endDate: this.requestService.formatDate(this.requestPaymentDate.value.end),
-        residenceDietQuantity: this.requestService.getNumberFromInput(this.requestPaymentDays.value),
-        residenceDietAmount: this.requestService.getNumberFromInput(this.requestPaymentDaysAmount.value),
-        accommodationQuantity: this.requestService.getNumberFromInput(this.requestPaymentDays.value),
         accommodationLimit: this.requestService.getNumberFromInput(this.requestPaymentAccommodationLimit.value),
-        travelDietAmount: this.requestService.getNumberFromInput(this.requestPaymentTravelDiet.value),
-        travelCosts: this.requestService.getNumberFromInput(this.requestPaymentLocalTransportCosts.value),
-        otherCostsDescription: this.requestService.formatInput(this.requestPaymentOtherExpensesDescription.value),
-        otherCostsAmount: this.requestService.getNumberFromInput(this.requestPaymentOtherExpensesValue.value),
-        residenceDietSum: this.requestService.getNumberFromInput(this.requestPaymentDaysAmountSum.value),
+        accommodationQuantity: this.requestService.getNumberFromInput(this.requestPaymentDays.value),
         accommodationSum: this.requestService.getNumberFromInput(this.requestPaymentAccommodationSum.value),
-        advanceSum: this.requestService.getNumberFromInput(this.requestPaymentSummarizedCosts.value)
-      },
-      identityDocument: {
-        type: this.requestService.formatSelect(this.identityDocumentTypeSelect.value),
-        number: this.requestService.formatInput(this.identityDocumentSerialNumber.value)
+        advanceSum: this.requestService.getNumberFromInput(this.requestPaymentSummarizedCosts.value),
+        endDate: this.requestService.formatDate(this.requestPaymentDate.value.end),
+        id: null,
+        otherCostsAmount: this.requestService.getNumberFromInput(this.requestPaymentOtherExpensesValue.value),
+        otherCostsDescription: this.requestService.formatInput(this.requestPaymentOtherExpensesDescription.value),
+        placeId: null,
+        residenceDietAmount: this.requestService.getNumberFromInput(this.requestPaymentDaysAmount.value),
+        residenceDietQuantity: this.requestService.getNumberFromInput(this.requestPaymentDays.value),
+        residenceDietSum: this.requestService.getNumberFromInput(this.requestPaymentDaysAmountSum.value),
+        startDate: this.requestService.formatDate(this.requestPaymentDate.value.start),
+        travelCosts: this.requestService.getNumberFromInput(this.requestPaymentLocalTransportCosts.value),
+        travelDietAmount: this.requestService.getNumberFromInput(this.requestPaymentTravelDiet.value)
       },
       advancePayments: {
-        accommodationFeeTypeSelect: this.requestService.formatSelect(this.depositPaymentTypeSelect.value),
+        accommodationFeePaymentTypeSelect: this.requestService.formatSelect(this.depositPaymentTypeSelect.value),
         accommodationFeeValue: this.requestService.getNumberFromInput(this.depositValue.value),
         conferenceFeePaymentTypeSelect: this.requestService.formatSelect(this.conferenceFeePaymentTypeSelect.value),
         conferenceFeeValue: this.requestService.getNumberFromInput(this.conferenceFeeValue.value)
+      },
+      application: {
+        abroadEndDate: this.requestService.formatDate(this.abroadDate.value.end),
+        abroadEndDateInsurance: this.requestService.formatDate(this.abroadDateInsurance.value.end),
+        abroadStartDate: this.requestService.formatDate(this.abroadDate.value.start),
+        abroadStartDateInsurance: this.requestService.formatDate(this.abroadDateInsurance.value.start),
+        academicDegree: this.requestService.formatInput(this.academicTitle.value),
+        advanceApplicationId: null,
+        birthDate: this.requestService.formatDate(this.birthDate.value),
+        comments: this.requestService.formatInput(this.comments.value),
+        conference: this.requestService.formatInput(this.conference.value),
+        conferenceStartDate: this.requestService.formatDate(this.conferenceDate.value.start),
+        conferenceEndDate: this.requestService.formatDate(this.conferenceDate.value.end),
+        createdOn: null,
+        directorComments: null,
+        employeeId: this.employeeId,
+        financialSourceId: null,
+        firstName: this.requestService.formatInput(this.firstName.value),
+        id: null,
+        identityDocumentNumber: this.requestService.formatInput(this.identityDocumentSerialNumber.value),
+        identityDocumentType: this.requestService.formatSelect(this.identityDocumentTypeSelect.value),
+        instituteId: this.employeeInstitute.id,
+        phoneNumber: this.requestService.formatInput(this.phoneNumber.value),
+        placeId: null,
+        prepaymentId: null,
+        purpose: this.requestService.formatInput(this.purpose.value),
+        rectorComments: null,
+        selfInsured: this.selfInsuredCheckbox.checked,
+        status: this.status,
+        subject: this.requestService.formatInput(this.subject.value),
+        surname: this.requestService.formatInput(this.surname.value),
+        wildaComments: null
+      },
+      financialSource: null,
+      institute: {
+        id: this.employeeInstitute.id,
+        name: this.employeeInstitute.name,
+        active: this.employeeInstitute.active
+      },
+      place: {
+        id: null,
+        country: this.requestService.formatInput(this.destinationCountry.value),
+        city: this.requestService.formatInput(this.destinationCity.value),
       },
       transport: transportParsedArray
     };
@@ -471,7 +495,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   sendFormData(form) {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/application/create`;
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/user/application/create`;
     this.http.post(url, form).subscribe(
       () => {
         const dialogConfig = new MatDialogConfig();
