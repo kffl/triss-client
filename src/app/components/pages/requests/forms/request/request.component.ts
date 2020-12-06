@@ -304,8 +304,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   loadIdentityDocument() {
-    this.identityDocumentTypeSelect.value = this.formData.application.identityDocumentType;
-    this.identityDocumentSerialNumber.value = this.formData.application.identityDocumentNumber;
+    if (this.useCase !== UseCaseEnum.Create) {
+      this.identityDocumentTypeSelect.value = this.formData.application.identityDocumentType;
+      this.identityDocumentSerialNumber.value = this.formData.application.identityDocumentNumber;
+    }
   }
 
   loadTransportData() {
@@ -468,31 +470,69 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     };
   }
 
-  validateForm(form: object): boolean { // TODO after getting to know which fields are required
-    // for (const property in form.application) {
-    //   if (form.application.hasOwnProperty(property) && form.application[property] === null) {
-    //     if (!(property === 'comments' || (!this.selfInsuredCheckbox.checked && (property === 'abroadStartDateInsurance' || property === 'abroadEndDateInsurance')))) {
-    //       return false;
-    //     }
-    //   }
-    // }
-    // const formGroups = ['employee', 'institute', 'place', 'advanceApplication', 'advancePayments', 'identityDocument'];
-    // for (const formGroup of formGroups) {
-    //   for (const property in form[formGroup]) {
-    //     if (form[formGroup].hasOwnProperty(property) && form[formGroup][property] === null) {
-    //       return false;
-    //     }
-    //   }
-    // }
-    // for (const transportMean of form.transport) {
-    //   for (const property in transportMean) {
-    //     if (transportMean.hasOwnProperty(property) && property !== 'carrier' && transportMean[property] === null) {
-    //       return false;
-    //     }
-    //   }
-    // }
+  validateForm(form: FormData): boolean {
+    const instituteFields = [form.institute.name];
+    const placeFields = [form.place.country, form.place.city];
+    const applicationFields = [
+      form.application.firstName,
+      form.application.surname,
+      form.application.birthDate,
+      form.application.academicDegree,
+      form.application.phoneNumber,
+      form.application.identityDocumentType,
+      form.application.identityDocumentNumber,
+      form.application.abroadStartDate,
+      form.application.abroadEndDate,
+      form.application.purpose,
+      form.application.conference,
+      form.application.subject,
+      form.application.conferenceStartDate,
+      form.application.conferenceEndDate,
+      form.application.abroadStartDate,
+      form.application.abroadEndDate,
+    ];
+    const advanceApplicationFields = [
+      form.advanceApplication.startDate,
+      form.advanceApplication.endDate,
+      form.advanceApplication.residenceDietQuantity,
+      form.advanceApplication.residenceDietAmount,
+      form.advanceApplication.accommodationQuantity,
+      form.advanceApplication.accommodationLimit,
+      form.advanceApplication.travelDietAmount,
+      form.advanceApplication.travelCosts,
+    ];
+    const advancePaymentsFields = [
+      form.advancePayments.conferenceFeeValue,
+      form.advancePayments.conferenceFeePaymentTypeSelect,
+      form.advancePayments.accommodationFeeValue,
+      form.advancePayments.accommodationFeePaymentTypeSelect
+    ];
+    const transportFields = [];
+    form.transport.forEach(transportMean => transportFields.push(
+      transportMean.destinationFrom,
+      transportMean.destinationTo,
+      transportMean.departureDay,
+      transportMean.departureMinute,
+      transportMean.departureHour,
+      transportMean.vehicleSelect
+    ));
+    const sections = [
+      instituteFields,
+      placeFields,
+      applicationFields,
+      advanceApplicationFields,
+      advancePaymentsFields,
+      transportFields
+    ];
+    for (const section of sections) {
+      if (section.some(field => field == null)) {
+        return false;
+      }
+    }
     return true;
   }
+
+
 
   sendFormData(form) {
     const url = `${window.location.protocol}//${window.location.hostname}:8080/user/application/create`;
