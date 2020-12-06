@@ -26,6 +26,7 @@ import {Location} from '@angular/common';
 import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
 import {InstituteInterface} from '../../../../../extra/institute-interface/institute.interface';
 import {RequestDataService} from '../../../../../services/request-data.service';
+import {RejectDialogComponent} from '../../../../shared/reject-dialog/reject-dialog.component';
 
 interface Enum {
   value: number;
@@ -322,7 +323,20 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
-
+  rejectForm(useCase: UseCaseEnum) {
+    this.dialog.open(RejectDialogComponent, {});
+    switch (useCase) {
+      case UseCaseEnum.Director: {
+        break;
+      }
+      case UseCaseEnum.WildaApprove: {
+        break;
+      }
+      case UseCaseEnum.Rector: {
+        break;
+      }
+    }
+  }
 
   sendToWilda() {
     this.formData.financialSource.allocationAccount = this.allocationAccount.value;

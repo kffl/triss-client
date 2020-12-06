@@ -45,6 +45,7 @@
     "BUTTON_NEW_TRANSPORT": "Dodaj kolejny środek transportu",
     "BUTTON_DELETE_TRANSPORT": "Usuń ostatni środek transportu",
     "BUTTON_CANCEL": "Anuluj",
+    "BUTTON_REJECT": "Odrzuć wniosek",
     "BUTTON_SEND": "Wyślij wniosek",
     "BUTTON_APPROVE": "Oznacz jako zweryfikowany",
     "BUTTON_ACCEPT": "Zaakceptuj wniosek",

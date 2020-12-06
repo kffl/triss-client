@@ -45,6 +45,7 @@
     "BUTTON_NEW_TRANSPORT": "Add new mean of transport",
     "BUTTON_DELETE_TRANSPORT": "Delete last mean of transport",
     "BUTTON_CANCEL": "Cancel",
+    "BUTTON_REJECT": "Reject the request",
     "BUTTON_SEND": "Send the request",
     "BUTTON_APPROVE": "Mark as verified",
     "BUTTON_ACCEPT": "Accept request",

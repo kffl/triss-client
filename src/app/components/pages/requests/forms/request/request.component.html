@@ -360,6 +360,7 @@
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.OTHER_COSTS' | translate }}</span></mat-label>
           <textarea matInput
+                    cdkTextareaAutosize
                     placeholder="{{ 'REQUEST.OTHER_COSTS_PLACEHOLDER' | translate }}"
                     [readonly]="useCase > 1"
                     #requestPaymentOtherExpensesDescription></textarea>
@@ -465,13 +466,16 @@
     <div class="form-group comments">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label *ngIf="useCase === 1"><span>{{ 'REQUEST.COMMENTS' | translate }}</span></mat-label>
-        <textarea [readonly]="useCase > 1" matInput #comments></textarea>
+        <textarea cdkTextareaAutosize [readonly]="useCase > 1" matInput #comments></textarea>
       </mat-form-field>
     </div>
 
     <div class="outcome-buttons">
       <a><button (click)="cancelForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
+      </button></a>
+      <a *ngIf="useCase === 2 ||useCase === 3 || useCase === 4"><button (click)="rejectForm(useCase)" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_REJECT' | translate }}</span>
       </button></a>
       <a *ngIf="useCase === 1"><button (click)="submitForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_SEND' | translate }}</span>
