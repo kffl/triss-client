@@ -26,7 +26,7 @@ import {Location} from '@angular/common';
 import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
 import {InstituteInterface} from '../../../../../extra/institute-interface/institute.interface';
 import {RequestDataService} from '../../../../../services/request-data.service';
-import {RejectDialogComponent} from '../../../../shared/reject-dialog/reject-dialog.component';
+import {RejectDialogComponent, RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
 
 interface Enum {
   value: number;
@@ -324,18 +324,35 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   rejectForm(useCase: UseCaseEnum) {
-    this.dialog.open(RejectDialogComponent, {});
-    switch (useCase) {
-      case UseCaseEnum.Director: {
-        break;
+    this.dialog.open(RejectDialogComponent, {}).beforeClosed().subscribe((result: RejectInfo) => {
+      if (result.rejected) {
+        let url = `${window.location.protocol}//${window.location.hostname}:8080/`;
+        switch (useCase) {
+          case UseCaseEnum.Director: {
+            this.formData.application.directorComments = result.reason;
+            this.formData.application.status = 4;
+            url += 'director/application/reject';
+            break;
+          }
+          case UseCaseEnum.WildaApprove: {
+            this.formData.application.wildaComments = result.reason;
+            this.formData.application.status = 5;
+            url += 'wilda/application/reject';
+            break;
+          }
+          case UseCaseEnum.Rector: {
+            this.formData.application.rectorComments = result.reason;
+            this.formData.application.status = 6;
+            url += 'rector/application/reject';
+            break;
+          }
+        }
+        this.http.post(url, this.formData).subscribe(
+          () => {},
+          (error: HttpErrorResponse) => {}
+        );
       }
-      case UseCaseEnum.WildaApprove: {
-        break;
-      }
-      case UseCaseEnum.Rector: {
-        break;
-      }
-    }
+    });
   }
 
   sendToWilda() {
