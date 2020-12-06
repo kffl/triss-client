@@ -10,6 +10,7 @@
     "NEW_REQUESTS": "New request",
     "REQUESTS_LIST": "Submitted requests",
     "DIRECTOR_PANEL": "Director's panel",
+    "WILDA_PANEL": "Wilda's panel",
     "RECTOR_PANEL": "Rector's panel"
   },
   "FOOTER": {
@@ -18,8 +19,17 @@
   "MAIN_VIEW": {
     "HELLO": "Hello"
   },
+  "LIST": {
+    "REQUESTS_LIST": "Submitted requests",
+    "DIRECTOR_LIST": "Director's panel",
+    "WILDA_LIST": "Wilda's panel",
+    "RECTOR_LIST": "Rector's panel"
+  },
   "PERSONAL_DATA": {
-
+    "TITLE": "Personal data",
+    "BUTTON_EDIT": "Edit your data",
+    "BUTTON_SAVE": "Save",
+    "BUTTON_CANCEL": "Cancel"
   },
   "REQUEST": {
     "MAIN_TITLE": "Request for an official trip abroad",
@@ -36,6 +46,8 @@
     "BUTTON_DELETE_TRANSPORT": "Delete last mean of transport",
     "BUTTON_CANCEL": "Cancel",
     "BUTTON_SEND": "Send the request",
+    "BUTTON_APPROVE": "Mark as verified",
+    "BUTTON_ACCEPT": "Accept request",
     "FIRST_NAME": "First name",
     "SURNAME": "Surname",
     "ACADEMIC_TITLE": "Title/academic degree/position",
@@ -108,18 +120,14 @@
       "TITLE": "Communication error with the server",
       "CONTENT": "Error code: "
     },
+    "REQUEST_APPROVED": {
+      "TITLE": "Request approved",
+      "CONTENT": "Request has been approved"
+    },
+    "REQUEST_APPROVE_FAIL": {
+      "TITLE": "Error approving the request",
+      "CONTENT": "Error code: "
+    },
     "CLOSE": "Close"
-  },
-  "REQUESTS_LIST": {
-
-  },
-  "DIRECTOR_PANEL": {
-
-  },
-  "RECTOR_PANEL": {
-
-  },
-  "SETTINGS": {
-
   }
 }

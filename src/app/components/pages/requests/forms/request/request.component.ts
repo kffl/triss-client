@@ -351,16 +351,17 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.http.post(url, this.formData).subscribe(
       () => {
         dialogConfig.data = {
-          title: 'Zaakceptowano wniosek',
-          content: 'Wniosek został zaakceptowany',
+          title: 'DIALOG.REQUEST_APPROVED.TITLE',
+          content: 'DIALOG.REQUEST_APPROVED.CONTENT',
           showCloseButton: true
         };
       },
       (error: HttpErrorResponse) => {
         dialogConfig.data = {
-          title: 'Błąd',
-          content: 'Nie udało się zaakceptować wniosku',
-          showCloseButton: true
+          title: 'DIALOG.REQUEST_APPROVE_FAIL.TITLE',
+          content: 'DIALOG.REQUEST_APPROVE_FAIL.CONTENT',
+          showCloseButton: true,
+          error: `${error.status} ${error.statusText}`
         };
         this.dialog.open(InfoDialogComponent, dialogConfig);
       },
@@ -550,15 +551,14 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         }, 2000);
       },
       (error: HttpErrorResponse) => {
-        this.translateService.get('DIALOG.REQUEST_NOT_SENT.CONTENT').subscribe(content => {
-          const dialogConfig = new MatDialogConfig();
-          dialogConfig.data = {
-            title: 'DIALOG.REQUEST_NOT_SENT.TITLE',
-            content: `${content} ${error.status} ${error.statusText}`,
-            showCloseButton: true
-          };
-          this.dialog.open(InfoDialogComponent, dialogConfig);
-        });
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          title: 'DIALOG.REQUEST_NOT_SENT.TITLE',
+          content: 'DIALOG.REQUEST_NOT_SENT.CONTENT',
+          showCloseButton: true,
+          error: `${error.status} ${error.statusText}`
+        };
+        this.dialog.open(InfoDialogComponent, dialogConfig);
       },
     );
   }

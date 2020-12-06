@@ -5,6 +5,7 @@ interface DialogData {
   title: string;
   content: string;
   showCloseButton: boolean;
+  error: string;
 }
 
 @Component({

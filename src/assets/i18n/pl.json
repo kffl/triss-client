@@ -20,7 +20,16 @@
     "HELLO": "Cześć"
   },
   "PERSONAL_DATA": {
-
+    "TITLE": "Dane osobowe",
+    "BUTTON_EDIT": "Edytuj dane",
+    "BUTTON_SAVE": "Zapisz dane",
+    "BUTTON_CANCEL": "Anuluj"
+  },
+  "LIST": {
+    "REQUESTS_LIST": "Złożone wnioski",
+    "DIRECTOR_LIST": "Panel dyrektora",
+    "WILDA_LIST": "Panel Wildy",
+    "RECTOR_LIST": "Panel rektora"
   },
   "REQUEST": {
     "MAIN_TITLE": "Wniosek o wyjazd służbowy za granicę",
@@ -96,9 +105,7 @@
     "DOCUMENT_TYPE": "Rodzaj dokumentu",
     "DOCUMENT_SERIAL_NUMBER": "Seria i numer",
     "COMMENTS": "Tu wpisz swoje uwagi",
-    "REQUIRED_FIELD": "To pole jest wymagane",
-    "BUTTON_EDIT": "Edytuj dane",
-    "BUTTON_SAVE": "Zapisz dane"
+    "REQUIRED_FIELD": "To pole jest wymagane"
   },
   "DIALOG": {
     "REQUEST_VALIDATION_FAILED": {
@@ -113,18 +120,14 @@
       "TITLE": "Błąd komunikacji z serwerem",
       "CONTENT": "Kod błędu: "
     },
+    "REQUEST_APPROVED": {
+      "TITLE": "Zaakceptiowano wniosek",
+      "CONTENT": "Wniosek został zaakceptowany"
+    },
+    "REQUEST_APPROVE_FAIL": {
+      "TITLE": "Nie udało się zaakceptować wniosku",
+      "CONTENT": "Kod błędu: "
+    },
     "CLOSE": "Zamknij"
-  },
-  "REQUESTS_LIST": {
-
-  },
-  "DIRECTOR_PANEL": {
-
-  },
-  "RECTOR_PANEL": {
-
-  },
-  "SETTINGS": {
-
   }
 }
