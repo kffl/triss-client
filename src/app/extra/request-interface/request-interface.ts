@@ -54,13 +54,7 @@ export interface FormData {
     surname: string
     wildaComments: string
   };
-  financialSource: {
-    allocationAccount: string
-    financialSource: string
-    id: number
-    mpk: string
-    project: string
-  };
+  financialSource: FinancialSource;
   institute: {
     id: number;
     name: string;
@@ -83,6 +77,14 @@ export interface Transport {
   destinationTo: string;
   id: number;
   vehicleSelect: number;
+}
+
+export interface FinancialSource {
+  allocationAccount: string;
+  financialSource: string;
+  id: number;
+  mpk: string;
+  project: string;
 }
 
 export interface FormWithStatus {

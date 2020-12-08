@@ -20,7 +20,7 @@ import {InfoDialogComponent} from '../../../../shared/info-dialog/info-dialog.co
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {UseCaseEnum} from '../../../../../extra/use-case-enum/use-case-enum';
-import {FormData, Transport} from '../../../../../extra/request-interface/request-interface';
+import {FinancialSource, FormData, Transport} from '../../../../../extra/request-interface/request-interface';
 import {AppRoutes} from '../../../../../extra/routes/appRoutes';
 import {Location} from '@angular/common';
 import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
@@ -221,14 +221,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     const formValues: FormData = this.getParsedFormData();
     const isFormValid = this.validateForm(formValues);
     if (!isFormValid) {
-      this.validationFailed = true;
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.data = {
-        title: 'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
-        content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT',
-        showCloseButton: true
-      };
-      this.dialog.open(InfoDialogComponent, dialogConfig);
+      this.validationFailedDialog();
     } else {
       this.sendFormData(formValues);
     }
@@ -323,7 +316,26 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
+  validationFailedDialog() {
+    this.validationFailed = true;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      title: 'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
+      content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT',
+      showCloseButton: true
+    };
+    this.dialog.open(InfoDialogComponent, dialogConfig);
+  }
+
   rejectForm(useCase: UseCaseEnum) {
+    if (useCase === UseCaseEnum.Director) {
+      const financialSource: FinancialSource = this.getParsedFinancialSourceData();
+      const isValidFinancialSource = this.validateFinancialSource(financialSource);
+      if (!isValidFinancialSource) {
+        this.validationFailedDialog();
+        return;
+      }
+    }
     this.dialog.open(RejectDialogComponent, {}).beforeClosed().subscribe((result: RejectInfo) => {
       if (result.rejected) {
         let url = `${window.location.protocol}//${window.location.hostname}:8080/`;
@@ -356,13 +368,16 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   sendToWilda() {
-    this.formData.financialSource.allocationAccount = this.allocationAccount.value;
-    this.formData.financialSource.mpk = this.MPK.value;
-    this.formData.financialSource.financialSource = this.financialSource.value;
-    this.formData.financialSource.project = this.project.value;
-    this.formData.application.status = this.status + 1;
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/director/application/approve`;
-    this.approveForm(url);
+    const financialSource: FinancialSource = this.getParsedFinancialSourceData();
+    const isValidFinancialSource = this.validateFinancialSource(financialSource);
+    if (isValidFinancialSource) {
+      this.formData.financialSource = financialSource;
+      this.formData.application.status = this.status + 1;
+      const url = `${window.location.protocol}//${window.location.hostname}:8080/director/application/approve`;
+      this.approveForm(url);
+    } else {
+      this.validationFailedDialog();
+    }
   }
 
   sendToRector() {
@@ -404,8 +419,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         });
       });
   }
-
-
 
   getParsedFormData(): FormData {
     const transportArrays = {
@@ -564,7 +577,25 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     return true;
   }
 
+  getParsedFinancialSourceData(): FinancialSource {
+    return {
+      id: null,
+      allocationAccount: this.requestService.formatInput(this.allocationAccount.value),
+      mpk: this.requestService.formatInput(this.MPK.value),
+      financialSource: this.requestService.formatInput(this.financialSource.value),
+      project: this.requestService.formatInput(this.project.value)
+    };
+  }
 
+  validateFinancialSource(financialSource: FinancialSource): boolean {
+    const fields = [
+      financialSource.allocationAccount,
+      financialSource.mpk,
+      financialSource.financialSource,
+      financialSource.project
+    ];
+    return !fields.some(field => field == null);
+  }
 
   sendFormData(form) {
     const url = `${window.location.protocol}//${window.location.hostname}:8080/user/application/create`;
