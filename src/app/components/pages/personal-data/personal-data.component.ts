@@ -8,9 +8,8 @@ import {MatDatepickerInput} from '@angular/material/datepicker';
 import {InstituteInterface} from '../../../extra/institute-interface/institute.interface';
 import {BehaviorSubject} from 'rxjs';
 import {take} from 'rxjs/operators';
-import {InfoDialogComponent} from '../../shared/info-dialog/info-dialog.component';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {RequestDataService} from '../../../services/request-data.service';
+import {DialogService} from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-personal-data',
@@ -34,8 +33,8 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
 
   constructor(
     private http: HttpClient,
-    private dialog: MatDialog,
-    private requestService: RequestDataService
+    private requestService: RequestDataService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -105,26 +104,20 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
-    const dialogConfig = new MatDialogConfig();
     const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/update`;
     this.http.post<PersonalDataInterface>(url, newPersonalData).subscribe(
       () => {
-        dialogConfig.data = {
-          title: 'Zapisano pomyślnie',
-          content: 'Dane zostały pomyślnie zapisane',
-          showCloseButton: true
-        };
+        this.dialogService.showSimpleDialog(
+          'DIALOG.PERSONAL_DATA_SAVED.TITLE',
+          'DIALOG.PERSONAL_DATA_SAVED.CONTENT'
+        );
       },
       (error: HttpErrorResponse) => {
-        dialogConfig.data = {
-          title: 'Błąd',
-          content: 'Nie udało się zapisać danych',
-          showCloseButton: true
-        };
-        this.dialog.open(InfoDialogComponent, dialogConfig);
-      },
-      () => {
-        this.dialog.open(InfoDialogComponent, dialogConfig);
+        this.dialogService.showErrorDialog(
+          'DIALOG.PERSONAL_DATA_FAILED.TITLE',
+          'DIALOG.PERSONAL_DATA_FAILED.CONTENT',
+          error
+        );
       });
   }
 

@@ -15,8 +15,6 @@ import {MatDatepickerInput, MatDateRangeInput, MatEndDate, MatStartDate} from '@
 import {MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {InfoDialogComponent} from '../../../../shared/info-dialog/info-dialog.component';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {UseCaseEnum} from '../../../../../extra/use-case-enum/use-case-enum';
@@ -26,7 +24,8 @@ import {Location} from '@angular/common';
 import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
 import {InstituteInterface} from '../../../../../extra/institute-interface/institute.interface';
 import {RequestDataService} from '../../../../../services/request-data.service';
-import {RejectDialogComponent, RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
+import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
+import {DialogService} from '../../../../../services/dialog.service';
 
 interface Enum {
   value: number;
@@ -141,11 +140,11 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
-    private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
     private location: Location,
-    private requestService: RequestDataService
+    private requestService: RequestDataService,
+    private dialogService: DialogService
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
@@ -265,9 +264,12 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.surnameInsurance.value = this.formData.application.surname;
       this.birthDate.value = new Date(this.formData.application.birthDate);
       this.departureCountry.value = this.formData.place.country;
-      this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
-      this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
-      this.selfInsuredCheckbox.checked = this.formData.application.selfInsured;
+      const selfInsured = this.formData.application.selfInsured;
+      if (selfInsured) {
+        this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
+        this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
+      }
+      this.selfInsuredCheckbox.checked = selfInsured;
       // advance-payment-request
       this.requestPaymentDestination.value = this.formData.place.country;
       this.requestPaymentDateStart.writeValue(new Date(this.formData.advanceApplication.startDate));
@@ -318,17 +320,42 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   validationFailedDialog() {
     this.validationFailed = true;
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      title: 'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
-      content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT',
-      showCloseButton: true
-    };
-    this.dialog.open(InfoDialogComponent, dialogConfig);
+    this.dialogService.showSimpleDialog(
+      'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
+      'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT'
+    );
   }
 
-  rejectForm(useCase: UseCaseEnum) {
-    if (useCase === UseCaseEnum.Director) {
+  approveRejectDialog(url: string, titleSuccess: string, contentSuccess: string, titleError: string, contentError: string) {
+    this.http.post(url, this.formData).subscribe(
+      () => {
+        this.dialogService.showSimpleDialog(titleSuccess, contentSuccess, false);
+        let goBackUrl: string = null;
+        switch (this.useCase) {
+          case UseCaseEnum.Director: {
+            goBackUrl = AppRoutes.requestsListDirector;
+            break;
+          }
+          case UseCaseEnum.WildaApprove: {
+            goBackUrl = AppRoutes.requestsListWilda;
+            break;
+          }
+          case UseCaseEnum.Rector: {
+            goBackUrl = AppRoutes.requestsListRector;
+            break;
+          }
+        }
+        setTimeout(() => {
+          this.router.navigateByUrl(goBackUrl).then(() => this.dialogService.getDialog().closeAll());
+        }, 2000);
+      },
+      (error: HttpErrorResponse) => {
+        this.dialogService.showErrorDialog(titleError, contentError, error);
+      });
+  }
+
+  rejectForm() {
+    if (this.useCase === UseCaseEnum.Director) {
       const financialSource: FinancialSource = this.getParsedFinancialSourceData();
       const isValidFinancialSource = this.validateFinancialSource(financialSource);
       if (!isValidFinancialSource) {
@@ -336,10 +363,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         return;
       }
     }
-    this.dialog.open(RejectDialogComponent, {}).beforeClosed().subscribe((result: RejectInfo) => {
+    this.dialogService.showRejectDialog().beforeClosed().subscribe((result: RejectInfo) => {
       if (result.rejected) {
         let url = `${window.location.protocol}//${window.location.hostname}:8080/`;
-        switch (useCase) {
+        switch (this.useCase) {
           case UseCaseEnum.Director: {
             this.formData.application.directorComments = result.reason;
             this.formData.application.status = 4;
@@ -359,9 +386,12 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
             break;
           }
         }
-        this.http.post(url, this.formData).subscribe(
-          () => {},
-          (error: HttpErrorResponse) => {}
+        this.approveRejectDialog(
+          url,
+          'DIALOG.REQUEST_REJECTED.TITLE',
+          'DIALOG.REQUEST_REJECTED.CONTENT',
+          'DIALOG.REQUEST_REJECT_FAIL.TITLE',
+          'DIALOG.REQUEST_REJECT_FAIL.CONTENT'
         );
       }
     });
@@ -393,31 +423,13 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   approveForm(url: string) {
-    const dialogConfig = new MatDialogConfig();
-    this.http.post(url, this.formData).subscribe(
-      () => {
-        dialogConfig.data = {
-          title: 'DIALOG.REQUEST_APPROVED.TITLE',
-          content: 'DIALOG.REQUEST_APPROVED.CONTENT',
-          showCloseButton: true
-        };
-      },
-      (error: HttpErrorResponse) => {
-        dialogConfig.data = {
-          title: 'DIALOG.REQUEST_APPROVE_FAIL.TITLE',
-          content: 'DIALOG.REQUEST_APPROVE_FAIL.CONTENT',
-          showCloseButton: true,
-          error: `${error.status} ${error.statusText}`
-        };
-        this.dialog.open(InfoDialogComponent, dialogConfig);
-      },
-      () => {
-        const dialog = this.dialog.open(InfoDialogComponent, dialogConfig);
-        dialog.afterOpened().subscribe( () => {
-          setTimeout(() => this.location.back(), 3000);
-          dialog.beforeClosed().subscribe(() => this.location.back());
-        });
-      });
+    this.approveRejectDialog(
+      url,
+      'DIALOG.REQUEST_APPROVED.TITLE',
+      'DIALOG.REQUEST_APPROVED.CONTENT',
+      'DIALOG.REQUEST_APPROVE_FAIL.TITLE',
+      'DIALOG.REQUEST_APPROVE_FAIL.CONTENT'
+      );
   }
 
   getParsedFormData(): FormData {
@@ -601,26 +613,21 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     const url = `${window.location.protocol}//${window.location.hostname}:8080/user/application/create`;
     this.http.post(url, form).subscribe(
       () => {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.data = {
-          title: 'DIALOG.REQUEST_SENT.TITLE',
-          content: 'DIALOG.REQUEST_SENT.CONTENT',
-          showCloseButton: false
-        };
-        this.dialog.open(InfoDialogComponent, dialogConfig);
+        this.dialogService.showSimpleDialog(
+          'DIALOG.REQUEST_SENT.TITLE',
+          'DIALOG.REQUEST_SENT.CONTENT',
+          false
+        );
         setTimeout(() => {
-          this.router.navigateByUrl(AppRoutes.home).then(() => this.dialog.closeAll());
+          this.router.navigateByUrl(AppRoutes.home).then(() => this.dialogService.getDialog().closeAll());
         }, 2000);
       },
       (error: HttpErrorResponse) => {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.data = {
-          title: 'DIALOG.REQUEST_NOT_SENT.TITLE',
-          content: 'DIALOG.REQUEST_NOT_SENT.CONTENT',
-          showCloseButton: true,
-          error: `${error.status} ${error.statusText}`
-        };
-        this.dialog.open(InfoDialogComponent, dialogConfig);
+        this.dialogService.showErrorDialog(
+          'DIALOG.REQUEST_NOT_SENT.TITLE',
+          'DIALOG.REQUEST_NOT_SENT.CONTENT',
+          error
+        );
       },
     );
   }

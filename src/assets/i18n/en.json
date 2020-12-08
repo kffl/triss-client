@@ -19,17 +19,17 @@
   "MAIN_VIEW": {
     "HELLO": "Hello"
   },
-  "LIST": {
-    "REQUESTS_LIST": "Submitted requests",
-    "DIRECTOR_LIST": "Director's panel",
-    "WILDA_LIST": "Wilda's panel",
-    "RECTOR_LIST": "Rector's panel"
-  },
   "PERSONAL_DATA": {
     "TITLE": "Personal data",
     "BUTTON_EDIT": "Edit your data",
     "BUTTON_SAVE": "Save",
     "BUTTON_CANCEL": "Cancel"
+  },
+  "LIST": {
+    "REQUESTS_LIST": "Submitted requests",
+    "DIRECTOR_LIST": "Director's panel",
+    "WILDA_LIST": "Wilda's panel",
+    "RECTOR_LIST": "Rector's panel"
   },
   "REQUEST": {
     "MAIN_TITLE": "Request for an official trip abroad",
@@ -68,7 +68,7 @@
     "ALLOCATION_ACCOUNT": "Allocation account",
     "MPK": "MPK",
     "FINANCIAL_SOURCE": "Financial source",
-    "PROJECT": "Projekt",
+    "PROJECT": "Project",
     "TRANSPORT_MEAN_NO": "Mean of transport No. ",
     "TRANSPORT_MEAN_TYPE": "Type of mean of transport",
     "ROUTE_FROM": "Route: from",
@@ -93,7 +93,7 @@
     "ACCOMMODATION": "Accommodation: number of nights",
     "LIMIT": "Limit/lump sum",
     "TRAVEL_DIET": "Travel diet",
-    "LOCAL_TRANSPORT_COSTS": "Travel costs by local tranport",
+    "LOCAL_TRANSPORT_COSTS": "Travel costs by local transport",
     "OTHER_COSTS": "Other costs",
     "OTHER_COSTS_PLACEHOLDER": "Describe other costs here",
     "OTHER_COSTS_AMOUNT": "Amount",
@@ -127,6 +127,22 @@
     },
     "REQUEST_APPROVE_FAIL": {
       "TITLE": "Error approving the request",
+      "CONTENT": "Error code: "
+    },
+    "REQUEST_REJECTED": {
+      "TITLE": "Request rejected",
+      "CONTENT": "Request has been rejected"
+    },
+    "REQUEST_REJECT_FAIL": {
+      "TITLE": "Error rejecting the request",
+      "CONTENT": "Error code: "
+    },
+    "PERSONAL_DATA_SAVED": {
+      "TITLE": "Data saved",
+      "CONTENT": "Personal data has been saved"
+    },
+    "PERSONAL_DATA_FAILED": {
+      "TITLE": "Error saving data",
       "CONTENT": "Error code: "
     },
     "CLOSE": "Close"

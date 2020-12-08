@@ -2,12 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PageInfo} from '../../../../../extra/app-grid-models/models';
 import {Row} from '../../../../../extra/app-grid-models/row';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {InfoDialogComponent} from '../../../../shared/info-dialog/info-dialog.component';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {FormData, FormWithStatus} from '../../../../../extra/request-interface/request-interface';
+import {DialogService} from '../../../../../services/dialog.service';
 
 @Component({
   selector: 'app-panel-template',
@@ -43,9 +42,9 @@ export class PanelTemplateComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private dialog: MatDialog,
     private translateService: TranslateService,
     private requestDataService: RequestDataService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -66,7 +65,6 @@ export class PanelTemplateComponent implements OnInit {
     const url = `${window.location.protocol}//${window.location.hostname}:8080/${this.singleRequestPath}`;
     this.http.post<object>(url, row.id).subscribe(
       (form: FormData) => {
-        // this.requestDataService.setCurrentForm(form, row.status);
         const formWithStatus: FormWithStatus = {
           form,
           status: row.status
@@ -75,15 +73,11 @@ export class PanelTemplateComponent implements OnInit {
         this.router.navigateByUrl(this.linkToSingleRequest);
       },
       (error: HttpErrorResponse) => {
-        this.translateService.get('DIALOG.REQUEST_NOT_SENT.CONTENT').subscribe(content => {
-          const dialogConfig = new MatDialogConfig();
-          dialogConfig.data = {
-            title: 'DIALOG.REQUEST_NOT_SENT.TITLE',
-            content: `${content} ${error.status} ${error.statusText}`,
-            showCloseButton: true
-          };
-          this.dialog.open(InfoDialogComponent, dialogConfig);
-        });
+        this.dialogService.showErrorDialog(
+          'DIALOG.REQUEST_NOT_SENT.TITLE',
+          'DIALOG.REQUEST_NOT_SENT.CONTENT',
+          error
+        );
       }
     );
   }

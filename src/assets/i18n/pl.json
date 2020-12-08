@@ -129,6 +129,22 @@
       "TITLE": "Nie udało się zaakceptować wniosku",
       "CONTENT": "Kod błędu: "
     },
+    "REQUEST_REJECTED": {
+      "TITLE": "Odrzucono wniosek",
+      "CONTENT": "Wniosek został odrzucony"
+    },
+    "REQUEST_REJECT_FAIL": {
+      "TITLE": "Nie udało się odrzucić wniosku",
+      "CONTENT": "Kod błędu: "
+    },
+    "PERSONAL_DATA_SAVED": {
+      "TITLE": "Zapisano pomyślnie",
+      "CONTENT": "Dane zostały pomyślnie zapisane"
+    },
+    "PERSONAL_DATA_FAILED": {
+      "TITLE": "Nie udało się zapisać danych",
+      "CONTENT": "Kod błędu: "
+    },
     "CLOSE": "Zamknij"
   }
 }

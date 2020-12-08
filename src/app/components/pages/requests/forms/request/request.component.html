@@ -474,7 +474,7 @@
       <a><button (click)="cancelForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 2 ||useCase === 3 || useCase === 4"><button (click)="rejectForm(useCase)" mat-flat-button color="primary">
+      <a *ngIf="useCase === 2 ||useCase === 3 || useCase === 4"><button (click)="rejectForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_REJECT' | translate }}</span>
       </button></a>
       <a *ngIf="useCase === 1"><button (click)="submitForm()" mat-flat-button color="primary">
