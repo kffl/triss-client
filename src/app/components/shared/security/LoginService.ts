@@ -14,18 +14,10 @@ export class LoginService {
 
   public login(): void {
     const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Accept:  'application/stream+json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      })
-    };
   
-    this.http.post<PersonalDataInterface>(url, {}, httpOptions).subscribe(personalData => {
+    this.http.post<PersonalDataInterface>(url, {}).subscribe(personalData => {
       const role = personalData.employeeType;
       this.localStorageService.role = role.toString();
-      // localStorage.setItem('role', role.toString());
     });
   }
 

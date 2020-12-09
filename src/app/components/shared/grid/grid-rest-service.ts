@@ -13,26 +13,12 @@ export class GridRestService {
     constructor(private http: SafeHttpClient)
     {}
 
-
-
     getFlux(url: string, pageInfo: PageInfo): Observable<any> {
-      const httpOptions = {
-          headers: new HttpHeaders({
-            Accept:  'application/stream+json',
-            Authorization: 'Bearer ' + localStorage.getItem('access_token')
-          })
-      };
-      return this.http.post<any>(url, pageInfo, httpOptions);
+      return this.http.post<any>(url, pageInfo);
     }
 
     getMono(url: string, pageInfo: PageInfo): Observable<any> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-              Accept:  'application/stream+json',
-              Authorization: 'Bearer ' + localStorage.getItem('access_token')
-            })
-        };
-        return this.http.post<any>(url, pageInfo, httpOptions);
+      return this.http.post<any>(url, pageInfo);
     }
 
 }

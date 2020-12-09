@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {FormData, FormWithStatus} from '../../../../../extra/request-interface/request-interface';
+import { SafeHttpClient } from 'src/app/components/shared/security/SafeHtppClient';
 
 @Component({
   selector: 'app-panel-template',
@@ -33,7 +34,7 @@ export class PanelTemplateComponent implements OnInit {
   countRestPath: string;
 
   constructor(
-    private http: HttpClient,
+    private http: SafeHttpClient,
     private router: Router,
     private dialog: MatDialog,
     private translateService: TranslateService,

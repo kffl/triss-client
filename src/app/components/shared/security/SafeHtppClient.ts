@@ -12,18 +12,7 @@ export class SafeHttpClient {
   constructor(private http: HttpClient,
               private securityService: SecurityService) {}
 
-  public post<T>(url: string, body: any | null, options?: {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    observe?: 'body';
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  }): Observable<T> {
+  public post<T>(url: string, body: any | null): Observable<T> {
     // TODO : this would be helpful, when we will want to response in Flux, not Mono<List<ApplicationRow>>, so i would like to have this here
     // return new Observable<T>((observer) => {
     //
@@ -45,7 +34,15 @@ export class SafeHttpClient {
     //   };
     // });
     //
-    const result = this.http.post<T>(url, body, options);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept:  'application/stream+json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      })
+  };
+
+    const result = this.http.post<T>(url, body, httpOptions);
     result.subscribe(
       (data) => {
         console.log(data);
@@ -59,20 +56,14 @@ export class SafeHttpClient {
     return result;
   }
 
-  get<T>(url: string, options?: {
-    headers?: HttpHeaders | {
-      [header: string]: string | string[];
-    };
-    observe?: 'body';
-    params?: HttpParams | {
-      [param: string]: string | string[];
-    };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  }): Observable<T> {
-
-    const result = this.http.get<T>(url, options);
+  get<T>(url: string): Observable<T> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept:  'application/stream+json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      })
+  };
+    const result = this.http.get<T>(url, httpOptions);
     result.subscribe(
       (data) => {
         console.log(data);
