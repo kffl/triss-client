@@ -2,18 +2,30 @@ import {PersonalDataInterface} from '../../../extra/personal-data-interface/pers
 import {SafeHttpClient} from './SafeHtppClient';
 import {Inject} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
+import { HttpHeaders } from '@angular/common/http';
+import { LocalStorageService } from './LocalStorageService';
 
 export class LoginService {
 
   constructor(private http: SafeHttpClient,
-              @Inject(DOCUMENT) private document: Document) {}
+              @Inject(DOCUMENT) private document: Document,
+              private localStorageService: LocalStorageService) {}
 
 
   public login(): void {
     const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
-    this.http.post<PersonalDataInterface>(url, {}).subscribe(personalData => {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept:  'application/stream+json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      })
+    };
+  
+    this.http.post<PersonalDataInterface>(url, {}, httpOptions).subscribe(personalData => {
       const role = personalData.employeeType;
-      localStorage.setItem('role', role.toString());
+      this.localStorageService.role = role.toString();
+      // localStorage.setItem('role', role.toString());
     });
   }
 

@@ -12,21 +12,23 @@ import {WildaPanelComponent} from './components/pages/requests/views/wilda-panel
 import {ReqeustDirectorComponent} from './components/pages/requests/views/director-panel/reqeust-director/reqeust-director.component';
 import {ReqeustWildaComponent} from './components/pages/requests/views/wilda-panel/reqeust-wilda/reqeust-wilda.component';
 import {RequestRectorComponent} from './components/pages/requests/views/rector-panel/request-rector/request-rector.component';
-import {UserService} from './components/shared/security/UserService';
-import {WildaService} from './components/shared/security/WildaService';
+import {UserService} from './components/shared/security/roles/UserService';
+import {WildaService} from './components/shared/security/roles/WildaService';
+import { DirectorService } from './components/shared/security/roles/DirectorService';
+import { RectorService } from './components/shared/security/roles/RectorService';
 
 const routes: Routes = [
   {path: AppRoutes.home, component: MainViewComponent},
   {path: AppRoutes.personalData, component: PersonalDataComponent, canActivate: [UserService]},
   {path: AppRoutes.createRequest, component: CreateRequestComponent},
   {path: AppRoutes.requestsListEmployee, component: RequestsListComponent, canActivate: [UserService]},
-  {path: AppRoutes.requestsListDirector, component: DirectorPanelComponent},
+  {path: AppRoutes.requestsListDirector, component: DirectorPanelComponent, canActivate: [DirectorService]},
   {path: AppRoutes.requestsListWilda, component: WildaPanelComponent, canActivate: [WildaService]},
-  {path: AppRoutes.requestsListRector, component: RectorPanelComponent},
+  {path: AppRoutes.requestsListRector, component: RectorPanelComponent, canActivate: [RectorService]},
   {path: AppRoutes.viewRequestEmployee, component: RequestEmployeeReadComponent, canActivate: [UserService]},
-  {path: AppRoutes.viewRequestDirector, component: ReqeustDirectorComponent},
+  {path: AppRoutes.viewRequestDirector, component: ReqeustDirectorComponent, canActivate: [DirectorService]},
   {path: AppRoutes.viewRequestWilda, component: ReqeustWildaComponent, canActivate: [WildaService]},
-  {path: AppRoutes.viewRequestRector, component: RequestRectorComponent},
+  {path: AppRoutes.viewRequestRector, component: RequestRectorComponent, canActivate: [RectorService]},
   {path: '**', redirectTo: AppRoutes.home}
 ];
 

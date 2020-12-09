@@ -27,7 +27,7 @@ export class MainViewComponent implements OnInit {
     if (token == null) {
       this.securityService.redirectToELogin();
     } else {
-      //this.loginService.login();
+      this.loginService.login();
     }
   }
 

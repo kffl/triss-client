@@ -52,6 +52,11 @@ import { RequestRectorComponent } from './components/pages/requests/views/rector
 import {SecurityService} from './components/shared/security/SecurityService';
 import {SafeHttpClient} from './components/shared/security/SafeHtppClient';
 import {LoginService} from './components/shared/security/LoginService';
+import { UserService } from './components/shared/security/roles/UserService';
+import { WildaService } from './components/shared/security/roles/WildaService';
+import { DirectorService } from './components/shared/security/roles/DirectorService';
+import { RectorService } from './components/shared/security/roles/RectorService';
+import { LocalStorageService } from './components/shared/security/LocalStorageService';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -127,6 +132,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     SecurityService,
     SafeHttpClient,
     LoginService,
+    UserService,
+    WildaService,
+    DirectorService,
+    RectorService,
+    LocalStorageService,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],
