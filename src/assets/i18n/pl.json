@@ -31,6 +31,11 @@
     "WILDA_LIST": "Panel Wildy",
     "RECTOR_LIST": "Panel rektora"
   },
+  "STATUS": {
+    "STATUS": "Status:",
+    "CREATE": "W trakcie tworzenia",
+    "DECLINE_REASON": "Powód odrzucenia:"
+  },
   "REQUEST": {
     "MAIN_TITLE": "Wniosek o wyjazd służbowy za granicę",
     "FINANCIAL_SOURCE_TITLE": "Źródło finansowania",

@@ -31,6 +31,11 @@
     "WILDA_LIST": "Wilda's panel",
     "RECTOR_LIST": "Rector's panel"
   },
+  "STATUS": {
+    "STATUS": "Status:",
+    "CREATE": "During creation",
+    "DECLINE_REASON": "Decline reason:"
+  },
   "REQUEST": {
     "MAIN_TITLE": "Request for an official trip abroad",
     "FINANCIAL_SOURCE_TITLE": "Financial source",

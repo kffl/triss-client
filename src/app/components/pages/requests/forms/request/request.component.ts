@@ -137,6 +137,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   employeeId: number = null;
   employeeInstitute: InstituteInterface = null;
 
+  statusEnum: Enum = null;
+  statusText: string = null;
+  declineReason: string = null;
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
@@ -152,6 +156,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   ngOnInit(): void {
     this.getSelectEnums();
+    this.getStatus();
   }
 
   ngAfterViewInit() {
@@ -174,6 +179,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.enumLang = 'nameEng';
     }
     this.currencyRegex = `^([1-9][0-9]*|0)([${this.decimalSeparator}][0-9]{0,2})?$`;
+    this.showStatus();
   }
 
   setAutocompletingFields() {
@@ -194,6 +200,24 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         this.birthDate.value = new Date(personalData.birthDate);
         this.employeeId = personalData.employeeId;
       });
+    }
+  }
+
+  getStatus() {
+    const url = `${window.location.protocol}//${window.location.hostname}:8080/enum/status`;
+    this.http.get<Enum[]>(url).subscribe(statuses => {
+      this.statusEnum = statuses.find(status => this.status === status.value);
+      this.showStatus();
+    });
+  }
+
+  showStatus() {
+    if (this.statusEnum == null) {
+      this.translateService.get('STATUS.CREATE').subscribe(value => {
+        this.statusText = value;
+      });
+    } else {
+      this.statusText = this.statusEnum[this.enumLang];
     }
   }
 
@@ -265,7 +289,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.birthDate.value = new Date(this.formData.application.birthDate);
       this.departureCountry.value = this.formData.place.country;
       const selfInsured = this.formData.application.selfInsured;
-      if (selfInsured) {
+      if (!selfInsured) {
         this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
         this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
       }
@@ -287,6 +311,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.requestPaymentSummarizedCosts.value = String(this.formData.advanceApplication.advanceSum);
       // comments
       this.comments.value = this.formData.application.comments;
+      // decline-reason
+      this.getDeclineReason();
     }
   }
 
@@ -316,6 +342,13 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.departureMinute.toArray().map((item, i) => item.value = String(this.formData.transport[i].departureMinute));
       this.carrier.toArray().map((item, i) => item.value = this.formData.transport[i].carrier);
     }
+  }
+
+  getDeclineReason() {
+    this.declineReason =
+      this.formData.application.directorComments ||
+      this.formData.application.wildaComments ||
+      this.formData.application.rectorComments;
   }
 
   validationFailedDialog() {
@@ -355,33 +388,25 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   rejectForm() {
-    if (this.useCase === UseCaseEnum.Director) {
-      const financialSource: FinancialSource = this.getParsedFinancialSourceData();
-      const isValidFinancialSource = this.validateFinancialSource(financialSource);
-      if (!isValidFinancialSource) {
-        this.validationFailedDialog();
-        return;
-      }
-    }
     this.dialogService.showRejectDialog().beforeClosed().subscribe((result: RejectInfo) => {
       if (result.rejected) {
         let url = `${window.location.protocol}//${window.location.hostname}:8080/`;
         switch (this.useCase) {
           case UseCaseEnum.Director: {
             this.formData.application.directorComments = result.reason;
-            this.formData.application.status = 4;
+            this.formData.application.status = 5;
             url += 'director/application/reject';
             break;
           }
           case UseCaseEnum.WildaApprove: {
             this.formData.application.wildaComments = result.reason;
-            this.formData.application.status = 5;
+            this.formData.application.status = 6;
             url += 'wilda/application/reject';
             break;
           }
           case UseCaseEnum.Rector: {
             this.formData.application.rectorComments = result.reason;
-            this.formData.application.status = 6;
+            this.formData.application.status = 7;
             url += 'rector/application/reject';
             break;
           }
@@ -507,7 +532,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         purpose: this.requestService.formatInput(this.purpose.value),
         rectorComments: null,
         selfInsured: this.selfInsuredCheckbox.checked,
-        status: this.status,
+        status: 0,
         subject: this.requestService.formatInput(this.subject.value),
         surname: this.requestService.formatInput(this.surname.value),
         wildaComments: null
