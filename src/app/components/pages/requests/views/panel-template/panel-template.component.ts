@@ -1,12 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PageInfo} from '../../../../../extra/app-grid-models/models';
 import {Row} from '../../../../../extra/app-grid-models/row';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {FormData, FormWithStatus} from '../../../../../extra/request-interface/request-interface';
 import {DialogService} from '../../../../../services/dialog.service';
+import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
+import {RestService} from '../../../../../services/rest-service';
 
 @Component({
   selector: 'app-panel-template',
@@ -20,9 +22,7 @@ export class PanelTemplateComponent implements OnInit {
   @Input() filter: any;
   @Input() orderBy: string;
   @Input() desc: boolean;
-  @Input() dataPath: string;
-  @Input() countPath: string;
-  @Input() singleRequestPath: string;
+  @Input() actor: ActorEnum;
 
   headers = {
     firstName: {description: 'Imię', type: 'text'},
@@ -36,20 +36,16 @@ export class PanelTemplateComponent implements OnInit {
   data: any[];
 
   pageInfo: PageInfo;
-  dataRestPath: string;
-  countRestPath: string;
 
   constructor(
-    private http: HttpClient,
     private router: Router,
     private translateService: TranslateService,
     private requestDataService: RequestDataService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private restService: RestService
   ) { }
 
   ngOnInit(): void {
-    this.dataRestPath = `${window.location.protocol}//${window.location.hostname}:8080/${this.dataPath}`;
-    this.countRestPath = `${window.location.protocol}//${window.location.hostname}:8080/${this.countPath}`;
     this.initializePageInfo();
   }
 
@@ -62,8 +58,7 @@ export class PanelTemplateComponent implements OnInit {
   }
 
   onListRowClicked(row: Row) {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/${this.singleRequestPath}`;
-    this.http.post<object>(url, row.id).subscribe(
+    this.restService.getApplication(this.actor, row.id).subscribe(
       (form: FormData) => {
         const formWithStatus: FormWithStatus = {
           form,

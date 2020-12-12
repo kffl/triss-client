@@ -2,7 +2,8 @@ import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
 import {PageInfo} from '../../../extra/app-grid-models/models';
-import {GridRestService} from './grid-rest-service';
+import {RestService} from '../../../services/rest-service';
+import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
 
 export class CustomDataSource implements DataSource<any> {
 
@@ -11,7 +12,7 @@ export class CustomDataSource implements DataSource<any> {
 
     public loading$ = this.loadingSubject.asObservable();
 
-    constructor(private restService: GridRestService) {}
+    constructor(private restService: RestService) {}
 
     connect(collectionViewer: CollectionViewer): Observable<any[]> {
         return this.rowSubject.asObservable();
@@ -22,12 +23,9 @@ export class CustomDataSource implements DataSource<any> {
         this.loadingSubject.complete();
     }
 
-    public loadData(url: string, pageInfo: PageInfo) {
-        if (url === undefined) {
-          return;
-        }
+    public loadData(actor: ActorEnum, pageInfo: PageInfo) {
         this.loadingSubject.next(true);
-        this.restService.getFlux(url, pageInfo).pipe(
+        this.restService.getFlux(actor, pageInfo).pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false))
         ).subscribe(rows => {

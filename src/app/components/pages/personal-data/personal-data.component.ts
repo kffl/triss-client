@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, AfterViewChecked, ViewChild} from '@angular/core';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
 import {MatInput} from '@angular/material/input';
 import {MatSelect} from '@angular/material/select';
@@ -10,6 +10,7 @@ import {BehaviorSubject} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {RequestDataService} from '../../../services/request-data.service';
 import {DialogService} from '../../../services/dialog.service';
+import {RestService} from '../../../services/rest-service';
 
 @Component({
   selector: 'app-personal-data',
@@ -32,7 +33,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   @ViewChild('instituteSelect') instituteSelect: MatSelect;
 
   constructor(
-    private http: HttpClient,
+    private restService: RestService,
     private requestService: RequestDataService,
     private dialogService: DialogService
   ) { }
@@ -50,8 +51,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   getPersonalData() {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
-    this.http.post<PersonalDataInterface>(url, {}).subscribe(personalData => {
+    this.restService.getPersonalData().subscribe(personalData => {
       this.personalData = personalData;
       this.loadPersonalData();
       this.personalDataReadySubject.next(true);
@@ -59,8 +59,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   getInstitutes() {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/institute/all`;
-    this.http.get<InstituteInterface[]>(url).subscribe(institutes => {
+    this.restService.getInstitutes().subscribe(institutes => {
       this.allInstitutes = institutes;
       this.loadInstituteData();
     });
@@ -104,8 +103,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/update`;
-    this.http.post<PersonalDataInterface>(url, newPersonalData).subscribe(
+    this.restService.updatePersonalData(newPersonalData).subscribe(
       () => {
         this.dialogService.showSimpleDialog(
           'DIALOG.PERSONAL_DATA_SAVED.TITLE',

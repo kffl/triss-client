@@ -5,9 +5,9 @@ import {merge} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {PageInfo} from '../../../extra/app-grid-models/models';
 import {CustomDataSource} from './data-source';
-import {GridRestService} from './grid-rest-service';
 import {Row} from '../../../extra/app-grid-models/row';
-import { MatTable } from '@angular/material/table';
+import {RestService} from '../../../services/rest-service';
+import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
 
 @Component({
   selector: 'app-grid',
@@ -19,8 +19,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   @Input() source;
   @Input() pageInfo: PageInfo;
   @Input() pageSizeOptions = [10, 25, 50];
-  @Input() dataRestPath: string;
-  @Input() countRestPath: string;
+  @Input() actor: ActorEnum;
 
   @Output() onRowClick = new EventEmitter<Row>();
 
@@ -33,17 +32,19 @@ export class GridComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(
-    private restService: GridRestService
+    private restService: RestService
   ) { }
 
   ngOnInit() {
     this.prepareInitPageInfo();
     this.loadCount();
-    for(let filter in this.columnHeader) {
-       this.columnFilters[filter + "Filter"] = this.columnHeader[filter];
+    for (const filter in this.columnHeader) {
+      if (this.columnHeader.hasOwnProperty(filter)) {
+        this.columnFilters[filter + 'Filter'] = this.columnHeader[filter];
+      }
     }
     this.dataSource = new CustomDataSource(this.restService);
-    this.dataSource.loadData(this.dataRestPath, this.pageInfo);
+    this.dataSource.loadData(this.actor, this.pageInfo);
   }
 
   ngAfterViewInit() {
@@ -55,7 +56,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   }
 
   public onFilterChange(event: any, tableFilter: any) {
-    const columnName = tableFilter.replace("Filter", '');
+    const columnName = tableFilter.replace('Filter', '');
     this.pageInfo.filter[columnName] = event.currentTarget.value;
     this.pageInfo.pageNumber = 0;
     this.paginator.pageIndex = 0;
@@ -64,7 +65,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   }
 
   public onDateFilterChange(event: any, tableFilter: any) {
-    const columnName = tableFilter.replace("Filter", '');
+    const columnName = tableFilter.replace('Filter', '');
     this.pageInfo.filter[columnName] = event.value;
     this.pageInfo.pageNumber = 0;
     this.paginator.pageIndex = 0;
@@ -84,28 +85,28 @@ export class GridComponent implements OnInit, AfterViewInit {
       this.pageInfo.filter = {};
     }
     if (this.pageInfo.orderBy == undefined) {
-      this.pageInfo.orderBy = "id";
+      this.pageInfo.orderBy = 'id';
     }
     if (this.pageInfo.desc == undefined) {
       this.pageInfo.desc = false;
     }
-      if (this.pageInfo.pageSize == undefined) {
-      this.pageInfo.pageSize = this.pageSizeOptions[0];;
+    if (this.pageInfo.pageSize == undefined) {
+      this.pageInfo.pageSize = this.pageSizeOptions[0];
     }
   }
 
   private loadPage() {
     this.pageInfo.pageNumber = this.paginator.pageIndex;
     this.pageInfo.pageSize = this.paginator.pageSize;
-    this.pageInfo.desc = this.sort.direction != "asc"
+    this.pageInfo.desc = this.sort.direction !== 'asc';
     if (this.sort.active != undefined) {
-      this.pageInfo.orderBy = this.sort.active
+      this.pageInfo.orderBy = this.sort.active;
     }
-    this.dataSource.loadData(this.dataRestPath, this.pageInfo);
+    this.dataSource.loadData(this.actor, this.pageInfo);
   }
 
   private loadCount() {
-    this.restService.getMono(this.countRestPath, this.pageInfo).subscribe(result => {
+    this.restService.getMono(this.actor, this.pageInfo).subscribe(result => {
       this.objectCount = result;
     });
   }

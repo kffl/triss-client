@@ -15,23 +15,18 @@ import {MatDatepickerInput, MatDateRangeInput, MatEndDate, MatStartDate} from '@
 import {MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {UseCaseEnum} from '../../../../../extra/use-case-enum/use-case-enum';
 import {FinancialSource, FormData, Transport} from '../../../../../extra/request-interface/request-interface';
 import {AppRoutes} from '../../../../../extra/routes/appRoutes';
 import {Location} from '@angular/common';
-import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
 import {InstituteInterface} from '../../../../../extra/institute-interface/institute.interface';
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
 import {DialogService} from '../../../../../services/dialog.service';
-
-interface Enum {
-  value: number;
-  namePl: string;
-  nameEng: string;
-}
+import {Enum, RestService} from '../../../../../services/rest-service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-request',
@@ -144,11 +139,11 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
-    private http: HttpClient,
     private router: Router,
     private location: Location,
     private requestService: RequestDataService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private restService: RestService
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
@@ -184,10 +179,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   setAutocompletingFields() {
     if (this.useCase === UseCaseEnum.Create) {
-      const userDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
-      this.http.post<PersonalDataInterface>(userDataUrl, {}).subscribe(personalData => {
-        const instituteDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/institute/all`;
-        this.http.get<InstituteInterface[]>(instituteDataUrl).subscribe(institutes => {
+      this.restService.getPersonalData().subscribe(personalData => {
+        this.restService.getInstitutes().subscribe(institutes => {
           this.employeeInstitute = institutes.find(institute => personalData.instituteID === institute.id);
           this.institute.value = this.employeeInstitute.name;
         });
@@ -204,8 +197,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   getStatus() {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/enum/status`;
-    this.http.get<Enum[]>(url).subscribe(statuses => {
+    this.restService.getStatuses().subscribe(statuses => {
       this.statusEnum = statuses.find(status => this.status === status.value);
       this.showStatus();
     });
@@ -222,18 +214,17 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   getSelectEnums() {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/enum`;
-    this.http.get<Enum[]>(`${url}/vehicle`)
+    this.restService.getVehicles()
       .subscribe(vehicles => {
         this.vehicles = vehicles;
         this.loadTransportData();
       });
-    this.http.get<Enum[]>(`${url}/documentType`)
+    this.restService.getDocumentTypes()
       .subscribe(identityDocuments => {
         this.identityDocuments = identityDocuments;
         this.loadIdentityDocument();
       });
-    this.http.get<Enum[]>(`${url}/paymentType`)
+    this.restService.getPaymentTypes()
       .subscribe(paymentTypes => {
         this.paymentTypes = paymentTypes;
         this.loadPaymentTypes();
@@ -359,25 +350,17 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     );
   }
 
-  approveRejectDialog(url: string, titleSuccess: string, contentSuccess: string, titleError: string, contentError: string) {
-    this.http.post(url, this.formData).subscribe(
+  approveRejectDialog(
+    restObservable: Observable<any>,
+    goBackUrl: string,
+    titleSuccess: string,
+    contentSuccess: string,
+    titleError: string,
+    contentError: string
+  ) {
+    restObservable.subscribe(
       () => {
         this.dialogService.showSimpleDialog(titleSuccess, contentSuccess, false);
-        let goBackUrl: string = null;
-        switch (this.useCase) {
-          case UseCaseEnum.Director: {
-            goBackUrl = AppRoutes.requestsListDirector;
-            break;
-          }
-          case UseCaseEnum.WildaApprove: {
-            goBackUrl = AppRoutes.requestsListWilda;
-            break;
-          }
-          case UseCaseEnum.Rector: {
-            goBackUrl = AppRoutes.requestsListRector;
-            break;
-          }
-        }
         setTimeout(() => {
           this.router.navigateByUrl(goBackUrl).then(() => this.dialogService.getDialog().closeAll());
         }, 2000);
@@ -390,29 +373,34 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   rejectForm() {
     this.dialogService.showRejectDialog().beforeClosed().subscribe((result: RejectInfo) => {
       if (result.rejected) {
-        let url = `${window.location.protocol}//${window.location.hostname}:8080/`;
+        let restObservable: Observable<any> = null;
+        let goBackUrl: string = null;
         switch (this.useCase) {
           case UseCaseEnum.Director: {
             this.formData.application.directorComments = result.reason;
             this.formData.application.status = 5;
-            url += 'director/application/reject';
+            restObservable = this.restService.rejectAsDirector(this.formData);
+            goBackUrl = AppRoutes.requestsListDirector;
             break;
           }
           case UseCaseEnum.WildaApprove: {
             this.formData.application.wildaComments = result.reason;
             this.formData.application.status = 6;
-            url += 'wilda/application/reject';
+            restObservable = this.restService.rejectAsWilda(this.formData);
+            goBackUrl = AppRoutes.requestsListWilda;
             break;
           }
           case UseCaseEnum.Rector: {
             this.formData.application.rectorComments = result.reason;
             this.formData.application.status = 7;
-            url += 'rector/application/reject';
+            restObservable = this.restService.rejectAsRector(this.formData);
+            goBackUrl = AppRoutes.requestsListRector;
             break;
           }
         }
         this.approveRejectDialog(
-          url,
+          restObservable,
+          goBackUrl,
           'DIALOG.REQUEST_REJECTED.TITLE',
           'DIALOG.REQUEST_REJECTED.CONTENT',
           'DIALOG.REQUEST_REJECT_FAIL.TITLE',
@@ -428,8 +416,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     if (isValidFinancialSource) {
       this.formData.financialSource = financialSource;
       this.formData.application.status = this.status + 1;
-      const url = `${window.location.protocol}//${window.location.hostname}:8080/director/application/approve`;
-      this.approveForm(url);
+      this.approveForm(this.restService.approveAsDirector(this.formData), AppRoutes.requestsListDirector);
     } else {
       this.validationFailedDialog();
     }
@@ -437,19 +424,18 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   sendToRector() {
     this.formData.application.status = this.status + 1;
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/wilda/application/approve`;
-    this.approveForm(url);
+    this.approveForm(this.restService.approveAsWilda(this.formData), AppRoutes.requestsListWilda);
   }
 
   sendBackToWilda() {
     this.formData.application.status = this.status + 1;
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/rector/application/approve`;
-    this.approveForm(url);
+    this.approveForm(this.restService.approveAsRector(this.formData), AppRoutes.requestsListRector);
   }
 
-  approveForm(url: string) {
+  approveForm(restObservable: Observable<any>, goBackUrl: string) {
     this.approveRejectDialog(
-      url,
+      restObservable,
+      goBackUrl,
       'DIALOG.REQUEST_APPROVED.TITLE',
       'DIALOG.REQUEST_APPROVED.CONTENT',
       'DIALOG.REQUEST_APPROVE_FAIL.TITLE',
@@ -634,9 +620,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     return !fields.some(field => field == null);
   }
 
-  sendFormData(form) {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/user/application/create`;
-    this.http.post(url, form).subscribe(
+  sendFormData(form: FormData) {
+    this.restService.sendFormData(form).subscribe(
       () => {
         this.dialogService.showSimpleDialog(
           'DIALOG.REQUEST_SENT.TITLE',
