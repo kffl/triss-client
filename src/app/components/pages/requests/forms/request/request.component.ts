@@ -25,15 +25,10 @@ import {InstituteInterface} from '../../../../../extra/institute-interface/insti
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
 import {DialogService} from '../../../../../services/dialog.service';
-import {Enum, RestService} from '../../../../../services/rest-service';
+import {RestService, Enum} from '../../../../../services/rest-service';
 import {Observable} from 'rxjs';
 import {SafeHttpClient} from '../../../../shared/security/SafeHtppClient';
 
-interface Enum {
-  value: number;
-  namePl: string;
-  nameEng: string;
-}
 
 @Component({
   selector: 'app-request',

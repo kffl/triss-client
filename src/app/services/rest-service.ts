@@ -1,4 +1,3 @@
-import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {PersonalDataInterface} from '../extra/personal-data-interface/personal-data.interface';
@@ -7,6 +6,7 @@ import {FormData} from '../extra/request-interface/request-interface';
 import {PageInfo} from '../extra/app-grid-models/models';
 import {ActorEnum} from '../extra/actor-enum/actor-enum';
 import {environment} from '../../environments/environment';
+import {SafeHttpClient} from '../components/shared/security/SafeHtppClient';
 
 export interface Enum {
   value: number;
@@ -21,7 +21,7 @@ export class RestService {
 
   serverAddress = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: SafeHttpClient) {
   }
 
   private getUrl(mapping: string): string {
