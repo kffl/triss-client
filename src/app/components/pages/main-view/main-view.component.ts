@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import {SecurityService} from '../../shared/security/SecurityService';
 import {LoginService} from '../../shared/security/LoginService';
+import {LocalStorageService} from '../../shared/security/LocalStorageService';
 
 @Component({
   selector: 'app-main-view',
@@ -13,7 +14,8 @@ export class MainViewComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private securityService: SecurityService,
-              private loginService: LoginService) { }
+              private loginService: LoginService,
+              private localStorageService: LocalStorageService) { }
 
   ngOnInit(): void {
 
@@ -22,7 +24,7 @@ export class MainViewComponent implements OnInit {
     });
 
 
-    const token = localStorage.getItem('access_token'); // get token
+    const token = this.localStorageService.token;
 
     if (token == null) {
       this.securityService.redirectToELogin();

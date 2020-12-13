@@ -1,12 +1,11 @@
 import {Inject, Injectable} from '@angular/core';
 import {Params} from '@angular/router';
 import {DOCUMENT} from '@angular/common';
-import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
-import {SafeHttpClient} from './SafeHtppClient';
+import {LocalStorageService} from './LocalStorageService';
 
 
 
-const production = false; // TODO this should be true on master!!!
+const production = false;
 const port = '4200';
 
 @Injectable({
@@ -14,7 +13,8 @@ const port = '4200';
 })
 export class SecurityService {
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document,
+              private localStorageService: LocalStorageService) {}
 
 
   public processParams(params: Params): void {
@@ -48,6 +48,6 @@ export class SecurityService {
   }
 
   private saveToken(token: any) {
-    localStorage.setItem('access_token', token);
+    this.localStorageService.token = token;
   }
 }

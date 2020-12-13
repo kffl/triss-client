@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {SecurityService} from './SecurityService';
+import {LocalStorageService} from './LocalStorageService';
 
 
 @Injectable({
@@ -10,7 +11,8 @@ import {SecurityService} from './SecurityService';
 export class SafeHttpClient {
 
   constructor(private http: HttpClient,
-              private securityService: SecurityService) {}
+              private securityService: SecurityService,
+              private localStorageService: LocalStorageService) {}
 
   public post<T>(url: string, body: any | null): Observable<T> {
     // TODO : this would be helpful, when we will want to response in Flux, not Mono<List<ApplicationRow>>, so i would like to have this here
@@ -38,20 +40,18 @@ export class SafeHttpClient {
     const httpOptions = {
       headers: new HttpHeaders({
         Accept:  'application/stream+json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        Authorization: 'Bearer ' + this.localStorageService.token
       })
-  };
+    };
 
     const result = this.http.post<T>(url, body, httpOptions);
     result.subscribe(
       (data) => {
-        console.log(data);
       },
       (error) => {
         if (error.status === 0 || error.status === 401) {
           this.securityService.redirectToELogin();
         }
-        console.log(error.status);
       });
     return result;
   }
@@ -60,19 +60,17 @@ export class SafeHttpClient {
     const httpOptions = {
       headers: new HttpHeaders({
         Accept:  'application/stream+json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        Authorization: 'Bearer ' + this.localStorageService.token
       })
-  };
+    };
     const result = this.http.get<T>(url, httpOptions);
     result.subscribe(
       (data) => {
-        console.log(data);
       },
       (error) => {
         if (error.status === 0 || error.status === 401) {
           this.securityService.redirectToELogin();
         }
-        console.log(error.status);
       });
     return result;
   }

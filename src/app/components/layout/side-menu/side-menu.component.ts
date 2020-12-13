@@ -14,20 +14,16 @@ export class SideMenuComponent implements OnInit, AfterViewInit {
   @Input() sidenav;
   appRoutes = AppRoutes;
 
-  private role: string;
-  constructor(private localStorageService: LocalStorageService,
-              private ref: ChangeDetectorRef ) {
+  role: string;
+
+  constructor(private localStorageService: LocalStorageService ) {
   }
 
 
   ngOnInit(): void {
-    
     this.localStorageService.roleSubject.subscribe((newRole) => {
-      console.log('role: ' + newRole);
       this.role = newRole;
-    })
-
-    
+    });
   }
 
   ngAfterViewInit() {

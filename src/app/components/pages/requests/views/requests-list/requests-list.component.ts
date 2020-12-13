@@ -22,6 +22,4 @@ export class RequestsListComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-
 }
