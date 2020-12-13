@@ -2,8 +2,21 @@
 
   <div class="form">
 
-    <div class="title main-title">
-      <span>{{ 'REQUEST.MAIN_TITLE' | translate }}</span>
+    <div class="title-wth-status">
+      <div class="title main-title">
+        <span>{{ 'REQUEST.MAIN_TITLE' | translate }}</span>
+      </div>
+
+      <div class="status">
+        <div>
+          <span class="label">{{ 'STATUS.STATUS' | translate }} </span>
+          <span class="value">{{statusText}}</span>
+        </div>
+        <div *ngIf="declineReason">
+          <span class="label">{{ 'STATUS.DECLINE_REASON' | translate }} </span>
+          <span class="value">{{declineReason}}</span>
+        </div>
+      </div>
     </div>
 
     <div class="form-group basic-info">
@@ -360,6 +373,7 @@
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.OTHER_COSTS' | translate }}</span></mat-label>
           <textarea matInput
+                    cdkTextareaAutosize
                     placeholder="{{ 'REQUEST.OTHER_COSTS_PLACEHOLDER' | translate }}"
                     [readonly]="useCase > 1"
                     #requestPaymentOtherExpensesDescription></textarea>
@@ -465,13 +479,16 @@
     <div class="form-group comments">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label *ngIf="useCase === 1"><span>{{ 'REQUEST.COMMENTS' | translate }}</span></mat-label>
-        <textarea [readonly]="useCase > 1" matInput #comments></textarea>
+        <textarea cdkTextareaAutosize [readonly]="useCase > 1" matInput #comments></textarea>
       </mat-form-field>
     </div>
 
     <div class="outcome-buttons">
       <a><button (click)="cancelForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
+      </button></a>
+      <a *ngIf="useCase === 2 ||useCase === 3 || useCase === 4"><button (click)="rejectForm()" mat-flat-button color="primary">
+        <span>{{ 'REQUEST.BUTTON_REJECT' | translate }}</span>
       </button></a>
       <a *ngIf="useCase === 1"><button (click)="submitForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_SEND' | translate }}</span>

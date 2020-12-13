@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AppRoutes} from '../../../../../extra/routes/appRoutes';
+import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 
 @Component({
   selector: 'app-rector-panel',
@@ -9,6 +10,7 @@ import {AppRoutes} from '../../../../../extra/routes/appRoutes';
 export class RectorPanelComponent implements OnInit {
 
   appRoutes = AppRoutes;
+  actor = ActorEnum.Rector;
   constructor() { }
 
   ngOnInit(): void {

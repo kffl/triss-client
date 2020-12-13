@@ -1,8 +1,8 @@
 <div class="container">
   <div class="list">
-    <span class="item header">{{pageTitle}}</span>
+    <span class="item header">{{ pageTitle | translate }}</span>
     <app-grid class="item grid"  [columnHeader]="headers"
-              [dataRestPath] = 'dataRestPath' [countRestPath] = 'countRestPath' [pageInfo] = "pageInfo" (onRowClick)="onListRowClicked($event)"></app-grid>
+              [actor]="actor" [pageInfo] = "pageInfo" (onRowClick)="onListRowClicked($event)"></app-grid>
   </div>
 </div>
 

@@ -15,22 +15,18 @@ import {MatDatepickerInput, MatDateRangeInput, MatEndDate, MatStartDate} from '@
 import {MatSelect} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {InfoDialogComponent} from '../../../../shared/info-dialog/info-dialog.component';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {UseCaseEnum} from '../../../../../extra/use-case-enum/use-case-enum';
-import {FormData} from '../../../../../extra/request-interface/request-interface';
+import {FinancialSource, FormData, Transport} from '../../../../../extra/request-interface/request-interface';
 import {AppRoutes} from '../../../../../extra/routes/appRoutes';
 import {Location} from '@angular/common';
-import {PersonalDataInterface} from '../../../../../extra/personal-data-interface/personal-data.interface';
 import {InstituteInterface} from '../../../../../extra/institute-interface/institute.interface';
-
-interface Enum {
-  value: number;
-  namePl: string;
-  nameEng: string;
-}
+import {RequestDataService} from '../../../../../services/request-data.service';
+import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
+import {DialogService} from '../../../../../services/dialog.service';
+import {Enum, RestService} from '../../../../../services/rest-service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-request',
@@ -41,6 +37,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   @Input() useCase: UseCaseEnum;
   @Input() formData: FormData;
+  @Input() status: number;
 
   formFieldsStyle: MatFormFieldAppearance = 'fill';
   transportMeansNumber = 1;
@@ -132,13 +129,21 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   identityDocuments: Enum[];
   paymentTypes: Enum[];
 
+  employeeId: number = null;
+  employeeInstitute: InstituteInterface = null;
+
+  statusEnum: Enum = null;
+  statusText: string = null;
+  declineReason: string = null;
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
-    private dialog: MatDialog,
-    private http: HttpClient,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private requestService: RequestDataService,
+    private dialogService: DialogService,
+    private restService: RestService
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
@@ -146,6 +151,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   ngOnInit(): void {
     this.getSelectEnums();
+    this.getStatus();
   }
 
   ngAfterViewInit() {
@@ -168,15 +174,15 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.enumLang = 'nameEng';
     }
     this.currencyRegex = `^([1-9][0-9]*|0)([${this.decimalSeparator}][0-9]{0,2})?$`;
+    this.showStatus();
   }
 
   setAutocompletingFields() {
     if (this.useCase === UseCaseEnum.Create) {
-      const userDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
-      this.http.post<PersonalDataInterface>(userDataUrl, {}).subscribe(personalData => {
-        const instituteDataUrl = `${window.location.protocol}//${window.location.hostname}:8080/institute/all`;
-        this.http.get<InstituteInterface[]>(instituteDataUrl).subscribe(institutes => {
-          this.institute.value = institutes.find(institute => personalData.instituteID === institute.id).name;
+      this.restService.getPersonalData().subscribe(personalData => {
+        this.restService.getInstitutes().subscribe(institutes => {
+          this.employeeInstitute = institutes.find(institute => personalData.instituteID === institute.id);
+          this.institute.value = this.employeeInstitute.name;
         });
         this.firstName.value = personalData.firstName;
         this.surname.value = personalData.surname;
@@ -185,23 +191,40 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         this.firstNameInsurance.value = personalData.firstName;
         this.surnameInsurance.value = personalData.surname;
         this.birthDate.value = new Date(personalData.birthDate);
+        this.employeeId = personalData.employeeId;
       });
     }
   }
 
+  getStatus() {
+    this.restService.getStatuses().subscribe(statuses => {
+      this.statusEnum = statuses.find(status => this.status === status.value);
+      this.showStatus();
+    });
+  }
+
+  showStatus() {
+    if (this.statusEnum == null) {
+      this.translateService.get('STATUS.CREATE').subscribe(value => {
+        this.statusText = value;
+      });
+    } else {
+      this.statusText = this.statusEnum[this.enumLang];
+    }
+  }
+
   getSelectEnums() {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/enum`;
-    this.http.get<Enum[]>(`${url}/vehicle`)
+    this.restService.getVehicles()
       .subscribe(vehicles => {
         this.vehicles = vehicles;
         this.loadTransportData();
       });
-    this.http.get<Enum[]>(`${url}/documentType`)
+    this.restService.getDocumentTypes()
       .subscribe(identityDocuments => {
         this.identityDocuments = identityDocuments;
         this.loadIdentityDocument();
       });
-    this.http.get<Enum[]>(`${url}/paymentType`)
+    this.restService.getPaymentTypes()
       .subscribe(paymentTypes => {
         this.paymentTypes = paymentTypes;
         this.loadPaymentTypes();
@@ -209,17 +232,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   submitForm() {
-    const formValues: object = this.getParsedFormData();
+    const formValues: FormData = this.getParsedFormData();
     const isFormValid = this.validateForm(formValues);
     if (!isFormValid) {
-      this.validationFailed = true;
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.data = {
-        title: 'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
-        content: 'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT',
-        showCloseButton: true
-      };
-      this.dialog.open(InfoDialogComponent, dialogConfig);
+      this.validationFailedDialog();
     } else {
       this.sendFormData(formValues);
     }
@@ -263,9 +279,12 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.surnameInsurance.value = this.formData.application.surname;
       this.birthDate.value = new Date(this.formData.application.birthDate);
       this.departureCountry.value = this.formData.place.country;
-      this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
-      this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
-      this.selfInsuredCheckbox.checked = this.formData.application.selfInsured;
+      const selfInsured = this.formData.application.selfInsured;
+      if (!selfInsured) {
+        this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
+        this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
+      }
+      this.selfInsuredCheckbox.checked = selfInsured;
       // advance-payment-request
       this.requestPaymentDestination.value = this.formData.place.country;
       this.requestPaymentDateStart.writeValue(new Date(this.formData.advanceApplication.startDate));
@@ -283,6 +302,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.requestPaymentSummarizedCosts.value = String(this.formData.advanceApplication.advanceSum);
       // comments
       this.comments.value = this.formData.application.comments;
+      // decline-reason
+      this.getDeclineReason();
     }
   }
 
@@ -296,8 +317,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   loadIdentityDocument() {
-    this.identityDocumentTypeSelect.value = this.formData.application.identityDocumentType;
-    this.identityDocumentSerialNumber.value = this.formData.application.identityDocumentNumber;
+    if (this.useCase !== UseCaseEnum.Create) {
+      this.identityDocumentTypeSelect.value = this.formData.application.identityDocumentType;
+      this.identityDocumentSerialNumber.value = this.formData.application.identityDocumentNumber;
+    }
   }
 
   loadTransportData() {
@@ -312,188 +335,309 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
+  getDeclineReason() {
+    this.declineReason =
+      this.formData.application.directorComments ||
+      this.formData.application.wildaComments ||
+      this.formData.application.rectorComments;
+  }
 
+  validationFailedDialog() {
+    this.validationFailed = true;
+    this.dialogService.showSimpleDialog(
+      'DIALOG.REQUEST_VALIDATION_FAILED.TITLE',
+      'DIALOG.REQUEST_VALIDATION_FAILED.CONTENT'
+    );
+  }
+
+  approveRejectDialog(
+    restObservable: Observable<any>,
+    goBackUrl: string,
+    titleSuccess: string,
+    contentSuccess: string,
+    titleError: string,
+    contentError: string
+  ) {
+    restObservable.subscribe(
+      () => {
+        this.dialogService.showSimpleDialog(titleSuccess, contentSuccess, false);
+        setTimeout(() => {
+          this.router.navigateByUrl(goBackUrl).then(() => this.dialogService.getDialog().closeAll());
+        }, 2000);
+      },
+      (error: HttpErrorResponse) => {
+        this.dialogService.showErrorDialog(titleError, contentError, error);
+      });
+  }
+
+  rejectForm() {
+    this.dialogService.showRejectDialog().beforeClosed().subscribe((result: RejectInfo) => {
+      if (result.rejected) {
+        let restObservable: Observable<any> = null;
+        let goBackUrl: string = null;
+        switch (this.useCase) {
+          case UseCaseEnum.Director: {
+            this.formData.application.directorComments = result.reason;
+            this.formData.application.status = this.status;
+            restObservable = this.restService.rejectAsDirector(this.formData);
+            goBackUrl = AppRoutes.requestsListDirector;
+            break;
+          }
+          case UseCaseEnum.WildaApprove: {
+            this.formData.application.wildaComments = result.reason;
+            this.formData.application.status = this.status;
+            restObservable = this.restService.rejectAsWilda(this.formData);
+            goBackUrl = AppRoutes.requestsListWilda;
+            break;
+          }
+          case UseCaseEnum.Rector: {
+            this.formData.application.rectorComments = result.reason;
+            this.formData.application.status = this.status;
+            restObservable = this.restService.rejectAsRector(this.formData);
+            goBackUrl = AppRoutes.requestsListRector;
+            break;
+          }
+        }
+        this.approveRejectDialog(
+          restObservable,
+          goBackUrl,
+          'DIALOG.REQUEST_REJECTED.TITLE',
+          'DIALOG.REQUEST_REJECTED.CONTENT',
+          'DIALOG.REQUEST_REJECT_FAIL.TITLE',
+          'DIALOG.REQUEST_REJECT_FAIL.CONTENT'
+        );
+      }
+    });
+  }
 
   sendToWilda() {
-    // TODO director to wilda
+    const financialSource: FinancialSource = this.getParsedFinancialSourceData();
+    const isValidFinancialSource = this.validateFinancialSource(financialSource);
+    if (isValidFinancialSource) {
+      this.formData.financialSource = financialSource;
+      this.formData.application.status = this.status;
+      this.approveForm(this.restService.approveAsDirector(this.formData), AppRoutes.requestsListDirector);
+    } else {
+      this.validationFailedDialog();
+    }
   }
 
   sendToRector() {
-    // TODO wilda to rector
+    this.formData.application.status = this.status;
+    this.approveForm(this.restService.approveAsWilda(this.formData), AppRoutes.requestsListWilda);
   }
 
   sendBackToWilda() {
-    // TODO rector to wilda
+    this.formData.application.status = this.status;
+    this.approveForm(this.restService.approveAsRector(this.formData), AppRoutes.requestsListRector);
   }
 
-  formatDate(date: Date): string {
-    return date ?
-      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}` : null;
+  approveForm(restObservable: Observable<any>, goBackUrl: string) {
+    this.approveRejectDialog(
+      restObservable,
+      goBackUrl,
+      'DIALOG.REQUEST_APPROVED.TITLE',
+      'DIALOG.REQUEST_APPROVED.CONTENT',
+      'DIALOG.REQUEST_APPROVE_FAIL.TITLE',
+      'DIALOG.REQUEST_APPROVE_FAIL.CONTENT'
+      );
   }
 
-  formatSelect(value: number): number {
-    if (value == null) {
-      return null;
-    }
-    return value;
-  }
-
-  formatInput(str: string): string {
-    const trimmed = str.trim();
-    if (trimmed === '') {
-      return null;
-    }
-    return trimmed;
-  }
-
-  getNumberFromInput(str: string): number {
-    let num: number;
-    if (!str || str.length === 0) {
-      return null;
-    }
-    if (str.includes(',') || str.includes('.')) {
-      num = parseFloat(str.replace(',', '.'));
-    } else {
-      num = parseInt(str, 10);
-    }
-    if (isNaN(num)) {
-      return null;
-    }
-    return num;
-  }
-
-  getNumberLimited(str: string, maxValue: number): string {
-    const num = this.getNumberFromInput(str);
-    return num == null ? '' : String(num > maxValue ? maxValue : num);
-  }
-
-  getParsedFormData(): object {
+  getParsedFormData(): FormData {
     const transportArrays = {
-      vehicleSelect: this.vehicleSelect.toArray().map(item => this.formatSelect(item.value)),
-      routeFrom: this.routeFrom.toArray().map(item => this.formatInput(item.value)),
-      routeTo: this.routeTo.toArray().map(item => this.formatInput(item.value)),
-      departureDay: this.departureDate.toArray().map(item => this.formatDate(item.value)),
-      departureHour: this.departureHour.toArray().map(item => this.getNumberFromInput(item.value)),
-      departureMinute: this.departureMinute.toArray().map(item => this.getNumberFromInput(item.value)),
-      carrier: this.carrier.toArray().map(item => this.formatInput(item.value))
+      vehicleSelect: this.vehicleSelect.toArray().map(item => this.requestService.formatSelect(item.value)),
+      routeFrom: this.routeFrom.toArray().map(item => this.requestService.formatInput(item.value)),
+      routeTo: this.routeTo.toArray().map(item => this.requestService.formatInput(item.value)),
+      departureDay: this.departureDate.toArray().map(item => this.requestService.formatDate(item.value)),
+      departureHour: this.departureHour.toArray().map(item => this.requestService.getNumberFromInput(item.value)),
+      departureMinute: this.departureMinute.toArray().map(item => this.requestService.getNumberFromInput(item.value)),
+      carrier: this.carrier.toArray().map(item => this.requestService.formatInput(item.value))
     };
-    const transportParsedArray = [];
+    const transportParsedArray: Transport[] = [];
     for (const i of Object.keys(this.transportMeansArray)) {
       transportParsedArray.push({
+        applicationID: null,
         vehicleSelect: transportArrays.vehicleSelect[i],
-        routeFrom: transportArrays.routeFrom[i],
-        routeTo: transportArrays.routeTo[i],
+        destinationFrom: transportArrays.routeFrom[i],
+        destinationTo: transportArrays.routeTo[i],
         departureDay: transportArrays.departureDay[i],
         departureHour: transportArrays.departureHour[i],
         departureMinute: transportArrays.departureMinute[i],
         carrier: transportArrays.carrier[i],
+        id: null
       });
     }
     return {
-      application: {
-        firstName: this.formatInput(this.firstName.value),
-        surname: this.formatInput(this.surname.value),
-        academicDegree: this.formatInput(this.academicTitle.value),
-        abroadStartDate: this.formatDate(this.abroadDate.value.start),
-        abroadEndDate: this.formatDate(this.abroadDate.value.end),
-        purpose: this.formatInput(this.purpose.value),
-        conference: this.formatInput(this.conference.value),
-        subject: this.formatInput(this.subject.value),
-        conferenceStartDate: this.formatDate(this.conferenceDate.value.start),
-        conferenceEndDate: this.formatDate(this.conferenceDate.value.end),
-        birthDate: this.formatDate(this.birthDate.value),
-        abroadStartDateInsurance: this.formatDate(this.abroadDateInsurance.value.start),
-        abroadEndDateInsurance: this.formatDate(this.abroadDateInsurance.value.end),
-        selfInsured: this.selfInsuredCheckbox.checked,
-        comments: this.formatInput(this.comments.value)
-      },
-      institute: {
-        name: this.formatInput(this.institute.value)
-      },
-      place: {
-        country: this.formatInput(this.destinationCountry.value),
-        city: this.formatInput(this.destinationCity.value),
-      },
       advanceApplication: {
-        startDate: this.formatDate(this.requestPaymentDate.value.start),
-        endDate: this.formatDate(this.requestPaymentDate.value.end),
-        residenceDietQuantity: this.getNumberFromInput(this.requestPaymentDays.value),
-        residenceDietAmount: this.getNumberFromInput(this.requestPaymentDaysAmount.value),
-        accommodationQuantity: this.getNumberFromInput(this.requestPaymentDays.value),
-        accommodationLimit: this.getNumberFromInput(this.requestPaymentAccommodationLimit.value),
-        travelDietAmount: this.getNumberFromInput(this.requestPaymentTravelDiet.value),
-        travelCosts: this.getNumberFromInput(this.requestPaymentLocalTransportCosts.value),
-        otherCostsDescription: this.formatInput(this.requestPaymentOtherExpensesDescription.value),
-        otherCostsAmount: this.getNumberFromInput(this.requestPaymentOtherExpensesValue.value),
-        residenceDietSum: this.getNumberFromInput(this.requestPaymentDaysAmountSum.value),
-        accommodationSum: this.getNumberFromInput(this.requestPaymentAccommodationSum.value),
-        advanceSum: this.getNumberFromInput(this.requestPaymentSummarizedCosts.value)
-      },
-      identityDocument: {
-        type: this.formatSelect(this.identityDocumentTypeSelect.value),
-        number: this.formatInput(this.identityDocumentSerialNumber.value)
+        accommodationLimit: this.requestService.getNumberFromInput(this.requestPaymentAccommodationLimit.value),
+        accommodationQuantity: this.requestService.getNumberFromInput(this.requestPaymentDays.value),
+        accommodationSum: this.requestService.getNumberFromInput(this.requestPaymentAccommodationSum.value),
+        advanceSum: this.requestService.getNumberFromInput(this.requestPaymentSummarizedCosts.value),
+        endDate: this.requestService.formatDate(this.requestPaymentDate.value.end),
+        id: null,
+        otherCostsAmount: this.requestService.getNumberFromInput(this.requestPaymentOtherExpensesValue.value),
+        otherCostsDescription: this.requestService.formatInput(this.requestPaymentOtherExpensesDescription.value),
+        placeId: null,
+        residenceDietAmount: this.requestService.getNumberFromInput(this.requestPaymentDaysAmount.value),
+        residenceDietQuantity: this.requestService.getNumberFromInput(this.requestPaymentDays.value),
+        residenceDietSum: this.requestService.getNumberFromInput(this.requestPaymentDaysAmountSum.value),
+        startDate: this.requestService.formatDate(this.requestPaymentDate.value.start),
+        travelCosts: this.requestService.getNumberFromInput(this.requestPaymentLocalTransportCosts.value),
+        travelDietAmount: this.requestService.getNumberFromInput(this.requestPaymentTravelDiet.value)
       },
       advancePayments: {
-        accommodationFeeTypeSelect: this.formatSelect(this.depositPaymentTypeSelect.value),
-        accommodationFeeValue: this.getNumberFromInput(this.depositValue.value),
-        conferenceFeePaymentTypeSelect: this.formatSelect(this.conferenceFeePaymentTypeSelect.value),
-        conferenceFeeValue: this.getNumberFromInput(this.conferenceFeeValue.value)
+        accommodationFeePaymentTypeSelect: this.requestService.formatSelect(this.depositPaymentTypeSelect.value),
+        accommodationFeeValue: this.requestService.getNumberFromInput(this.depositValue.value),
+        conferenceFeePaymentTypeSelect: this.requestService.formatSelect(this.conferenceFeePaymentTypeSelect.value),
+        conferenceFeeValue: this.requestService.getNumberFromInput(this.conferenceFeeValue.value)
+      },
+      application: {
+        abroadEndDate: this.requestService.formatDate(this.abroadDate.value.end),
+        abroadEndDateInsurance: this.requestService.formatDate(this.abroadDateInsurance.value.end),
+        abroadStartDate: this.requestService.formatDate(this.abroadDate.value.start),
+        abroadStartDateInsurance: this.requestService.formatDate(this.abroadDateInsurance.value.start),
+        academicDegree: this.requestService.formatInput(this.academicTitle.value),
+        advanceApplicationId: null,
+        birthDate: this.requestService.formatDate(this.birthDate.value),
+        comments: this.requestService.formatInput(this.comments.value),
+        conference: this.requestService.formatInput(this.conference.value),
+        conferenceStartDate: this.requestService.formatDate(this.conferenceDate.value.start),
+        conferenceEndDate: this.requestService.formatDate(this.conferenceDate.value.end),
+        createdOn: null,
+        directorComments: null,
+        employeeId: this.employeeId,
+        financialSourceId: null,
+        firstName: this.requestService.formatInput(this.firstName.value),
+        id: null,
+        identityDocumentNumber: this.requestService.formatInput(this.identityDocumentSerialNumber.value),
+        identityDocumentType: this.requestService.formatSelect(this.identityDocumentTypeSelect.value),
+        instituteId: this.employeeInstitute.id,
+        phoneNumber: this.requestService.formatInput(this.phoneNumber.value),
+        placeId: null,
+        prepaymentId: null,
+        purpose: this.requestService.formatInput(this.purpose.value),
+        rectorComments: null,
+        selfInsured: this.selfInsuredCheckbox.checked,
+        status: 0,
+        subject: this.requestService.formatInput(this.subject.value),
+        surname: this.requestService.formatInput(this.surname.value),
+        wildaComments: null
+      },
+      financialSource: null,
+      institute: {
+        id: this.employeeInstitute.id,
+        name: this.employeeInstitute.name,
+        active: this.employeeInstitute.active
+      },
+      place: {
+        id: null,
+        country: this.requestService.formatInput(this.destinationCountry.value),
+        city: this.requestService.formatInput(this.destinationCity.value),
       },
       transport: transportParsedArray
     };
   }
 
-  validateForm(form: object): boolean { // TODO after getting to know which fields are required
-    // for (const property in form.application) {
-    //   if (form.application.hasOwnProperty(property) && form.application[property] === null) {
-    //     if (!(property === 'comments' || (!this.selfInsuredCheckbox.checked && (property === 'abroadStartDateInsurance' || property === 'abroadEndDateInsurance')))) {
-    //       return false;
-    //     }
-    //   }
-    // }
-    // const formGroups = ['employee', 'institute', 'place', 'advanceApplication', 'advancePayments', 'identityDocument'];
-    // for (const formGroup of formGroups) {
-    //   for (const property in form[formGroup]) {
-    //     if (form[formGroup].hasOwnProperty(property) && form[formGroup][property] === null) {
-    //       return false;
-    //     }
-    //   }
-    // }
-    // for (const transportMean of form.transport) {
-    //   for (const property in transportMean) {
-    //     if (transportMean.hasOwnProperty(property) && property !== 'carrier' && transportMean[property] === null) {
-    //       return false;
-    //     }
-    //   }
-    // }
+  validateForm(form: FormData): boolean {
+    const instituteFields = [form.institute.name];
+    const placeFields = [form.place.country, form.place.city];
+    const applicationFields = [
+      form.application.firstName,
+      form.application.surname,
+      form.application.birthDate,
+      form.application.academicDegree,
+      form.application.phoneNumber,
+      form.application.identityDocumentType,
+      form.application.identityDocumentNumber,
+      form.application.abroadStartDate,
+      form.application.abroadEndDate,
+      form.application.purpose,
+      form.application.conference,
+      form.application.subject,
+      form.application.conferenceStartDate,
+      form.application.conferenceEndDate,
+      form.application.abroadStartDate,
+      form.application.abroadEndDate,
+    ];
+    const advanceApplicationFields = [
+      form.advanceApplication.startDate,
+      form.advanceApplication.endDate,
+      form.advanceApplication.residenceDietQuantity,
+      form.advanceApplication.residenceDietAmount,
+      form.advanceApplication.accommodationQuantity,
+      form.advanceApplication.accommodationLimit,
+      form.advanceApplication.travelDietAmount,
+      form.advanceApplication.travelCosts,
+    ];
+    const advancePaymentsFields = [
+      form.advancePayments.conferenceFeeValue,
+      form.advancePayments.conferenceFeePaymentTypeSelect,
+      form.advancePayments.accommodationFeeValue,
+      form.advancePayments.accommodationFeePaymentTypeSelect
+    ];
+    const transportFields = [];
+    form.transport.forEach(transportMean => transportFields.push(
+      transportMean.destinationFrom,
+      transportMean.destinationTo,
+      transportMean.departureDay,
+      transportMean.departureMinute,
+      transportMean.departureHour,
+      transportMean.vehicleSelect
+    ));
+    const sections = [
+      instituteFields,
+      placeFields,
+      applicationFields,
+      advanceApplicationFields,
+      advancePaymentsFields,
+      transportFields
+    ];
+    for (const section of sections) {
+      if (section.some(field => field == null)) {
+        return false;
+      }
+    }
     return true;
   }
 
-  sendFormData(form) {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/application/create`;
-    this.http.post(url, form).subscribe(
+  getParsedFinancialSourceData(): FinancialSource {
+    return {
+      id: null,
+      allocationAccount: this.requestService.formatInput(this.allocationAccount.value),
+      mpk: this.requestService.formatInput(this.MPK.value),
+      financialSource: this.requestService.formatInput(this.financialSource.value),
+      project: this.requestService.formatInput(this.project.value)
+    };
+  }
+
+  validateFinancialSource(financialSource: FinancialSource): boolean {
+    const fields = [
+      financialSource.allocationAccount,
+      financialSource.mpk,
+      financialSource.financialSource,
+      financialSource.project
+    ];
+    return !fields.some(field => field == null);
+  }
+
+  sendFormData(form: FormData) {
+    this.restService.sendFormData(form).subscribe(
       () => {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.data = {
-          title: 'DIALOG.REQUEST_SENT.TITLE',
-          content: 'DIALOG.REQUEST_SENT.CONTENT',
-          showCloseButton: false
-        };
-        this.dialog.open(InfoDialogComponent, dialogConfig);
+        this.dialogService.showSimpleDialog(
+          'DIALOG.REQUEST_SENT.TITLE',
+          'DIALOG.REQUEST_SENT.CONTENT',
+          false
+        );
         setTimeout(() => {
-          this.router.navigateByUrl(AppRoutes.home).then(() => this.dialog.closeAll());
+          this.router.navigateByUrl(AppRoutes.home).then(() => this.dialogService.getDialog().closeAll());
         }, 2000);
       },
       (error: HttpErrorResponse) => {
-        this.translateService.get('DIALOG.REQUEST_NOT_SENT.CONTENT').subscribe(content => {
-          const dialogConfig = new MatDialogConfig();
-          dialogConfig.data = {
-            title: 'DIALOG.REQUEST_NOT_SENT.TITLE',
-            content: `${content} ${error.status} ${error.statusText}`,
-            showCloseButton: true
-          };
-          this.dialog.open(InfoDialogComponent, dialogConfig);
-        });
+        this.dialogService.showErrorDialog(
+          'DIALOG.REQUEST_NOT_SENT.TITLE',
+          'DIALOG.REQUEST_NOT_SENT.CONTENT',
+          error
+        );
       },
     );
   }
@@ -535,7 +679,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   validatePaste(element: HTMLInputElement, maxValue: number) {
-    element.value = this.getNumberLimited(element.value, maxValue);
+    element.value = this.requestService.getNumberLimited(element.value, maxValue);
   }
 
   synchronizeCountryName() {

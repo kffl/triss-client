@@ -1,6 +1,6 @@
 <div class="page">
   <div class="container">
-    <div class="title item">Dane osobowe</div>
+    <div class="title item">{{ 'PERSONAL_DATA.TITLE' | translate }}</div>
     <div class="form item">
 
       <mat-form-field [appearance]="formFieldsStyle">
@@ -37,13 +37,13 @@
     </div>
     <div class="buttons item">
       <a><button *ngIf="!isEditing" (click)="onEditButton()" mat-flat-button color="primary">
-        <span>{{ 'REQUEST.BUTTON_EDIT' | translate }}</span>
+        <span>{{ 'PERSONAL_DATA.BUTTON_EDIT' | translate }}</span>
       </button></a>
       <a><button *ngIf="isEditing" (click)="onCancelButton()" mat-flat-button color="primary">
-        <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
+        <span>{{ 'PERSONAL_DATA.BUTTON_CANCEL' | translate }}</span>
       </button></a>
       <a><button *ngIf="isEditing" (click)="onSaveButton()" mat-flat-button color="primary">
-        <span>{{ 'REQUEST.BUTTON_SAVE' | translate }}</span>
+        <span>{{ 'PERSONAL_DATA.BUTTON_SAVE' | translate }}</span>
       </button></a>
     </div>
   </div>

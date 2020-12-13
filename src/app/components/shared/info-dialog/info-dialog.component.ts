@@ -5,6 +5,7 @@ interface DialogData {
   title: string;
   content: string;
   showCloseButton: boolean;
+  error: string;
 }
 
 @Component({
@@ -14,14 +15,18 @@ interface DialogData {
 })
 export class InfoDialogComponent implements OnInit {
 
+  showCloseButton = true;
+
   constructor(
     public dialogRef: MatDialogRef<InfoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
-    dialogRef.disableClose = !data.showCloseButton;
-  }
+  ) { }
 
   ngOnInit(): void {
+    if (this.data.showCloseButton === false) {
+      this.showCloseButton = false;
+    }
+    this.dialogRef.disableClose = !this.showCloseButton;
   }
 
   close() {

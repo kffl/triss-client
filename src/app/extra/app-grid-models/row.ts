@@ -5,5 +5,5 @@ export interface Row {
   country: string;
   employeeId: number;
   id: number;
-  status: string;
+  status: number;
 }

@@ -10,6 +10,7 @@
     "NEW_REQUESTS": "New request",
     "REQUESTS_LIST": "Submitted requests",
     "DIRECTOR_PANEL": "Director's panel",
+    "WILDA_PANEL": "Wilda's panel",
     "RECTOR_PANEL": "Rector's panel"
   },
   "FOOTER": {
@@ -19,7 +20,21 @@
     "HELLO": "Hello"
   },
   "PERSONAL_DATA": {
-
+    "TITLE": "Personal data",
+    "BUTTON_EDIT": "Edit your data",
+    "BUTTON_SAVE": "Save",
+    "BUTTON_CANCEL": "Cancel"
+  },
+  "LIST": {
+    "REQUESTS_LIST": "Submitted requests",
+    "DIRECTOR_LIST": "Director's panel",
+    "WILDA_LIST": "Wilda's panel",
+    "RECTOR_LIST": "Rector's panel"
+  },
+  "STATUS": {
+    "STATUS": "Status:",
+    "CREATE": "During creation",
+    "DECLINE_REASON": "Decline reason:"
   },
   "REQUEST": {
     "MAIN_TITLE": "Request for an official trip abroad",
@@ -35,7 +50,10 @@
     "BUTTON_NEW_TRANSPORT": "Add new mean of transport",
     "BUTTON_DELETE_TRANSPORT": "Delete last mean of transport",
     "BUTTON_CANCEL": "Cancel",
+    "BUTTON_REJECT": "Reject the request",
     "BUTTON_SEND": "Send the request",
+    "BUTTON_APPROVE": "Mark as verified",
+    "BUTTON_ACCEPT": "Accept request",
     "FIRST_NAME": "First name",
     "SURNAME": "Surname",
     "ACADEMIC_TITLE": "Title/academic degree/position",
@@ -55,7 +73,7 @@
     "ALLOCATION_ACCOUNT": "Allocation account",
     "MPK": "MPK",
     "FINANCIAL_SOURCE": "Financial source",
-    "PROJECT": "Projekt",
+    "PROJECT": "Project",
     "TRANSPORT_MEAN_NO": "Mean of transport No. ",
     "TRANSPORT_MEAN_TYPE": "Type of mean of transport",
     "ROUTE_FROM": "Route: from",
@@ -80,7 +98,7 @@
     "ACCOMMODATION": "Accommodation: number of nights",
     "LIMIT": "Limit/lump sum",
     "TRAVEL_DIET": "Travel diet",
-    "LOCAL_TRANSPORT_COSTS": "Travel costs by local tranport",
+    "LOCAL_TRANSPORT_COSTS": "Travel costs by local transport",
     "OTHER_COSTS": "Other costs",
     "OTHER_COSTS_PLACEHOLDER": "Describe other costs here",
     "OTHER_COSTS_AMOUNT": "Amount",
@@ -108,18 +126,30 @@
       "TITLE": "Communication error with the server",
       "CONTENT": "Error code: "
     },
+    "REQUEST_APPROVED": {
+      "TITLE": "Request approved",
+      "CONTENT": "Request has been approved"
+    },
+    "REQUEST_APPROVE_FAIL": {
+      "TITLE": "Error approving the request",
+      "CONTENT": "Error code: "
+    },
+    "REQUEST_REJECTED": {
+      "TITLE": "Request rejected",
+      "CONTENT": "Request has been rejected"
+    },
+    "REQUEST_REJECT_FAIL": {
+      "TITLE": "Error rejecting the request",
+      "CONTENT": "Error code: "
+    },
+    "PERSONAL_DATA_SAVED": {
+      "TITLE": "Data saved",
+      "CONTENT": "Personal data has been saved"
+    },
+    "PERSONAL_DATA_FAILED": {
+      "TITLE": "Error saving data",
+      "CONTENT": "Error code: "
+    },
     "CLOSE": "Close"
-  },
-  "REQUESTS_LIST": {
-
-  },
-  "DIRECTOR_PANEL": {
-
-  },
-  "RECTOR_PANEL": {
-
-  },
-  "SETTINGS": {
-
   }
 }

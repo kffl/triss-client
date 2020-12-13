@@ -1,9 +1,32 @@
 <br/>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Filtry
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class = "form">
+    <div *ngFor = "let tableFilter of objectKeys(columnFilters)" >
+      {{columnFilters[tableFilter].description}}: 
+      <div [ngSwitch] = "columnFilters[tableFilter].type">
+        <mat-form-field *ngSwitchCase="'text'" appearance="outline" class = "filter" >
+        <input matInput type="text" (keyup)="onFilterChange($event, tableFilter)" 
+              (paste)="onFilterChange($event, tableFilter)" [id] = "tableFilter">
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'date'" appearance="outline" class = "filter">
+          <input matInput [matDatepicker]="picker" (dateChange)="onDateFilterChange($event, tableFilter)">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+ </mat-expansion-panel>
+ 
+<br/>
 <div *ngIf = "dataSource" class = "main-container mat-elevation-z8">
 
-  <!-- <div class="spinner-container" *ngIf="dataSource.loading$ | async">
-    <mat-spinner class="spinner"></mat-spinner>
-  </div> -->
   <table mat-table [dataSource]="dataSource" matSort matSortDisableClear>
 
     <ng-container [matColumnDef]="tableData" *ngFor="let tableData of objectKeys(columnHeader)">
@@ -15,23 +38,7 @@
         </td>
     </ng-container>
 
-    <ng-container [matColumnDef]="tableFilter" *ngFor="let tableFilter of objectKeys(columnFilters)">
-      <th mat-header-cell *matHeaderCellDef>
-        <div [ngSwitch] = "columnFilters[tableFilter].type">
-          <mat-form-field *ngSwitchCase="'text'" appearance="outline" class = "filter">
-            <input matInput type="text" (keyup)="onFilterChange($event, tableFilter)" (paste)="onFilterChange($event, tableFilter)" [id] = "tableFilter">
-          </mat-form-field>
-          <mat-form-field *ngSwitchCase="'date'" appearance="outline" class = "filter">
-            <input matInput [matDatepicker]="picker" (dateChange)="onDateFilterChange($event, tableFilter)">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </th>
-    </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="objectKeys(columnHeader)"></tr>
-    <tr mat-header-row *matHeaderRowDef="objectKeys(columnFilters)"></tr>
     <tr class="table-row" mat-row *matRowDef="let row; columns: objectKeys(columnHeader);" (click) = onRowClicked(row)></tr>
   </table>
   <mat-paginator [length]="objectCount" [pageSizeOptions]="pageSizeOptions"></mat-paginator>

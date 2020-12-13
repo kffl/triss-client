@@ -13,6 +13,7 @@ export class RequestRectorComponent implements OnInit {
 
   useCase: UseCaseEnum;
   form: FormData;
+  status: number;
 
   constructor(
     private requestDataService: RequestDataService
@@ -23,6 +24,7 @@ export class RequestRectorComponent implements OnInit {
     this.useCase = UseCaseEnum.Rector;
     this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
       this.form = formWithStatus.form;
+      this.status = formWithStatus.status;
     });
   }
 }

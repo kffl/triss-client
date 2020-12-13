@@ -1,5 +1,5 @@
 export interface PersonalDataInterface {
-  id: number;
+  employeeId: number;
   firstName: string;
   surname: string;
   birthDate: string;
@@ -7,4 +7,5 @@ export interface PersonalDataInterface {
   academicDegree: string;
   instituteID: number;
   employeeType: number;
+  id: number;
 }

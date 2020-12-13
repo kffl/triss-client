@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Podaj powód odrzucenia wniosku</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Powód</mat-label>
+    <textarea cdkTextareaAutosize matInput [(ngModel)]="reason"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="close()"><span>Anuluj</span></button>
+  <button mat-raised-button color="primary" (click)="reject()" [disabled]="reason?.length < 1"><span>Odrzuć</span></button>
+</mat-dialog-actions>

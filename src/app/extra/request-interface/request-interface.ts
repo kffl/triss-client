@@ -49,18 +49,12 @@ export interface FormData {
     purpose: string
     rectorComments: string
     selfInsured: boolean
-    status: string
+    status: number
     subject: string
     surname: string
     wildaComments: string
   };
-  financialSource: {
-    allocationAccount: string
-    financialSource: string
-    id: number
-    mpk: string
-    project: string
-  };
+  financialSource: FinancialSource;
   institute: {
     id: number;
     name: string;
@@ -73,7 +67,7 @@ export interface FormData {
   };
   transport: Transport[];
 }
-interface Transport {
+export interface Transport {
   applicationID: number;
   carrier: string;
   departureDay: string;
@@ -85,7 +79,15 @@ interface Transport {
   vehicleSelect: number;
 }
 
+export interface FinancialSource {
+  allocationAccount: string;
+  financialSource: string;
+  id: number;
+  mpk: string;
+  project: string;
+}
+
 export interface FormWithStatus {
   form: FormData;
-  status: string;
+  status: number;
 }

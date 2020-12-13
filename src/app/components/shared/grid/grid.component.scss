@@ -17,9 +17,23 @@
       font-size: 16px;
     }
   }
-  //.spinner {
-  //    margin: auto;
-  //}
+}
+
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  mat-form-field {
+    flex: 1 1 0;
+    display: block;
+    padding: 5px;
+    min-width: min(425px, calc(100vw - 20px));
+    input {
+      color: black;
+    }
+  }
 }
 
 
