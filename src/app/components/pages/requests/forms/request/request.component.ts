@@ -378,21 +378,21 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         switch (this.useCase) {
           case UseCaseEnum.Director: {
             this.formData.application.directorComments = result.reason;
-            this.formData.application.status = 5;
+            this.formData.application.status = this.status;
             restObservable = this.restService.rejectAsDirector(this.formData);
             goBackUrl = AppRoutes.requestsListDirector;
             break;
           }
           case UseCaseEnum.WildaApprove: {
             this.formData.application.wildaComments = result.reason;
-            this.formData.application.status = 6;
+            this.formData.application.status = this.status;
             restObservable = this.restService.rejectAsWilda(this.formData);
             goBackUrl = AppRoutes.requestsListWilda;
             break;
           }
           case UseCaseEnum.Rector: {
             this.formData.application.rectorComments = result.reason;
-            this.formData.application.status = 7;
+            this.formData.application.status = this.status;
             restObservable = this.restService.rejectAsRector(this.formData);
             goBackUrl = AppRoutes.requestsListRector;
             break;
@@ -415,7 +415,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     const isValidFinancialSource = this.validateFinancialSource(financialSource);
     if (isValidFinancialSource) {
       this.formData.financialSource = financialSource;
-      this.formData.application.status = this.status + 1;
+      this.formData.application.status = this.status;
       this.approveForm(this.restService.approveAsDirector(this.formData), AppRoutes.requestsListDirector);
     } else {
       this.validationFailedDialog();
@@ -423,12 +423,12 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   sendToRector() {
-    this.formData.application.status = this.status + 1;
+    this.formData.application.status = this.status;
     this.approveForm(this.restService.approveAsWilda(this.formData), AppRoutes.requestsListWilda);
   }
 
   sendBackToWilda() {
-    this.formData.application.status = this.status + 1;
+    this.formData.application.status = this.status;
     this.approveForm(this.restService.approveAsRector(this.formData), AppRoutes.requestsListRector);
   }
 
