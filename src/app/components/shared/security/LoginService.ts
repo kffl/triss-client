@@ -1,21 +1,19 @@
-import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
-import {SafeHttpClient} from './SafeHtppClient';
 import {Inject} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import { HttpHeaders } from '@angular/common/http';
-import { LocalStorageService } from './LocalStorageService';
+import {LocalStorageService} from './LocalStorageService';
+import {RestService} from '../../../services/rest-service';
 
 export class LoginService {
 
-  constructor(private http: SafeHttpClient,
-              @Inject(DOCUMENT) private document: Document,
-              private localStorageService: LocalStorageService) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private localStorageService: LocalStorageService,
+    private restService: RestService
+  ) {}
 
 
   public login(): void {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
-
-    this.http.post<PersonalDataInterface>(url, {}).subscribe(personalData => {
+    this.restService.getPersonalData().subscribe(personalData => {
       const role = personalData.employeeType;
       this.localStorageService.role = role.toString();
     });
