@@ -1,11 +1,9 @@
 <app-panel-template
+  pageTitle="LIST.RECTOR_LIST"
   [headers] = 'headers'
-  [pageTitle]="'Widok rektora'"
   [linkToSingleRequest]="appRoutes.viewRequestRector"
   [filter]="{}"
   [orderBy]="'id'"
   [desc]="false"
-  [dataPath]="'rector/application/get'"
-  [countPath]="'rector/application/count'"
-  [singleRequestPath]="'rector/application/getFull'"
+  [actor]="actor"
 ></app-panel-template>

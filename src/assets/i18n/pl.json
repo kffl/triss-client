@@ -20,7 +20,21 @@
     "HELLO": "Cześć"
   },
   "PERSONAL_DATA": {
-
+    "TITLE": "Dane osobowe",
+    "BUTTON_EDIT": "Edytuj dane",
+    "BUTTON_SAVE": "Zapisz dane",
+    "BUTTON_CANCEL": "Anuluj"
+  },
+  "LIST": {
+    "REQUESTS_LIST": "Złożone wnioski",
+    "DIRECTOR_LIST": "Panel dyrektora",
+    "WILDA_LIST": "Panel Wildy",
+    "RECTOR_LIST": "Panel rektora"
+  },
+  "STATUS": {
+    "STATUS": "Status:",
+    "CREATE": "W trakcie tworzenia",
+    "DECLINE_REASON": "Powód odrzucenia:"
   },
   "REQUEST": {
     "MAIN_TITLE": "Wniosek o wyjazd służbowy za granicę",
@@ -36,6 +50,7 @@
     "BUTTON_NEW_TRANSPORT": "Dodaj kolejny środek transportu",
     "BUTTON_DELETE_TRANSPORT": "Usuń ostatni środek transportu",
     "BUTTON_CANCEL": "Anuluj",
+    "BUTTON_REJECT": "Odrzuć wniosek",
     "BUTTON_SEND": "Wyślij wniosek",
     "BUTTON_APPROVE": "Oznacz jako zweryfikowany",
     "BUTTON_ACCEPT": "Zaakceptuj wniosek",
@@ -96,9 +111,7 @@
     "DOCUMENT_TYPE": "Rodzaj dokumentu",
     "DOCUMENT_SERIAL_NUMBER": "Seria i numer",
     "COMMENTS": "Tu wpisz swoje uwagi",
-    "REQUIRED_FIELD": "To pole jest wymagane",
-    "BUTTON_EDIT": "Edytuj dane",
-    "BUTTON_SAVE": "Zapisz dane"
+    "REQUIRED_FIELD": "To pole jest wymagane"
   },
   "DIALOG": {
     "REQUEST_VALIDATION_FAILED": {
@@ -113,18 +126,30 @@
       "TITLE": "Błąd komunikacji z serwerem",
       "CONTENT": "Kod błędu: "
     },
+    "REQUEST_APPROVED": {
+      "TITLE": "Zaakceptiowano wniosek",
+      "CONTENT": "Wniosek został zaakceptowany"
+    },
+    "REQUEST_APPROVE_FAIL": {
+      "TITLE": "Nie udało się zaakceptować wniosku",
+      "CONTENT": "Kod błędu: "
+    },
+    "REQUEST_REJECTED": {
+      "TITLE": "Odrzucono wniosek",
+      "CONTENT": "Wniosek został odrzucony"
+    },
+    "REQUEST_REJECT_FAIL": {
+      "TITLE": "Nie udało się odrzucić wniosku",
+      "CONTENT": "Kod błędu: "
+    },
+    "PERSONAL_DATA_SAVED": {
+      "TITLE": "Zapisano pomyślnie",
+      "CONTENT": "Dane zostały pomyślnie zapisane"
+    },
+    "PERSONAL_DATA_FAILED": {
+      "TITLE": "Nie udało się zapisać danych",
+      "CONTENT": "Kod błędu: "
+    },
     "CLOSE": "Zamknij"
-  },
-  "REQUESTS_LIST": {
-
-  },
-  "DIRECTOR_PANEL": {
-
-  },
-  "RECTOR_PANEL": {
-
-  },
-  "SETTINGS": {
-
   }
 }

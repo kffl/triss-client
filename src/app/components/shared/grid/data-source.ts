@@ -2,16 +2,17 @@ import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, EMPTY, Observable, of} from 'rxjs';
 import {catchError, finalize, map, take, tap} from 'rxjs/operators';
 import {PageInfo} from '../../../extra/app-grid-models/models';
-import {GridRestService} from './grid-rest-service';
+import {RestService} from '../../../services/rest-service';
+import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
 
 export class CustomDataSource implements DataSource<any> {
 
-  private rowSubject = new BehaviorSubject<any[]>([]);
+    private rowSubject = new BehaviorSubject<any[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
 
     public loading$ = this.loadingSubject.asObservable();
 
-    constructor(private restService: GridRestService) {}
+    constructor(private restService: RestService) {}
 
     connect(collectionViewer: CollectionViewer): Observable<any[]> {
         return this.rowSubject.asObservable();
@@ -22,17 +23,13 @@ export class CustomDataSource implements DataSource<any> {
         this.loadingSubject.complete();
     }
 
-    public loadData(url: string, pageInfo: PageInfo) {
-        if (url === undefined) {
-          return;
-        }
-
+    public loadData(actor: ActorEnum, pageInfo: PageInfo) {
         this.loadingSubject.next(true);
-        this.restService.getFlux(url, pageInfo).pipe(
+        this.restService.getFlux(actor, pageInfo).pipe(
                 catchError(() => of([])),
-                finalize(() => this.loadingSubject.next(false)),
+                finalize(() => this.loadingSubject.next(false))
         ).subscribe(rows => {
-          this.rowSubject.next(rows);
+            this.rowSubject.next(rows);
         });
     }
 }

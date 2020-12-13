@@ -1,7 +1,9 @@
 <h2 mat-dialog-title>{{ data.title | translate }}</h2>
 <mat-dialog-content>
-  <span>{{ data.content | translate }}</span>
+  <span>
+    {{ data.content | translate }} <span *ngIf="data.error">{{data.error}}</span>
+  </span>
 </mat-dialog-content>
-<mat-dialog-actions *ngIf="data.showCloseButton">
+<mat-dialog-actions *ngIf="showCloseButton">
   <button mat-raised-button color="primary" (click)="close()"><span>{{ 'DIALOG.CLOSE' | translate }}</span></button>
 </mat-dialog-actions>

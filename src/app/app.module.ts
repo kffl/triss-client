@@ -41,7 +41,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { GridRestService } from './components/shared/grid/grid-rest-service';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CreateRequestComponent } from './components/pages/requests/views/create-request/create-request.component';
 import { RequestEmployeeReadComponent } from './components/pages/requests/views/requests-list/request-employee-read/request-employee-read.component';
 import { WildaPanelComponent } from './components/pages/requests/views/wilda-panel/wilda-panel.component';
@@ -49,6 +49,7 @@ import { PanelTemplateComponent } from './components/pages/requests/views/panel-
 import { ReqeustDirectorComponent } from './components/pages/requests/views/director-panel/reqeust-director/reqeust-director.component';
 import { ReqeustWildaComponent } from './components/pages/requests/views/wilda-panel/reqeust-wilda/reqeust-wilda.component';
 import { RequestRectorComponent } from './components/pages/requests/views/rector-panel/request-rector/request-rector.component';
+import { RejectDialogComponent } from './components/shared/reject-dialog/reject-dialog.component';
 import {SecurityService} from './components/shared/security/SecurityService';
 import {SafeHttpClient} from './components/shared/security/SafeHtppClient';
 import {LoginService} from './components/shared/security/LoginService';
@@ -84,7 +85,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PanelTemplateComponent,
     ReqeustDirectorComponent,
     ReqeustWildaComponent,
-    RequestRectorComponent
+    RequestRectorComponent,
+    RejectDialogComponent
   ],
   imports: [
     MatNativeDateModule,
@@ -123,7 +125,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSelectModule,
     MatCheckboxModule,
     DigitOnlyModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule
   ],
   providers: [
     MatDatepickerModule,
@@ -140,7 +143,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],
-  entryComponents: [InfoDialogComponent]
+  entryComponents: [InfoDialogComponent, RejectDialogComponent]
 })
 
 export class AppModule {

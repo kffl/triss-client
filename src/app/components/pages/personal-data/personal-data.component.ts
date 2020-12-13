@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, AfterViewChecked, ViewChild} from '@angular/core';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
 import {MatInput} from '@angular/material/input';
 import {MatSelect} from '@angular/material/select';
@@ -8,9 +8,9 @@ import {MatDatepickerInput} from '@angular/material/datepicker';
 import {InstituteInterface} from '../../../extra/institute-interface/institute.interface';
 import {BehaviorSubject} from 'rxjs';
 import {take} from 'rxjs/operators';
-import {InfoDialogComponent} from '../../shared/info-dialog/info-dialog.component';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {RequestDataService} from '../../../services/request-data.service';
+import {DialogService} from '../../../services/dialog.service';
+import {RestService} from '../../../services/rest-service';
 
 @Component({
   selector: 'app-personal-data',
@@ -33,9 +33,9 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   @ViewChild('instituteSelect') instituteSelect: MatSelect;
 
   constructor(
-    private http: HttpClient,
-    private dialog: MatDialog,
-    private requestService: RequestDataService
+    private restService: RestService,
+    private requestService: RequestDataService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -51,8 +51,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   getPersonalData() {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/get`;
-    this.http.post<PersonalDataInterface>(url, {}).subscribe(personalData => {
+    this.restService.getPersonalData().subscribe(personalData => {
       this.personalData = personalData;
       this.loadPersonalData();
       this.personalDataReadySubject.next(true);
@@ -60,8 +59,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   getInstitutes() {
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/institute/all`;
-    this.http.get<InstituteInterface[]>(url).subscribe(institutes => {
+    this.restService.getInstitutes().subscribe(institutes => {
       this.allInstitutes = institutes;
       this.loadInstituteData();
     });
@@ -105,26 +103,19 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
-    const dialogConfig = new MatDialogConfig();
-    const url = `${window.location.protocol}//${window.location.hostname}:8080/employee/update`;
-    this.http.post<PersonalDataInterface>(url, newPersonalData).subscribe(
+    this.restService.updatePersonalData(newPersonalData).subscribe(
       () => {
-        dialogConfig.data = {
-          title: 'Zapisano pomyślnie',
-          content: 'Dane zostały pomyślnie zapisane',
-          showCloseButton: true
-        };
+        this.dialogService.showSimpleDialog(
+          'DIALOG.PERSONAL_DATA_SAVED.TITLE',
+          'DIALOG.PERSONAL_DATA_SAVED.CONTENT'
+        );
       },
       (error: HttpErrorResponse) => {
-        dialogConfig.data = {
-          title: 'Błąd',
-          content: 'Nie udało się zapisać danych',
-          showCloseButton: true
-        };
-        this.dialog.open(InfoDialogComponent, dialogConfig);
-      },
-      () => {
-        this.dialog.open(InfoDialogComponent, dialogConfig);
+        this.dialogService.showErrorDialog(
+          'DIALOG.PERSONAL_DATA_FAILED.TITLE',
+          'DIALOG.PERSONAL_DATA_FAILED.CONTENT',
+          error
+        );
       });
   }
 

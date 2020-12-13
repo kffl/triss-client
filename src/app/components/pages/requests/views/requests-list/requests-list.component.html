@@ -1,11 +1,9 @@
 <app-panel-template
+  pageTitle="LIST.REQUESTS_LIST"
   [headers] = 'headers'
-  [pageTitle]="'Złożone wioski'"
   [linkToSingleRequest]="appRoutes.viewRequestEmployee"
   [filter]="{}"
   [orderBy]="'id'"
   [desc]="false"
-  [dataPath]="'user/application/get'"
-  [countPath]="'user/application/count'"
-  [singleRequestPath]="'user/application/getFull'"
+  [actor]="actor"
 ></app-panel-template>
