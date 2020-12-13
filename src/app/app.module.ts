@@ -50,6 +50,14 @@ import { ReqeustDirectorComponent } from './components/pages/requests/views/dire
 import { ReqeustWildaComponent } from './components/pages/requests/views/wilda-panel/reqeust-wilda/reqeust-wilda.component';
 import { RequestRectorComponent } from './components/pages/requests/views/rector-panel/request-rector/request-rector.component';
 import { RejectDialogComponent } from './components/shared/reject-dialog/reject-dialog.component';
+import {SecurityService} from './components/shared/security/SecurityService';
+import {SafeHttpClient} from './components/shared/security/SafeHtppClient';
+import {LoginService} from './components/shared/security/LoginService';
+import { UserService } from './components/shared/security/roles/UserService';
+import { WildaService } from './components/shared/security/roles/WildaService';
+import { DirectorService } from './components/shared/security/roles/DirectorService';
+import { RectorService } from './components/shared/security/roles/RectorService';
+import { LocalStorageService } from './components/shared/security/LocalStorageService';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -124,6 +132,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
     RestService,
     GridRestService,
+    SecurityService,
+    SafeHttpClient,
+    LoginService,
+    UserService,
+    WildaService,
+    DirectorService,
+    RectorService,
+    LocalStorageService,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent],

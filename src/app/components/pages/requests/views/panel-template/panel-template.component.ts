@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {FormData, FormWithStatus} from '../../../../../extra/request-interface/request-interface';
+import { SafeHttpClient } from 'src/app/components/shared/security/SafeHtppClient';
 import {DialogService} from '../../../../../services/dialog.service';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 import {RestService} from '../../../../../services/rest-service';
@@ -23,21 +24,14 @@ export class PanelTemplateComponent implements OnInit {
   @Input() orderBy: string;
   @Input() desc: boolean;
   @Input() actor: ActorEnum;
+  @Input() headers;
 
-  headers = {
-    firstName: {description: 'Imię', type: 'text'},
-    surname: {description: 'Nazwisko', type: 'text'},
-    instituteName: {description: 'Instytut', type: 'text'},
-    country: {description: 'Kraj', type: 'text'},
-    city: {description: 'Miasto', type: 'text'},
-    status: {description: 'Status', type: 'text'},
-    abroadStartDate: {description: 'Data wyjazdu', type: 'date'},
-    abroadEndDate: {description: 'Data powrotu', type: 'date'}};
   data: any[];
 
   pageInfo: PageInfo;
 
   constructor(
+    private http: SafeHttpClient,
     private router: Router,
     private translateService: TranslateService,
     private requestDataService: RequestDataService,

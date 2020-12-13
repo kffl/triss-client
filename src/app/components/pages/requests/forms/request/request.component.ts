@@ -25,8 +25,10 @@ import {InstituteInterface} from '../../../../../extra/institute-interface/insti
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
 import {DialogService} from '../../../../../services/dialog.service';
-import {Enum, RestService} from '../../../../../services/rest-service';
+import {RestService, Enum} from '../../../../../services/rest-service';
 import {Observable} from 'rxjs';
+import {SafeHttpClient} from '../../../../shared/security/SafeHtppClient';
+
 
 @Component({
   selector: 'app-request',
@@ -139,6 +141,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService,
+    private http: SafeHttpClient,
     private router: Router,
     private location: Location,
     private requestService: RequestDataService,

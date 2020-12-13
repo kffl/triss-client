@@ -1,6 +1,9 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Inject, Input, OnInit} from '@angular/core';
 import {DateAdapter, ThemePalette} from '@angular/material/core';
 import {TranslateService} from '@ngx-translate/core';
+import {DOCUMENT} from '@angular/common';
+import {SecurityService} from '../../shared/security/SecurityService';
+import {LoginService} from '../../shared/security/LoginService';
 
 @Component({
   selector: 'app-header',
@@ -35,8 +38,10 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(
-    private translateService: TranslateService,
-    private dateAdapter: DateAdapter<any>
+              @Inject(DOCUMENT) private document: Document,
+              private translateService: TranslateService,
+              private dateAdapter: DateAdapter<any>,
+              private loginService: LoginService
   ) {
 
   }
@@ -64,4 +69,9 @@ export class HeaderComponent implements OnInit {
     this.translateService.use('en');
     this.dateAdapter.setLocale('en');
   }
+
+  logout() {
+    this.loginService.logout();
+  }
+
 }

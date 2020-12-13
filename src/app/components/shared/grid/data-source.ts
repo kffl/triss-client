@@ -1,6 +1,6 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {catchError, finalize} from 'rxjs/operators';
+import {BehaviorSubject, EMPTY, Observable, of} from 'rxjs';
+import {catchError, finalize, map, take, tap} from 'rxjs/operators';
 import {PageInfo} from '../../../extra/app-grid-models/models';
 import {RestService} from '../../../services/rest-service';
 import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
