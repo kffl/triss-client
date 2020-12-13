@@ -10,7 +10,7 @@ import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 export class RectorPanelComponent implements OnInit {
 
   appRoutes = AppRoutes;
-  actor = ActorEnum.Director;
+  actor = ActorEnum.Rector;
   constructor() { }
 
   ngOnInit(): void {
