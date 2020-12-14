@@ -2,13 +2,16 @@ import {Inject} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {LocalStorageService} from './LocalStorageService';
 import {RestService} from '../../../services/rest-service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {SecurityService} from './SecurityService';
 
 export class LoginService {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private localStorageService: LocalStorageService,
-    private restService: RestService
+    private restService: RestService,
+    private securityService: SecurityService
   ) {}
 
 
@@ -16,7 +19,7 @@ export class LoginService {
     this.restService.getPersonalData().subscribe(personalData => {
       const role = personalData.employeeType;
       this.localStorageService.role = role.toString();
-    });
+    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
   }
 
   public logout(): void {

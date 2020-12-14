@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {SecurityService} from './SecurityService';
 import {LocalStorageService} from './LocalStorageService';
@@ -15,7 +15,8 @@ export class SafeHttpClient {
               private localStorageService: LocalStorageService) {}
 
   public post<T>(url: string, body: any | null): Observable<T> {
-    // TODO : this would be helpful, when we will want to response in Flux, not Mono<List<ApplicationRow>>, so i would like to have this here
+    // TODO : this would be helpful, when we will want to response in Flux,
+    //  not Mono<List<ApplicationRow>>, so i would like to have this here
     // return new Observable<T>((observer) => {
     //
     //   const eventSource = new EventSource(url);
@@ -45,14 +46,14 @@ export class SafeHttpClient {
     };
 
     const result = this.http.post<T>(url, body, httpOptions);
-    result.subscribe(
-      (data) => {
-      },
-      (error) => {
-        if (error.status === 0 || error.status === 401) {
-          this.securityService.redirectToELogin();
-        }
-      });
+    // result.subscribe(
+    //   (data) => {
+    //   },
+    //   (error) => {
+    //     if (error.status === 0 || error.status === 401) {
+    //       this.securityService.redirectToELogin();
+    //     }
+    //   });
     return result;
   }
 
@@ -64,14 +65,14 @@ export class SafeHttpClient {
       })
     };
     const result = this.http.get<T>(url, httpOptions);
-    result.subscribe(
-      (data) => {
-      },
-      (error) => {
-        if (error.status === 0 || error.status === 401) {
-          this.securityService.redirectToELogin();
-        }
-      });
+    // result.subscribe(
+    //   (data) => {
+    //   },
+    //   (error) => {
+    //     if (error.status === 0 || error.status === 401) {
+    //       this.securityService.redirectToELogin();
+    //     }
+    //   });
     return result;
   }
 }

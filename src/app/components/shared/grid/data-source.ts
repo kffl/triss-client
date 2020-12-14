@@ -1,9 +1,11 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject, EMPTY, Observable, of} from 'rxjs';
-import {catchError, finalize, map, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {catchError, finalize} from 'rxjs/operators';
 import {PageInfo} from '../../../extra/app-grid-models/models';
 import {RestService} from '../../../services/rest-service';
 import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
+import {SecurityService} from '../security/SecurityService';
+import {HttpErrorResponse} from '@angular/common/http';
 
 export class CustomDataSource implements DataSource<any> {
 
@@ -12,7 +14,10 @@ export class CustomDataSource implements DataSource<any> {
 
     public loading$ = this.loadingSubject.asObservable();
 
-    constructor(private restService: RestService) {}
+    constructor(
+      private restService: RestService,
+      private securityService: SecurityService
+    ) {}
 
     connect(collectionViewer: CollectionViewer): Observable<any[]> {
         return this.rowSubject.asObservable();
@@ -30,6 +35,6 @@ export class CustomDataSource implements DataSource<any> {
                 finalize(() => this.loadingSubject.next(false))
         ).subscribe(rows => {
             this.rowSubject.next(rows);
-        });
+        }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
     }
 }

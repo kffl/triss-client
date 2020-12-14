@@ -11,6 +11,7 @@ import {take} from 'rxjs/operators';
 import {RequestDataService} from '../../../services/request-data.service';
 import {DialogService} from '../../../services/dialog.service';
 import {RestService} from '../../../services/rest-service';
+import {SecurityService} from '../../shared/security/SecurityService';
 
 @Component({
   selector: 'app-personal-data',
@@ -34,6 +35,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
 
   constructor(
     private restService: RestService,
+    private securityService: SecurityService,
     private requestService: RequestDataService,
     private dialogService: DialogService
   ) { }
@@ -55,14 +57,14 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
       this.personalData = personalData;
       this.loadPersonalData();
       this.personalDataReadySubject.next(true);
-    });
+    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
   }
 
   getInstitutes() {
     this.restService.getInstitutes().subscribe(institutes => {
       this.allInstitutes = institutes;
       this.loadInstituteData();
-    });
+    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
   }
 
   loadPersonalData() {
@@ -111,6 +113,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
         );
       },
       (error: HttpErrorResponse) => {
+        this.securityService.checkErrorAndRedirectToELogin(error);
         this.dialogService.showErrorDialog(
           'DIALOG.PERSONAL_DATA_FAILED.TITLE',
           'DIALOG.PERSONAL_DATA_FAILED.CONTENT',
