@@ -1,5 +1,9 @@
 export enum StatusEnum {
-  ApprovedByDirector= 1,
-  ApprovedByRector
-  // TODO rest of statuses when needed
+  waitingForDirector = 1,
+  waitingForWilda = 2,
+  waitingForRector = 3,
+  rejectedByDirector = 4,
+  rejectedByWilda = 5,
+  rejectedByRector = 6,
+  accepted = 7
 }
