@@ -2,6 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {Params} from '@angular/router';
 import {DOCUMENT} from '@angular/common';
 import {LocalStorageService} from './LocalStorageService';
+import {HttpErrorResponse} from '@angular/common/http';
 
 
 
@@ -35,6 +36,12 @@ export class SecurityService {
       this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl';
     } else {
       this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl&additional_data=dev';
+    }
+  }
+
+  checkErrorAndRedirectToELogin(error: HttpErrorResponse) {
+    if (error.status === 0 || error.status === 401) {
+      this.redirectToELogin();
     }
   }
 

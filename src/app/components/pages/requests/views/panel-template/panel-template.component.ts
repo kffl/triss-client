@@ -10,6 +10,7 @@ import { SafeHttpClient } from 'src/app/components/shared/security/SafeHtppClien
 import {DialogService} from '../../../../../services/dialog.service';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 import {RestService} from '../../../../../services/rest-service';
+import {SecurityService} from '../../../../shared/security/SecurityService';
 
 @Component({
   selector: 'app-panel-template',
@@ -36,7 +37,8 @@ export class PanelTemplateComponent implements OnInit {
     private translateService: TranslateService,
     private requestDataService: RequestDataService,
     private dialogService: DialogService,
-    private restService: RestService
+    private restService: RestService,
+    private securityService: SecurityService
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +64,7 @@ export class PanelTemplateComponent implements OnInit {
         this.router.navigateByUrl(this.linkToSingleRequest);
       },
       (error: HttpErrorResponse) => {
+        this.securityService.checkErrorAndRedirectToELogin(error);
         this.dialogService.showErrorDialog(
           'DIALOG.REQUEST_NOT_SENT.TITLE',
           'DIALOG.REQUEST_NOT_SENT.CONTENT',

@@ -8,6 +8,7 @@ import {CustomDataSource} from './data-source';
 import {Row} from '../../../extra/app-grid-models/row';
 import {RestService} from '../../../services/rest-service';
 import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
+import {SecurityService} from '../security/SecurityService';
 
 @Component({
   selector: 'app-grid',
@@ -32,7 +33,8 @@ export class GridComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(
-    private restService: RestService
+    private restService: RestService,
+    private securityService: SecurityService
   ) { }
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class GridComponent implements OnInit, AfterViewInit {
         this.columnFilters[filter + 'Filter'] = this.columnHeader[filter];
       }
     }
-    this.dataSource = new CustomDataSource(this.restService);
+    this.dataSource = new CustomDataSource(this.restService, this.securityService);
     this.dataSource.loadData(this.actor, this.pageInfo);
   }
 

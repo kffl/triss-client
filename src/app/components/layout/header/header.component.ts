@@ -2,7 +2,6 @@ import {Component, HostListener, Inject, Input, OnInit} from '@angular/core';
 import {DateAdapter, ThemePalette} from '@angular/material/core';
 import {TranslateService} from '@ngx-translate/core';
 import {DOCUMENT} from '@angular/common';
-import {SecurityService} from '../../shared/security/SecurityService';
 import {LoginService} from '../../shared/security/LoginService';
 
 @Component({
