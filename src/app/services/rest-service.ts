@@ -9,7 +9,7 @@ import {environment} from '../../environments/environment';
 import {SafeHttpClient} from '../components/shared/security/SafeHtppClient';
 
 export interface Enum {
-  value: number;
+  id: number;
   namePl: string;
   nameEng: string;
 }
@@ -52,12 +52,6 @@ export class RestService {
   }
 
   getFlux(actor: ActorEnum, pageInfo: PageInfo): Observable<any[]> {
-    // const httpOptions = {
-    //     headers: new HttpHeaders({
-    //       Accept:  'application/stream+json',
-    //       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-    //     })
-    // };
     let mapping: string;
     switch (actor) {
       case ActorEnum.Employee: {
@@ -81,12 +75,6 @@ export class RestService {
   }
 
   getMono(actor: ActorEnum, pageInfo: PageInfo): Observable<any> {
-    // const httpOptions = {
-    //     headers: new HttpHeaders({
-    //       Accept:  'application/stream+json',
-    //       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-    //     })
-    // };
     let mapping: string;
     switch (actor) {
       case ActorEnum.Employee: {

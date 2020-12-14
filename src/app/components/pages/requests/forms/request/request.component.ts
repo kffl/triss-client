@@ -28,6 +28,7 @@ import {DialogService} from '../../../../../services/dialog.service';
 import {RestService, Enum} from '../../../../../services/rest-service';
 import {Observable} from 'rxjs';
 import {SafeHttpClient} from '../../../../shared/security/SafeHtppClient';
+import {StatusEnum} from '../../../../../extra/status-enum/status-enum';
 
 
 @Component({
@@ -201,7 +202,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   getStatus() {
     this.restService.getStatuses().subscribe(statuses => {
-      this.statusEnum = statuses.find(status => this.status === status.value);
+      this.statusEnum = statuses.find(status => this.status === status.id);
       this.showStatus();
     });
   }
@@ -521,7 +522,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         purpose: this.requestService.formatInput(this.purpose.value),
         rectorComments: null,
         selfInsured: this.selfInsuredCheckbox.checked,
-        status: 0,
+        status: StatusEnum.waitingForDirector,
         subject: this.requestService.formatInput(this.subject.value),
         surname: this.requestService.formatInput(this.surname.value),
         wildaComments: null
