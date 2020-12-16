@@ -78,8 +78,12 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   loadInstituteData() {
     this.personalDataReadySubject.pipe(take(2)).subscribe(ready => {
       if (ready) {
-        this.instituteSelect.value = this.allInstitutes.find(institute => institute.id === this.personalData.instituteID).id;
-      }});
+        const searchedInstitute = this.allInstitutes.find(institute => institute.id === this.personalData.instituteID);
+        if (searchedInstitute != null) {
+          this.instituteSelect.value = searchedInstitute.id;
+        }
+      }
+    });
   }
 
   onEditButton() {
