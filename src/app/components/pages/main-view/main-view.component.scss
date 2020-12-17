@@ -1,0 +1,18 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  .item {
+    padding: 10px 20px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .title {
+    padding-top: 20px;
+    font-size: 24px;
+  }
+
+
+}
