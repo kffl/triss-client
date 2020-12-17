@@ -1,4 +1,5 @@
 <app-request
+  *ngIf="formDataReady"
   [useCase]="useCase"
   [formData]="form"
   [status]="status">
