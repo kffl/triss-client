@@ -6,7 +6,7 @@
     <a [routerLink]="appRoutes.personalData">
       <mat-list-item class="link"><span>{{'SIDE_MENU.PERSONAL_DATA' | translate}}</span></mat-list-item>
     </a>
-    <mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true">
       <mat-expansion-panel-header>
         <span>{{'SIDE_MENU.REQUESTS' | translate}}</span>
       </mat-expansion-panel-header>
