@@ -25,7 +25,7 @@ export class ReqeustWildaComponent implements OnInit {
     this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
       this.form = formWithStatus.form;
       this.status = formWithStatus.status;
-      if (formWithStatus.status === StatusEnum.waitingForDirector) {
+      if (formWithStatus.status === StatusEnum.waitingForWilda) {
         this.useCase = UseCaseEnum.WildaApprove;
       } else {
         this.useCase = UseCaseEnum.WildaAfterRector;
