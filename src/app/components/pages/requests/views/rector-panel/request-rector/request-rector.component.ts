@@ -1,12 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UseCaseEnum} from '../../../../../../extra/use-case-enum/use-case-enum';
-import {FormData} from '../../../../../../extra/request-interface/request-interface';
 import {ActorEnum} from '../../../../../../extra/actor-enum/actor-enum';
-import {HttpErrorResponse} from '@angular/common/http';
-import {LocalStorageService} from '../../../../../shared/security/LocalStorageService';
-import {RestService} from '../../../../../../services/rest-service';
-import {SecurityService} from '../../../../../shared/security/SecurityService';
-import {DialogService} from '../../../../../../services/dialog.service';
 
 @Component({
   selector: 'app-reqeust-rector',
@@ -16,36 +10,13 @@ import {DialogService} from '../../../../../../services/dialog.service';
 export class RequestRectorComponent implements OnInit {
 
   useCase: UseCaseEnum;
-  form: FormData;
-  requestId: number;
-  status: number;
-  formDataReady = false;
+  actorEnum: ActorEnum;
 
-  constructor(
-    private localStorageService: LocalStorageService,
-    private restService: RestService,
-    private securityService: SecurityService,
-    private dialogService: DialogService
-  ) {
+  constructor() {
   }
 
   ngOnInit(): void {
     this.useCase = UseCaseEnum.Rector;
-    this.requestId = parseInt(this.localStorageService.request, 10);
-    this.status = parseInt(this.localStorageService.status, 10);
-    this.restService.getApplication(ActorEnum.Rector, this.requestId).subscribe(
-      (form: FormData) => {
-        this.form = form;
-        this.formDataReady = true;
-      },
-      (error: HttpErrorResponse) => {
-        this.securityService.checkErrorAndRedirectToELogin(error);
-        this.dialogService.showErrorDialog(
-          'DIALOG.REQUEST_NOT_SENT.TITLE',
-          'DIALOG.REQUEST_NOT_SENT.CONTENT',
-          error
-        );
-      }
-    );
+    this.actorEnum = ActorEnum.Rector;
   }
 }

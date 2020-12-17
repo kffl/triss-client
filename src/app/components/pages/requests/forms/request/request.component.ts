@@ -30,6 +30,8 @@ import {Observable} from 'rxjs';
 import {SafeHttpClient} from '../../../../shared/security/SafeHtppClient';
 import {StatusEnum} from '../../../../../extra/status-enum/status-enum';
 import {SecurityService} from '../../../../shared/security/SecurityService';
+import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
+import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
 
 
 @Component({
@@ -40,8 +42,9 @@ import {SecurityService} from '../../../../shared/security/SecurityService';
 export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @Input() useCase: UseCaseEnum;
-  @Input() formData: FormData;
-  @Input() status: number;
+  @Input() actor: ActorEnum;
+  status: number;
+  formData: FormData;
 
   formFieldsStyle: MatFormFieldAppearance = 'fill';
   transportMeansNumber = 1;
@@ -149,21 +152,20 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     private requestService: RequestDataService,
     private dialogService: DialogService,
     private restService: RestService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private localStorageService: LocalStorageService,
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
   }
 
   ngOnInit(): void {
-    this.getSelectEnums();
+    this.getFormData();
     this.getStatus();
   }
 
   ngAfterViewInit() {
     this.setAutocompletingFields();
-    this.setTransportQuantity();
-    this.loadFormData();
     this.changeDetectorRef.detectChanges();
   }
 
@@ -202,7 +204,30 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
+  getFormData() {
+    if (this.useCase !== UseCaseEnum.Create) {
+      const requestId = parseInt(this.localStorageService.request, 10);
+      this.restService.getApplication(this.actor, requestId).subscribe(
+        (form: FormData) => {
+          this.formData = form;
+          this.getSelectEnums();
+          this.loadFormData();
+        },
+        (error: HttpErrorResponse) => {
+          this.securityService.checkErrorAndRedirectToELogin(error);
+          this.dialogService.showErrorDialog(
+            'DIALOG.REQUEST_NOT_SENT.TITLE',
+            'DIALOG.REQUEST_NOT_SENT.CONTENT',
+            error
+          );
+        },
+        () => this.setTransportQuantity()
+      );
+    }
+  }
+
   getStatus() {
+    this.status = parseInt(this.localStorageService.status, 10);
     this.restService.getStatuses().subscribe(statuses => {
       this.statusEnum = statuses.find(status => this.status === status.id);
       this.showStatus();
@@ -248,69 +273,65 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   setTransportQuantity() {
-    if (this.useCase !== UseCaseEnum.Create) {
-      this.transportMeansNumber = this.formData.transport.length;
-      this.transportMeansArray = Array.from(Array(this.transportMeansNumber).keys()).map(val => val + 1);
-    }
+    this.transportMeansNumber = this.formData.transport.length;
+    this.transportMeansArray = Array.from(Array(this.transportMeansNumber).keys()).map(val => val + 1);
   }
 
   loadFormData() {
-    if (this.useCase !== UseCaseEnum.Create) {
-      // basic-info
-      this.firstName.value = this.formData.application.firstName;
-      this.surname.value = this.formData.application.surname;
-      this.academicTitle.value = this.formData.application.academicDegree;
-      this.institute.value = this.formData.institute.name;
-      this.phoneNumber.value = this.formData.application.phoneNumber;
-      this.firstNameInsurance.value = this.formData.application.firstName;
-      this.surnameInsurance.value = this.formData.application.surname;
-      this.destinationCountry.value = this.formData.place.country;
-      this.destinationCity.value = this.formData.place.city;
-      this.abroadDateStart.writeValue(new Date(this.formData.application.abroadStartDate));
-      this.abroadDateEnd.writeValue(new Date(this.formData.application.abroadEndDate));
-      this.purpose.value = this.formData.application.purpose;
-      this.conference.value = this.formData.application.conference;
-      this.subject.value = this.formData.application.subject;
-      this.conferenceDateStart.writeValue(new Date(this.formData.application.conferenceStartDate));
-      this.conferenceDateEnd.writeValue(new Date(this.formData.application.conferenceEndDate));
-      // financial-source
-      if (this.useCase !== UseCaseEnum.EmployeeRead) {
-        this.allocationAccount.value = this.formData.financialSource.allocationAccount;
-        this.MPK.value = this.formData.financialSource.mpk;
-        this.financialSource.value = this.formData.financialSource.financialSource;
-        this.project.value = this.formData.financialSource.project;
-      }
-      // insurance
-      this.firstNameInsurance.value = this.formData.application.firstName;
-      this.surnameInsurance.value = this.formData.application.surname;
-      this.birthDate.value = new Date(this.formData.application.birthDate);
-      this.departureCountry.value = this.formData.place.country;
-      const selfInsured = this.formData.application.selfInsured;
-      if (!selfInsured) {
-        this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
-        this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
-      }
-      this.selfInsuredCheckbox.checked = selfInsured;
-      // advance-payment-request
-      this.requestPaymentDestination.value = this.formData.place.country;
-      this.requestPaymentDateStart.writeValue(new Date(this.formData.advanceApplication.startDate));
-      this.requestPaymentDateEnd.writeValue(new Date(this.formData.advanceApplication.endDate));
-      this.requestPaymentDays.value = String(this.formData.advanceApplication.residenceDietQuantity);
-      this.requestPaymentDaysAmount.value = String(this.formData.advanceApplication.residenceDietAmount);
-      this.requestPaymentAccommodation.value = String(this.formData.advanceApplication.accommodationQuantity);
-      this.requestPaymentAccommodationLimit.value = String(this.formData.advanceApplication.accommodationLimit);
-      this.requestPaymentTravelDiet.value = String(this.formData.advanceApplication.travelDietAmount);
-      this.requestPaymentLocalTransportCosts.value = String(this.formData.advanceApplication.travelCosts);
-      this.requestPaymentOtherExpensesDescription.value = String(this.formData.advanceApplication.otherCostsDescription || '');
-      this.requestPaymentOtherExpensesValue.value = String(this.formData.advanceApplication.otherCostsAmount || '');
-      this.requestPaymentDaysAmountSum.value = String(this.formData.advanceApplication.residenceDietSum);
-      this.requestPaymentAccommodationSum.value = String(this.formData.advanceApplication.accommodationSum);
-      this.requestPaymentSummarizedCosts.value = String(this.formData.advanceApplication.advanceSum);
-      // comments
-      this.comments.value = this.formData.application.comments;
-      // decline-reason
-      this.getDeclineReason();
+    // basic-info
+    this.firstName.value = this.formData.application.firstName;
+    this.surname.value = this.formData.application.surname;
+    this.academicTitle.value = this.formData.application.academicDegree;
+    this.institute.value = this.formData.institute.name;
+    this.phoneNumber.value = this.formData.application.phoneNumber;
+    this.firstNameInsurance.value = this.formData.application.firstName;
+    this.surnameInsurance.value = this.formData.application.surname;
+    this.destinationCountry.value = this.formData.place.country;
+    this.destinationCity.value = this.formData.place.city;
+    this.abroadDateStart.writeValue(new Date(this.formData.application.abroadStartDate));
+    this.abroadDateEnd.writeValue(new Date(this.formData.application.abroadEndDate));
+    this.purpose.value = this.formData.application.purpose;
+    this.conference.value = this.formData.application.conference;
+    this.subject.value = this.formData.application.subject;
+    this.conferenceDateStart.writeValue(new Date(this.formData.application.conferenceStartDate));
+    this.conferenceDateEnd.writeValue(new Date(this.formData.application.conferenceEndDate));
+    // financial-source
+    if (this.useCase !== UseCaseEnum.EmployeeRead) {
+      this.allocationAccount.value = this.formData.financialSource.allocationAccount;
+      this.MPK.value = this.formData.financialSource.mpk;
+      this.financialSource.value = this.formData.financialSource.financialSource;
+      this.project.value = this.formData.financialSource.project;
     }
+    // insurance
+    this.firstNameInsurance.value = this.formData.application.firstName;
+    this.surnameInsurance.value = this.formData.application.surname;
+    this.birthDate.value = new Date(this.formData.application.birthDate);
+    this.departureCountry.value = this.formData.place.country;
+    const selfInsured = this.formData.application.selfInsured;
+    if (!selfInsured) {
+      this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
+      this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
+    }
+    this.selfInsuredCheckbox.checked = selfInsured;
+    // advance-payment-request
+    this.requestPaymentDestination.value = this.formData.place.country;
+    this.requestPaymentDateStart.writeValue(new Date(this.formData.advanceApplication.startDate));
+    this.requestPaymentDateEnd.writeValue(new Date(this.formData.advanceApplication.endDate));
+    this.requestPaymentDays.value = String(this.formData.advanceApplication.residenceDietQuantity);
+    this.requestPaymentDaysAmount.value = String(this.formData.advanceApplication.residenceDietAmount);
+    this.requestPaymentAccommodation.value = String(this.formData.advanceApplication.accommodationQuantity);
+    this.requestPaymentAccommodationLimit.value = String(this.formData.advanceApplication.accommodationLimit);
+    this.requestPaymentTravelDiet.value = String(this.formData.advanceApplication.travelDietAmount);
+    this.requestPaymentLocalTransportCosts.value = String(this.formData.advanceApplication.travelCosts);
+    this.requestPaymentOtherExpensesDescription.value = String(this.formData.advanceApplication.otherCostsDescription || '');
+    this.requestPaymentOtherExpensesValue.value = String(this.formData.advanceApplication.otherCostsAmount || '');
+    this.requestPaymentDaysAmountSum.value = String(this.formData.advanceApplication.residenceDietSum);
+    this.requestPaymentAccommodationSum.value = String(this.formData.advanceApplication.accommodationSum);
+    this.requestPaymentSummarizedCosts.value = String(this.formData.advanceApplication.advanceSum);
+    // comments
+    this.comments.value = this.formData.application.comments;
+    // decline-reason
+    this.getDeclineReason();
   }
 
   loadPaymentTypes() {
