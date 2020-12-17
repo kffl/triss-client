@@ -22,7 +22,9 @@
     "TITLE": "Dane osobowe",
     "BUTTON_EDIT": "Edytuj dane",
     "BUTTON_SAVE": "Zapisz dane",
-    "BUTTON_CANCEL": "Anuluj"
+    "BUTTON_CANCEL": "Anuluj",
+    "NOT_SET_TITLE": "Dane osobowe nie zostały uzupełnione",
+    "NOT_SET_CONTENT": "Po zamknięciu tego okna nastąpi przekierowanie do panelu danych osobowych w celu uzupełnienia brakujących danych."
   },
   "LIST": {
     "REQUESTS_LIST": "Złożone wnioski",
