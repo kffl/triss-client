@@ -188,18 +188,24 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   setAutocompletingFields() {
     if (this.useCase === UseCaseEnum.Create) {
       this.restService.getPersonalData().subscribe(personalData => {
-        this.restService.getInstitutes().subscribe(institutes => {
-          this.employeeInstitute = institutes.find(institute => personalData.instituteID === institute.id);
-          this.institute.value = this.employeeInstitute.name;
-        }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
-        this.firstName.value = personalData.firstName;
-        this.surname.value = personalData.surname;
-        this.academicTitle.value = personalData.academicDegree;
-        this.phoneNumber.value = personalData.phoneNumber;
-        this.firstNameInsurance.value = personalData.firstName;
-        this.surnameInsurance.value = personalData.surname;
-        this.birthDate.value = new Date(personalData.birthDate);
-        this.employeeId = personalData.employeeId;
+        if (Object.values(personalData).some(value => value == null || value === '')) {
+          this.dialogService.showSimpleDialog('PERSONAL_DATA.NOT_SET_TITLE', 'PERSONAL_DATA.NOT_SET_CONTENT').afterClosed().subscribe(() =>
+            this.router.navigateByUrl(AppRoutes.personalData)
+          );
+        } else {
+          this.restService.getInstitutes().subscribe(institutes => {
+            this.employeeInstitute = institutes.find(institute => personalData.instituteID === institute.id);
+            this.institute.value = this.employeeInstitute.name;
+          }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+          this.firstName.value = personalData.firstName;
+          this.surname.value = personalData.surname;
+          this.academicTitle.value = personalData.academicDegree;
+          this.phoneNumber.value = personalData.phoneNumber;
+          this.firstNameInsurance.value = personalData.firstName;
+          this.surnameInsurance.value = personalData.surname;
+          this.birthDate.value = new Date(personalData.birthDate);
+          this.employeeId = personalData.employeeId;
+        }
       }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
     }
   }

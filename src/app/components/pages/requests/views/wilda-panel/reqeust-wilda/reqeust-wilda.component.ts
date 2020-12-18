@@ -21,7 +21,7 @@ export class ReqeustWildaComponent implements OnInit {
 
   ngOnInit(): void {
     const status = parseInt(this.localStorageService.status, 10);
-    if (status === StatusEnum.waitingForDirector) {
+    if (status === StatusEnum.waitingForWilda) {
       this.useCase = UseCaseEnum.WildaApprove;
     } else {
       this.useCase = UseCaseEnum.WildaAfterRector;

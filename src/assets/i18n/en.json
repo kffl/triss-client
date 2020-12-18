@@ -17,13 +17,14 @@
     "PUT": "Poznan University of Technology"
   },
   "MAIN_VIEW": {
-    "HELLO": "Hello"
   },
   "PERSONAL_DATA": {
     "TITLE": "Personal data",
     "BUTTON_EDIT": "Edit your data",
     "BUTTON_SAVE": "Save",
-    "BUTTON_CANCEL": "Cancel"
+    "BUTTON_CANCEL": "Cancel",
+    "NOT_SET_TITLE": "Personal data was not set",
+    "NOT_SET_CONTENT": "After closing this dialog you will be redirected to the personal data panel to set your data."
   },
   "LIST": {
     "REQUESTS_LIST": "Submitted requests",
