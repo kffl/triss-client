@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UseCaseEnum} from '../../../../../../extra/use-case-enum/use-case-enum';
-import {RequestDataService} from '../../../../../../services/request-data.service';
-import {FormData} from '../../../../../../extra/request-interface/request-interface';
-import {first} from 'rxjs/operators';
+import {ActorEnum} from '../../../../../../extra/actor-enum/actor-enum';
 
 @Component({
   selector: 'app-reqeust-director',
@@ -12,20 +10,14 @@ import {first} from 'rxjs/operators';
 export class ReqeustDirectorComponent implements OnInit {
 
   useCase: UseCaseEnum;
-  form: FormData;
-  status: number;
+  actorEnum: ActorEnum;
 
-  constructor(
-    private requestDataService: RequestDataService
-  ) {
+  constructor() {
   }
 
   ngOnInit(): void {
     this.useCase = UseCaseEnum.Director;
-    this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
-      this.form = formWithStatus.form;
-      this.status = formWithStatus.status;
-    });
+    this.actorEnum = ActorEnum.Director;
   }
 
 }

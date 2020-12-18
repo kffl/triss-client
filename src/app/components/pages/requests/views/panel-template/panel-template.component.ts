@@ -1,16 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PageInfo} from '../../../../../extra/app-grid-models/models';
 import {Row} from '../../../../../extra/app-grid-models/row';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {RequestDataService} from '../../../../../services/request-data.service';
-import {FormData, FormWithStatus} from '../../../../../extra/request-interface/request-interface';
-import { SafeHttpClient } from 'src/app/components/shared/security/SafeHtppClient';
-import {DialogService} from '../../../../../services/dialog.service';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
-import {RestService} from '../../../../../services/rest-service';
-import {SecurityService} from '../../../../shared/security/SecurityService';
+import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
 
 @Component({
   selector: 'app-panel-template',
@@ -32,13 +25,8 @@ export class PanelTemplateComponent implements OnInit {
   pageInfo: PageInfo;
 
   constructor(
-    private http: SafeHttpClient,
     private router: Router,
-    private translateService: TranslateService,
-    private requestDataService: RequestDataService,
-    private dialogService: DialogService,
-    private restService: RestService,
-    private securityService: SecurityService
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -54,24 +42,9 @@ export class PanelTemplateComponent implements OnInit {
   }
 
   onListRowClicked(row: Row) {
-    this.restService.getApplication(this.actor, row.id).subscribe(
-      (form: FormData) => {
-        const formWithStatus: FormWithStatus = {
-          form,
-          status: row.status
-        };
-        this.requestDataService.setCurrentForm(formWithStatus);
-        this.router.navigateByUrl(this.linkToSingleRequest);
-      },
-      (error: HttpErrorResponse) => {
-        this.securityService.checkErrorAndRedirectToELogin(error);
-        this.dialogService.showErrorDialog(
-          'DIALOG.REQUEST_NOT_SENT.TITLE',
-          'DIALOG.REQUEST_NOT_SENT.CONTENT',
-          error
-        );
-      }
-    );
+    this.localStorageService.request = String(row.id);
+    this.localStorageService.status = String(row.status);
+    this.router.navigateByUrl(this.linkToSingleRequest);
   }
 
 }

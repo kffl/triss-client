@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UseCaseEnum} from '../../../../../../extra/use-case-enum/use-case-enum';
-import {FormData} from '../../../../../../extra/request-interface/request-interface';
-import {RequestDataService} from '../../../../../../services/request-data.service';
-import {first} from 'rxjs/operators';
 import {StatusEnum} from '../../../../../../extra/status-enum/status-enum';
+import {LocalStorageService} from '../../../../../shared/security/LocalStorageService';
+import {ActorEnum} from '../../../../../../extra/actor-enum/actor-enum';
 
 @Component({
   selector: 'app-reqeust-wilda',
@@ -13,24 +12,21 @@ import {StatusEnum} from '../../../../../../extra/status-enum/status-enum';
 export class ReqeustWildaComponent implements OnInit {
 
   useCase: UseCaseEnum;
-  form: FormData;
-  status: number;
+  actorEnum: ActorEnum;
 
   constructor(
-    private requestDataService: RequestDataService
+    private localStorageService: LocalStorageService
   ) {
   }
 
   ngOnInit(): void {
-    this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
-      this.form = formWithStatus.form;
-      this.status = formWithStatus.status;
-      if (formWithStatus.status === StatusEnum.waitingForWilda) {
-        this.useCase = UseCaseEnum.WildaApprove;
-      } else {
-        this.useCase = UseCaseEnum.WildaAfterRector;
-      }
-    });
+    const status = parseInt(this.localStorageService.status, 10);
+    if (status === StatusEnum.waitingForWilda) {
+      this.useCase = UseCaseEnum.WildaApprove;
+    } else {
+      this.useCase = UseCaseEnum.WildaAfterRector;
+    }
+    this.actorEnum = ActorEnum.Wilda;
   }
 
 }

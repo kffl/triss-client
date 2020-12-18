@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UseCaseEnum} from '../../../../../../extra/use-case-enum/use-case-enum';
-import {FormData} from '../../../../../../extra/request-interface/request-interface';
-import {RequestDataService} from '../../../../../../services/request-data.service';
-import {first} from 'rxjs/operators';
+import {ActorEnum} from '../../../../../../extra/actor-enum/actor-enum';
 
 @Component({
   selector: 'app-reqeust-rector',
@@ -12,19 +10,13 @@ import {first} from 'rxjs/operators';
 export class RequestRectorComponent implements OnInit {
 
   useCase: UseCaseEnum;
-  form: FormData;
-  status: number;
+  actorEnum: ActorEnum;
 
-  constructor(
-    private requestDataService: RequestDataService
-  ) {
+  constructor() {
   }
 
   ngOnInit(): void {
     this.useCase = UseCaseEnum.Rector;
-    this.requestDataService.form.pipe(first()).subscribe( formWithStatus => {
-      this.form = formWithStatus.form;
-      this.status = formWithStatus.status;
-    });
+    this.actorEnum = ActorEnum.Rector;
   }
 }

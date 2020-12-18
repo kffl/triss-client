@@ -1,18 +1,9 @@
 import {Injectable} from '@angular/core';
-import {FormWithStatus} from '../extra/request-interface/request-interface';
-import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RequestDataService {
-
-  private formSource = new BehaviorSubject<FormWithStatus>(null);
-  form = this.formSource.asObservable();
-
-  setCurrentForm(formWithStatus: FormWithStatus) {
-    this.formSource.next(formWithStatus);
-  }
 
   formatDate(date: Date): string {
     return date ?
