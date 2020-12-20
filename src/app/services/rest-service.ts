@@ -6,7 +6,7 @@ import {FormData} from '../extra/request-interface/request-interface';
 import {PageInfo} from '../extra/app-grid-models/models';
 import {ActorEnum} from '../extra/actor-enum/actor-enum';
 import {environment} from '../../environments/environment';
-import {SafeHttpClient} from '../components/shared/security/SafeHtppClient';
+import {SafeHttpClient} from '../components/shared/security/SafeHttpClient';
 
 export interface Enum {
   id: number;
@@ -51,7 +51,7 @@ export class RestService {
     return this.http.post<FormData>(this.getUrl(mapping), rowId);
   }
 
-  getFlux(actor: ActorEnum, pageInfo: PageInfo): Observable<any[]> {
+  getGridData(actor: ActorEnum, pageInfo: PageInfo): Observable<any[]> {
     let mapping: string;
     switch (actor) {
       case ActorEnum.Employee: {
@@ -74,7 +74,7 @@ export class RestService {
     return this.http.post<any[]>(this.getUrl(mapping), pageInfo);
   }
 
-  getMono(actor: ActorEnum, pageInfo: PageInfo): Observable<any> {
+  getGridCount(actor: ActorEnum, pageInfo: PageInfo): Observable<any> {
     let mapping: string;
     switch (actor) {
       case ActorEnum.Employee: {

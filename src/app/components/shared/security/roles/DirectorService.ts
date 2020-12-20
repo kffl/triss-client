@@ -10,6 +10,7 @@ export class DirectorService implements CanActivate {
   constructor(private localStorageService: LocalStorageService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.localStorageService.role === '2';
+    return this.localStorageService.personalData.employeeType === 2;
+    return this.localStorageService.personalDataSubject.getValue().employeeType === '2';
   }
 }

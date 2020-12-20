@@ -1,5 +1,5 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
 import {PageInfo} from '../../../extra/app-grid-models/models';
 import {RestService} from '../../../services/rest-service';
@@ -30,11 +30,11 @@ export class CustomDataSource implements DataSource<any> {
 
     public loadData(actor: ActorEnum, pageInfo: PageInfo) {
         this.loadingSubject.next(true);
-        this.restService.getFlux(actor, pageInfo).pipe(
-                catchError(() => of([])),
+        this.restService.getGridData(actor, pageInfo).pipe(
+                //catchError(() => of([]); throwError(error)),
                 finalize(() => this.loadingSubject.next(false))
         ).subscribe(rows => {
             this.rowSubject.next(rows);
-        }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+        });
     }
 }

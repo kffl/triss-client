@@ -10,6 +10,7 @@ export class RectorService implements CanActivate {
   constructor(private localStorageService: LocalStorageService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.localStorageService.role === '3';
+    // return this.localStorageService.personalData.employeeType === 3;
+    return this.localStorageService.personalDataSubject.getValue().employeeType === 3;
   }
 }

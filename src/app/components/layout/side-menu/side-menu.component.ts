@@ -14,15 +14,17 @@ export class SideMenuComponent implements OnInit, AfterViewInit {
   @Input() sidenav;
   appRoutes = AppRoutes;
 
-  role: string;
+  role: number;
 
   constructor(private localStorageService: LocalStorageService ) {
   }
 
 
   ngOnInit(): void {
-    this.localStorageService.roleSubject.subscribe((newRole) => {
-      this.role = newRole;
+    this.localStorageService.personalDataSubject.subscribe((newPersonalData) => {
+      if (newPersonalData != null) {
+        this.role = newPersonalData.employeeType;
+      }
     });
   }
 

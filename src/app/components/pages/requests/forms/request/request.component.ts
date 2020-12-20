@@ -27,7 +27,7 @@ import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.compone
 import {DialogService} from '../../../../../services/dialog.service';
 import {RestService, Enum} from '../../../../../services/rest-service';
 import {Observable} from 'rxjs';
-import {SafeHttpClient} from '../../../../shared/security/SafeHtppClient';
+import {SafeHttpClient} from '../../../../shared/security/SafeHttpClient';
 import {StatusEnum} from '../../../../../extra/status-enum/status-enum';
 import {SecurityService} from '../../../../shared/security/SecurityService';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
@@ -196,7 +196,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
           this.restService.getInstitutes().subscribe(institutes => {
             this.employeeInstitute = institutes.find(institute => personalData.instituteID === institute.id);
             this.institute.value = this.employeeInstitute.name;
-          }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+          });
           this.firstName.value = personalData.firstName;
           this.surname.value = personalData.surname;
           this.academicTitle.value = personalData.academicDegree;
@@ -206,7 +206,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
           this.birthDate.value = new Date(personalData.birthDate);
           this.employeeId = personalData.employeeId;
         }
-      }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+      });
     }
   }
 
@@ -220,7 +220,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
           this.loadFormData();
         },
         (error: HttpErrorResponse) => {
-          this.securityService.checkErrorAndRedirectToELogin(error);
           this.dialogService.showErrorDialog(
             'DIALOG.REQUEST_NOT_SENT.TITLE',
             'DIALOG.REQUEST_NOT_SENT.CONTENT',
@@ -237,7 +236,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.restService.getStatuses().subscribe(statuses => {
       this.statusEnum = statuses.find(status => this.status === status.id);
       this.showStatus();
-    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+    });
   }
 
   showStatus() {
@@ -255,17 +254,17 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       .subscribe(vehicles => {
         this.vehicles = vehicles;
         this.loadTransportData();
-      }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+      });
     this.restService.getDocumentTypes()
       .subscribe(identityDocuments => {
         this.identityDocuments = identityDocuments;
         this.loadIdentityDocument();
-      }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+      });
     this.restService.getPaymentTypes()
       .subscribe(paymentTypes => {
         this.paymentTypes = paymentTypes;
         this.loadPaymentTypes();
-      }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+      });
   }
 
   submitForm() {
@@ -399,7 +398,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         }, 2000);
       },
       (error: HttpErrorResponse) => {
-        this.securityService.checkErrorAndRedirectToELogin(error);
         this.dialogService.showErrorDialog(titleError, contentError, error);
       });
   }
@@ -667,7 +665,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         }, 2000);
       },
       (error: HttpErrorResponse) => {
-        this.securityService.checkErrorAndRedirectToELogin(error);
         this.dialogService.showErrorDialog(
           'DIALOG.REQUEST_NOT_SENT.TITLE',
           'DIALOG.REQUEST_NOT_SENT.CONTENT',

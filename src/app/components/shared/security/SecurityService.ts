@@ -39,12 +39,6 @@ export class SecurityService {
     }
   }
 
-  checkErrorAndRedirectToELogin(error: HttpErrorResponse) {
-    if (error.status === 0 || error.status === 401) {
-      this.redirectToELogin();
-    }
-  }
-
   private redirectToLocalHost(params: Params, port: string): void {
       this.document.location.href = 'http://localhost:' + port + '/?access_token=' +
         params.access_token.toString() +

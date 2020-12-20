@@ -12,6 +12,7 @@ import {RequestDataService} from '../../../services/request-data.service';
 import {DialogService} from '../../../services/dialog.service';
 import {RestService} from '../../../services/rest-service';
 import {SecurityService} from '../../shared/security/SecurityService';
+import {LocalStorageService} from "../../shared/security/LocalStorageService";
 
 @Component({
   selector: 'app-personal-data',
@@ -37,7 +38,8 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
     private restService: RestService,
     private securityService: SecurityService,
     private requestService: RequestDataService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -53,18 +55,25 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   getPersonalData() {
-    this.restService.getPersonalData().subscribe(personalData => {
+    this.localStorageService.personalDataSubject.subscribe(personalData => {
+      console.log("Get Personal Data");
+      console.log(personalData);
       this.personalData = personalData;
       this.loadPersonalData();
       this.personalDataReadySubject.next(true);
-    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+    });
+    // // this.localStorageService.personalDataSubject.subscribe(personalData => {
+    //   this.personalData = this.localStorageService.personalData;
+    //   this.loadPersonalData();
+    //   this.personalDataReadySubject.next(true);
+    // // });
   }
 
   getInstitutes() {
     this.restService.getInstitutes().subscribe(institutes => {
       this.allInstitutes = institutes;
       this.loadInstituteData();
-    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+    });
   }
 
   loadPersonalData() {
@@ -117,7 +126,6 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
         );
       },
       (error: HttpErrorResponse) => {
-        this.securityService.checkErrorAndRedirectToELogin(error);
         this.dialogService.showErrorDialog(
           'DIALOG.PERSONAL_DATA_FAILED.TITLE',
           'DIALOG.PERSONAL_DATA_FAILED.CONTENT',

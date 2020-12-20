@@ -17,9 +17,9 @@ export class LoginService {
 
   public login(): void {
     this.restService.getPersonalData().subscribe(personalData => {
-      const role = personalData.employeeType;
-      this.localStorageService.role = role.toString();
-    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+      this.localStorageService.personalData = personalData; // role.toString();
+      console.log('Got personal data');
+    });
   }
 
   public logout(): void {

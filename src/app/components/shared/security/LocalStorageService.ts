@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 
-const roleKey = 'role';
+const personalDataKey = 'personal_data';
 const tokenKey = 'access_token';
 const request = 'request';
 const status = 'status';
@@ -12,14 +12,14 @@ const status = 'status';
 })
 export class LocalStorageService{
 
-    roleSubject = new BehaviorSubject(this.role);
+    personalDataSubject = new BehaviorSubject(this.personalData);
 
-    set role(value) {
-        this.roleSubject.next(value);
-        localStorage.setItem(roleKey, value);
+    set personalData(value: any) {
+        this.personalDataSubject.next(value);
+        localStorage.setItem(personalDataKey, JSON.stringify(value));
     }
-    get role() {
-        return localStorage.getItem(roleKey);
+    get personalData(): any {
+        return JSON.parse(localStorage.getItem(personalDataKey));
     }
 
     tokenSubject = new BehaviorSubject(this.token);

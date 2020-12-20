@@ -1,8 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Inject, Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
 import {SecurityService} from './SecurityService';
 import {LocalStorageService} from './LocalStorageService';
+import {catchError} from 'rxjs/operators';
+import {DOCUMENT} from "@angular/common";
 
 
 @Injectable({
@@ -10,9 +12,10 @@ import {LocalStorageService} from './LocalStorageService';
   })
 export class SafeHttpClient {
 
+  private securityService: SecurityService;
+
   constructor(private http: HttpClient,
-              private securityService: SecurityService,
-              private localStorageService: LocalStorageService) {}
+              private localStorageService: LocalStorageService) { }
 
   public post<T>(url: string, body: any | null): Observable<T> {
     // TODO : this would be helpful, when we will want to response in Flux,
@@ -45,16 +48,7 @@ export class SafeHttpClient {
       })
     };
 
-    const result = this.http.post<T>(url, body, httpOptions);
-    // result.subscribe(
-    //   (data) => {
-    //   },
-    //   (error) => {
-    //     if (error.status === 0 || error.status === 401) {
-    //       this.securityService.redirectToELogin();
-    //     }
-    //   });
-    return result;
+    return this.http.post<T>(url, body, httpOptions)
   }
 
   get<T>(url: string): Observable<T> {
@@ -64,15 +58,6 @@ export class SafeHttpClient {
         Authorization: 'Bearer ' + this.localStorageService.token
       })
     };
-    const result = this.http.get<T>(url, httpOptions);
-    // result.subscribe(
-    //   (data) => {
-    //   },
-    //   (error) => {
-    //     if (error.status === 0 || error.status === 401) {
-    //       this.securityService.redirectToELogin();
-    //     }
-    //   });
-    return result;
+    return this.http.get<T>(url, httpOptions);
   }
 }
