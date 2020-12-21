@@ -27,12 +27,15 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   allInstitutes: InstituteInterface[];
   personalDataReadySubject = new BehaviorSubject(false);
 
-  @ViewChild('firstName', {read: MatInput}) firstName: MatInput;
-  @ViewChild('surname', {read: MatInput}) surname: MatInput;
-  @ViewChild('birthDate', {read: MatDatepickerInput}) birthDate: MatDatepickerInput<Date>;
-  @ViewChild('phoneNumber', {read: MatInput}) phoneNumber: MatInput;
-  @ViewChild('academicTitle', {read: MatInput}) academicTitle: MatInput;
-  @ViewChild('instituteSelect') instituteSelect: MatSelect;
+  firstName: string;
+  surname: string;
+  birthDate: Date = new Date();
+  phoneNumber: string;
+  academicTitle: string;
+  instituteSelect: InstituteInterface = {
+    id: 1,
+    name: 'garbage',
+    active: false};
 
   constructor(
     private restService: RestService,
@@ -48,6 +51,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   ngAfterViewInit() {
+
   }
 
   ngAfterViewChecked() {
@@ -56,17 +60,10 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
 
   getPersonalData() {
     this.localStorageService.personalDataSubject.subscribe(personalData => {
-      console.log("Get Personal Data");
-      console.log(personalData);
       this.personalData = personalData;
       this.loadPersonalData();
       this.personalDataReadySubject.next(true);
     });
-    // // this.localStorageService.personalDataSubject.subscribe(personalData => {
-    //   this.personalData = this.localStorageService.personalData;
-    //   this.loadPersonalData();
-    //   this.personalDataReadySubject.next(true);
-    // // });
   }
 
   getInstitutes() {
@@ -77,11 +74,11 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   loadPersonalData() {
-    this.firstName.value = this.personalData.firstName;
-    this.surname.value = this.personalData.surname;
-    this.birthDate.value = new Date(this.personalData.birthDate);
-    this.phoneNumber.value = this.personalData.phoneNumber;
-    this.academicTitle.value = this.personalData.academicDegree;
+    this.firstName = this.personalData.firstName;
+    this.surname = this.personalData.surname;
+    this.birthDate = new Date(this.personalData.birthDate);
+    this.phoneNumber = this.personalData.phoneNumber;
+    this.academicTitle = this.personalData.academicDegree;
   }
 
   loadInstituteData() {
@@ -89,7 +86,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
       if (ready) {
         const searchedInstitute = this.allInstitutes.find(institute => institute.id === this.personalData.instituteID);
         if (searchedInstitute != null) {
-          this.instituteSelect.value = searchedInstitute.id;
+          this.instituteSelect = searchedInstitute;
         }
       }
     });
@@ -102,7 +99,7 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
   onCancelButton() {
     this.isEditing = false;
     this.loadPersonalData();
-    this.instituteSelect.value = this.personalData.instituteID;
+    this.instituteSelect.id = this.personalData.instituteID;
   }
 
   onSaveButton() {
@@ -110,10 +107,10 @@ export class PersonalDataComponent implements OnInit, AfterViewInit, AfterViewCh
     const newPersonalData: PersonalDataInterface = {
       firstName: this.personalData.firstName,
       surname: this.personalData.surname,
-      birthDate: this.requestService.formatDate(this.birthDate.value),
-      phoneNumber: this.phoneNumber.value,
-      academicDegree: this.academicTitle.value,
-      instituteID: this.requestService.formatSelect(this.instituteSelect.value),
+      birthDate: this.requestService.formatDate(this.birthDate),
+      phoneNumber: this.phoneNumber,
+      academicDegree: this.academicTitle,
+      instituteID: this.requestService.formatSelect(this.instituteSelect.id),
       employeeType: this.personalData.employeeType,
       employeeId: this.personalData.employeeId,
       id: this.personalData.id

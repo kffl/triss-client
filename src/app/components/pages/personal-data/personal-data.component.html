@@ -5,29 +5,29 @@
 
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
-        <input matInput #firstName readonly>
+        <input matInput  readonly [(ngModel)]="firstName">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
-        <input matInput #surname readonly>
+        <input matInput  readonly [(ngModel)]="surname">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
-        <input matInput [matDatepicker]="birthPicker" #birthDate readonly (click)="birthPicker.open()">
+        <input matInput [matDatepicker]="birthPicker" [(ngModel)]="birthDate" readonly (click)="birthPicker.open()">
         <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
         <mat-datepicker #birthPicker [disabled]="!isEditing"></mat-datepicker>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>
-        <input matInput #phoneNumber [readonly]="!isEditing">
+        <input matInput  [readonly]="!isEditing" [(ngModel)]="phoneNumber">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.ACADEMIC_TITLE' | translate }}</span></mat-label>
-        <input matInput #academicTitle [readonly]="!isEditing">
+        <input matInput  [readonly]="!isEditing" [(ngModel)]="academicTitle">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.INSTITUTE' | translate }}</span></mat-label>
-        <mat-select #instituteSelect [disabled]="!isEditing">
+        <mat-select  [disabled]="!isEditing" [(ngModel)]="instituteSelect.id">
           <mat-option *ngFor="let institute of allInstitutes" [value]="institute.id" [disabled]="!institute.active">
             <span>{{institute.name}}</span>
           </mat-option>
@@ -36,13 +36,13 @@
 
     </div>
     <div class="buttons item">
-      <a><button *ngIf="!isEditing" (click)="onEditButton()" mat-flat-button color="primary">
+      <a><button class="button" *ngIf="!isEditing" (click)="onEditButton()" mat-flat-button color="primary">
         <span>{{ 'PERSONAL_DATA.BUTTON_EDIT' | translate }}</span>
       </button></a>
-      <a><button *ngIf="isEditing" (click)="onCancelButton()" mat-flat-button color="primary">
+      <a><button class="button" *ngIf="isEditing" (click)="onCancelButton()" mat-flat-button color="primary">
         <span>{{ 'PERSONAL_DATA.BUTTON_CANCEL' | translate }}</span>
       </button></a>
-      <a><button *ngIf="isEditing" (click)="onSaveButton()" mat-flat-button color="primary">
+      <a><button class="button" *ngIf="isEditing" (click)="onSaveButton()" mat-flat-button color="primary">
         <span>{{ 'PERSONAL_DATA.BUTTON_SAVE' | translate }}</span>
       </button></a>
     </div>

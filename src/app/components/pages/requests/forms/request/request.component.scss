@@ -145,6 +145,7 @@
         span {
           white-space: normal;
         }
+
       }
     }
     .outcome-buttons {
@@ -185,5 +186,9 @@
     display: inline !important;
     color: red;
   }
+}
+
+.button {
+  background-color: $main-color;
 }
 

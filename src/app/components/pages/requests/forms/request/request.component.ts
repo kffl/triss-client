@@ -187,7 +187,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   setAutocompletingFields() {
     if (this.useCase === UseCaseEnum.Create) {
-      this.restService.getPersonalData().subscribe(personalData => {
+      this.localStorageService.personalDataSubject.subscribe(personalData => {
         if (Object.values(personalData).some(value => value == null || value === '')) {
           this.dialogService.showSimpleDialog('PERSONAL_DATA.NOT_SET_TITLE', 'PERSONAL_DATA.NOT_SET_CONTENT').afterClosed().subscribe(() =>
             this.router.navigateByUrl(AppRoutes.personalData)

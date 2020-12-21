@@ -21,7 +21,7 @@ export class SecurityService {
   public processParams(params: Params): void {
 
     const mode = params.state;
-    if (mode !== undefined) {  // we are on localhost:4200
+    if (mode !== undefined) {  // we are on localhost:port
       this.redirectToLocalHost(params, port);
     }
 
