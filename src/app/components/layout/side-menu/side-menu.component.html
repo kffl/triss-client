@@ -6,29 +6,20 @@
     <a [routerLink]="appRoutes.personalData">
       <mat-list-item class="link"><span>{{'SIDE_MENU.PERSONAL_DATA' | translate}}</span></mat-list-item>
     </a>
-    <mat-expansion-panel [expanded]="true">
-      <mat-expansion-panel-header>
-        <span>{{'SIDE_MENU.REQUESTS' | translate}}</span>
-      </mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-list>
-          <a [routerLink]="appRoutes.createRequest">
-            <mat-list-item class="link"><span>{{'SIDE_MENU.NEW_REQUESTS' | translate}}</span></mat-list-item>
-          </a>
-          <a [routerLink]="appRoutes.requestsListEmployee">
-            <mat-list-item class="link"><span>{{'SIDE_MENU.REQUESTS_LIST' | translate}}</span></mat-list-item>
-          </a>
-          <a [routerLink]="appRoutes.requestsListDirector" *ngIf = "(this.role) === 2 ">
-            <mat-list-item class="link"><span>{{'SIDE_MENU.DIRECTOR_PANEL' | translate}}</span></mat-list-item>
-          </a>
-          <a [routerLink]="appRoutes.requestsListWilda" *ngIf = "(this.role) === 1 ">
-            <mat-list-item class="link"><span>{{'SIDE_MENU.WILDA_PANEL' | translate}}</span></mat-list-item>
-          </a>
-          <a [routerLink]="appRoutes.requestsListRector" *ngIf = "(this.role) === 3 ">
-            <mat-list-item class="link"><span>{{'SIDE_MENU.RECTOR_PANEL' | translate}}</span></mat-list-item>
-          </a>
-        </mat-list>
-      </mat-panel-title>
-    </mat-expansion-panel>
+    <a [routerLink]="appRoutes.createRequest">
+      <mat-list-item class="link"><span>{{'SIDE_MENU.NEW_REQUESTS' | translate}}</span></mat-list-item>
+    </a>
+    <a [routerLink]="appRoutes.requestsListEmployee">
+      <mat-list-item class="link"><span>{{'SIDE_MENU.REQUESTS_LIST' | translate}}</span></mat-list-item>
+    </a>
+    <a [routerLink]="appRoutes.requestsListDirector" *ngIf = "(this.role) === 2 ">
+      <mat-list-item class="link"><span>{{'SIDE_MENU.DIRECTOR_PANEL' | translate}}</span></mat-list-item>
+    </a>
+    <a [routerLink]="appRoutes.requestsListWilda" *ngIf = "(this.role) === 1 ">
+      <mat-list-item class="link"><span>{{'SIDE_MENU.WILDA_PANEL' | translate}}</span></mat-list-item>
+    </a>
+    <a [routerLink]="appRoutes.requestsListRector" *ngIf = "(this.role) === 3 ">
+      <mat-list-item class="link"><span>{{'SIDE_MENU.RECTOR_PANEL' | translate}}</span></mat-list-item>
+    </a>
   </mat-list>
 </div>

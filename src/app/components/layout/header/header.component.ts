@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   headerColor: ThemePalette = 'primary';
   @Input() sidenav;
   innerWidth = window.innerWidth;
-  breakpointWidth = 900;
+  breakpointWidth = 860;
   belowBreakpoint = this.innerWidth < this.breakpointWidth;
 
   @HostListener('window:resize', ['$event'])

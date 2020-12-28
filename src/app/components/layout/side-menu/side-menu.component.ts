@@ -1,8 +1,6 @@
-import {Component, OnInit, AfterViewInit, Input, ApplicationRef, ChangeDetectorRef} from '@angular/core';
-import {Router} from '@angular/router';
-import { Subject } from 'rxjs';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {AppRoutes} from '../../../extra/routes/appRoutes';
-import { LocalStorageService } from '../../shared/security/LocalStorageService';
+import {LocalStorageService} from '../../shared/security/LocalStorageService';
 
 @Component({
   selector: 'app-side-menu',
