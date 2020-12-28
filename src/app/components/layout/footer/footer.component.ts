@@ -9,6 +9,7 @@ import {ThemePalette} from '@angular/material/core';
 export class FooterComponent implements OnInit {
 
   footerColor: ThemePalette = 'primary';
+  currentYear: string = new Date().getFullYear().toString(10);
 
   constructor() { }
 

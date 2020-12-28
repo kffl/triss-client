@@ -32,6 +32,7 @@ import {StatusEnum} from '../../../../../extra/status-enum/status-enum';
 import {SecurityService} from '../../../../shared/security/SecurityService';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
+import {first} from 'rxjs/operators';
 
 
 @Component({
@@ -187,7 +188,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   setAutocompletingFields() {
     if (this.useCase === UseCaseEnum.Create) {
-      this.localStorageService.personalDataSubject.subscribe(personalData => {
+      this.localStorageService.personalDataSubject.pipe(first()).subscribe(personalData => {
         if (Object.values(personalData).some(value => value == null || value === '')) {
           this.dialogService.showSimpleDialog('PERSONAL_DATA.NOT_SET_TITLE', 'PERSONAL_DATA.NOT_SET_CONTENT').afterClosed().subscribe(() =>
             this.router.navigateByUrl(AppRoutes.personalData)

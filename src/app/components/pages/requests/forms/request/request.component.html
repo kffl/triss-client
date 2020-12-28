@@ -484,22 +484,22 @@
     </div>
 
     <div class="outcome-buttons">
-      <a><button class = "button" (click)="cancelForm()" mat-flat-button color="primary">
+      <a><button (click)="cancelForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_CANCEL' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 2 ||useCase === 3 || useCase === 4"><button class = "button" (click)="rejectForm()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 2 ||useCase === 3 || useCase === 4"><button (click)="rejectForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_REJECT' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 1"><button class = "button" (click)="submitForm()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 1"><button (click)="submitForm()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_SEND' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 2"><button class = "button" (click)="sendToWilda()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 2"><button (click)="sendToWilda()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 3"><button class = "button" (click)="sendToRector()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 3"><button (click)="sendToRector()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_APPROVE' | translate }}</span>
       </button></a>
-      <a *ngIf="useCase === 4"><button class = "button" (click)="sendBackToWilda()" mat-flat-button color="primary">
+      <a *ngIf="useCase === 4"><button (click)="sendBackToWilda()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
       </button></a>
     </div>
