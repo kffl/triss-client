@@ -108,7 +108,7 @@ export class GridComponent implements OnInit, AfterViewInit {
   }
 
   private loadCount() {
-    this.restService.getMono(this.actor, this.pageInfo).subscribe(result => {
+    this.restService.getGridCount(this.actor, this.pageInfo).subscribe(result => {
       this.objectCount = result;
     });
   }

@@ -28,9 +28,8 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/flag-icon-css/css/flag-icon.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/flag-icon-css/css/flag-icon.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -98,9 +97,8 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/flag-icon-css/css/flag-icon.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/flag-icon-css/css/flag-icon.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

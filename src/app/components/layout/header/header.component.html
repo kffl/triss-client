@@ -10,14 +10,13 @@
         <span class="title">{{'HEADER.TITLE' | translate}}</span>
       </div>
       <div class="toolbar-items-group">
-        <span *ngIf="!belowBreakpoint" class="language-text">{{'HEADER.LANGUAGE' | translate}}</span>
+        <span *ngIf="!belowBreakpoint" class="normal-text">{{'HEADER.LANGUAGE' | translate}}</span>
         <span (click)="changeLanguageToPolish()" class="flag-icon flag-icon-pl"></span>
         <span (click)="changeLanguageToEnglish()" class="flag-icon flag-icon-gb"></span>
+        <span *ngIf="!belowBreakpoint && fullName" class="normal-text">{{fullName}}</span>
         <button mat-button (click)="logout()">
-            <span class="material-icons">
-              power_settings_new
-            </span>
-          Wyloguj się
+          <mat-icon>power_settings_new</mat-icon>
+          {{ 'HEADER.LOG_OUT' | translate }}
         </button>
       </div>
     </div>

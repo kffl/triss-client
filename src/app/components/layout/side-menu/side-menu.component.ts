@@ -1,8 +1,6 @@
-import {Component, OnInit, AfterViewInit, Input, ApplicationRef, ChangeDetectorRef} from '@angular/core';
-import {Router} from '@angular/router';
-import { Subject } from 'rxjs';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {AppRoutes} from '../../../extra/routes/appRoutes';
-import { LocalStorageService } from '../../shared/security/LocalStorageService';
+import {LocalStorageService} from '../../shared/security/LocalStorageService';
 
 @Component({
   selector: 'app-side-menu',
@@ -14,15 +12,17 @@ export class SideMenuComponent implements OnInit, AfterViewInit {
   @Input() sidenav;
   appRoutes = AppRoutes;
 
-  role: string;
+  role: number;
 
   constructor(private localStorageService: LocalStorageService ) {
   }
 
 
   ngOnInit(): void {
-    this.localStorageService.roleSubject.subscribe((newRole) => {
-      this.role = newRole;
+    this.localStorageService.personalDataSubject.subscribe((newPersonalData) => {
+      if (newPersonalData != null) {
+        this.role = newPersonalData.employeeType;
+      }
     });
   }
 

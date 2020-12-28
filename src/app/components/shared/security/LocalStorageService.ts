@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
 
 
-const roleKey = 'role';
+const personalDataKey = 'personal_data';
 const tokenKey = 'access_token';
 const request = 'request';
 const status = 'status';
@@ -10,48 +11,53 @@ const status = 'status';
 @Injectable({
   providedIn: 'root'
 })
-export class LocalStorageService{
+export class LocalStorageService {
 
-    roleSubject = new BehaviorSubject(this.role);
+  personalDataSubject = new BehaviorSubject<PersonalDataInterface>(this.personalData);
 
-    set role(value) {
-        this.roleSubject.next(value);
-        localStorage.setItem(roleKey, value);
-    }
-    get role() {
-        return localStorage.getItem(roleKey);
-    }
+  set personalData(value: PersonalDataInterface) {
+    this.personalDataSubject.next(value);
+    localStorage.setItem(personalDataKey, JSON.stringify(value));
+  }
+  get personalData(): PersonalDataInterface {
+    return JSON.parse(localStorage.getItem(personalDataKey));
+  }
 
-    tokenSubject = new BehaviorSubject(this.token);
+  tokenSubject = new BehaviorSubject(this.token);
 
-    set token(value) {
-      this.tokenSubject.next(value);
-      localStorage.setItem(tokenKey, value);
-    }
-    get token() {
-      return localStorage.getItem(tokenKey);
-    }
+  set token(value) {
+    this.tokenSubject.next(value);
+    localStorage.setItem(tokenKey, value);
+  }
+  get token() {
+    return localStorage.getItem(tokenKey);
+  }
 
-    requestSubject = new BehaviorSubject(this.request);
+  requestSubject = new BehaviorSubject(this.request);
 
-    set request(value: string) {
-      this.requestSubject.next(value);
-      localStorage.setItem(request, value);
-    }
+  set request(value: string) {
+    this.requestSubject.next(value);
+    localStorage.setItem(request, value);
+  }
+  get request() {
+    // return this.requestSubject.getValue();
+    return localStorage.getItem(request);
+  }
 
-    get request() {
-      return localStorage.getItem(request);
-    }
+  statusSubject = new BehaviorSubject(this.status);
 
-    statusSubject = new BehaviorSubject(this.status);
+  set status(value: string) {
+    this.statusSubject.next(value);
+    localStorage.setItem(status, value);
+  }
+  get status() {
+    // return this.statusSubject.getValue();
+    return localStorage.getItem(status);
+  }
 
-    set status(value: string) {
-      this.statusSubject.next(value);
-      localStorage.setItem(status, value);
-    }
-
-    get status() {
-      return localStorage.getItem(status);
-    }
+  removeToken(): void {
+    this.tokenSubject.next(null);
+    localStorage.removeItem(tokenKey);
+  }
 
 }

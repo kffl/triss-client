@@ -14,14 +14,14 @@ export class DirectorPanelComponent implements OnInit {
   actor = ActorEnum.Director;
   constructor() { }
 
-  
+
   headers = {
     firstName: {description: 'Imię', type: 'text'},
     surname: {description: 'Nazwisko', type: 'text'},
     instituteName: {description: 'Instytut', type: 'text'},
     country: {description: 'Kraj', type: 'text'},
     city: {description: 'Miasto', type: 'text'},
-    status: {description: 'Status', type: 'text'},
+    statusPl: {description: 'Status', type: 'text'},
     abroadStartDate: {description: 'Data wyjazdu', type: 'date'},
     abroadEndDate: {description: 'Data powrotu', type: 'date'}};
 

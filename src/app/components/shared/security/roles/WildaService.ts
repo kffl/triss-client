@@ -10,6 +10,7 @@ export class WildaService implements CanActivate {
   constructor(private localStorageService: LocalStorageService ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.localStorageService.role === '1';
+    return this.localStorageService.personalData.employeeType === 1;
+    //return this.localStorageService.personalDataSubject.getValue().employeeType === 1;
   }
 }

@@ -10,20 +10,18 @@ export class LoginService {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private localStorageService: LocalStorageService,
-    private restService: RestService,
-    private securityService: SecurityService
+    private restService: RestService
   ) {}
 
 
   public login(): void {
     this.restService.getPersonalData().subscribe(personalData => {
-      const role = personalData.employeeType;
-      this.localStorageService.role = role.toString();
-    }, (error: HttpErrorResponse) => this.securityService.checkErrorAndRedirectToELogin(error));
+      this.localStorageService.personalData = personalData; // role.toString();
+    });
   }
 
   public logout(): void {
-    localStorage.removeItem('access_token');
+    this.localStorageService.removeToken();
     this.document.location.href = 'https://elogin.put.poznan.pl/?do=Logout&system=triss-dev.esys.put.poznan.pl';
   }
 }

@@ -14,11 +14,11 @@ export class RequestsListComponent implements OnInit {
   actor = ActorEnum.Employee;
   constructor() {
   }
-  
+
   headers = {
     country: {description: 'Kraj', type: 'text'},
     city: {description: 'Miasto', type: 'text'},
-    status: {description: 'Status', type: 'text'},
+    statusPl: {description: 'Status', type: 'text'},
     abroadStartDate: {description: 'Data wyjazdu', type: 'date'},
     abroadEndDate: {description: 'Data powrotu', type: 'date'}};
 

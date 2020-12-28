@@ -1,7 +1,8 @@
 {
   "HEADER": {
     "TITLE": "Triss",
-    "LANGUAGE": "Change language:"
+    "LANGUAGE": "Change language:",
+    "LOG_OUT": "Log out"
   },
   "SIDE_MENU": {
     "MAIN_PAGE": "Main page",

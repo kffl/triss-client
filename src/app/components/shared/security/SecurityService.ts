@@ -21,7 +21,7 @@ export class SecurityService {
   public processParams(params: Params): void {
 
     const mode = params.state;
-    if (mode !== undefined) {  // we are on localhost:4200
+    if (mode !== undefined) {  // we are on localhost:port
       this.redirectToLocalHost(params, port);
     }
 
@@ -36,12 +36,6 @@ export class SecurityService {
       this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl';
     } else {
       this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl&additional_data=dev';
-    }
-  }
-
-  checkErrorAndRedirectToELogin(error: HttpErrorResponse) {
-    if (error.status === 0 || error.status === 401) {
-      this.redirectToELogin();
     }
   }
 

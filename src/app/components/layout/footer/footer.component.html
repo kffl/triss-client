@@ -1,7 +1,11 @@
 <div>
   <mat-toolbar
-    class="footer"
     [color]="footerColor">
-    {{'FOOTER.PUT' | translate}}
+    <span>
+      &#169; {{'FOOTER.PUT' | translate}} {{currentYear}}
+    </span>
+    <span>
+      <a href="https://www.put.poznan.pl" target="_blank">www.put.poznan.pl</a>
+    </span>
   </mat-toolbar>
 </div>

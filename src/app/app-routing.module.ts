@@ -19,8 +19,8 @@ import { RectorService } from './components/shared/security/roles/RectorService'
 
 const routes: Routes = [
   {path: AppRoutes.home, component: MainViewComponent},
-  {path: AppRoutes.personalData, component: PersonalDataComponent, canActivate: [UserService]},
   {path: AppRoutes.createRequest, component: CreateRequestComponent},
+  {path: AppRoutes.personalData, component: PersonalDataComponent, canActivate: [UserService]},
   {path: AppRoutes.requestsListEmployee, component: RequestsListComponent, canActivate: [UserService]},
   {path: AppRoutes.requestsListDirector, component: DirectorPanelComponent, canActivate: [DirectorService]},
   {path: AppRoutes.requestsListWilda, component: WildaPanelComponent, canActivate: [WildaService]},

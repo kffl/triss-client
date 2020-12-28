@@ -1,10 +1,21 @@
 @import "variables";
 
-.footer {
+mat-toolbar {
+  height: $footer-height;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-mat-toolbar {
-  height: $footer-height;
+  flex-direction: column;
+  span {
+    font-size: 0.85em;
+    font-weight: lighter;
+    a {
+      text-decoration: none;
+      color: rgb(178, 178, 178);
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  }
 }
