@@ -230,6 +230,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         },
         () => this.setTransportQuantity()
       );
+    } else {
+      this.getSelectEnums();
     }
   }
 
