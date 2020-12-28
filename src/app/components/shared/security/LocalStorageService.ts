@@ -2,53 +2,61 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 
+const personalDataKey = 'personal_data';
 const tokenKey = 'access_token';
+const request = 'request';
+const status = 'status';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService{
 
-    personalDataSubject = new BehaviorSubject(null);
+  personalDataSubject = new BehaviorSubject(this.personalData);
 
-    set personalData(value: any) {
-        this.personalDataSubject.next(value);
-    }
-    get personalData(): any {
-      return this.personalDataSubject.getValue();
-    }
+  set personalData(value: any) {
+    this.personalDataSubject.next(value);
+    localStorage.setItem(personalDataKey, JSON.stringify(value));
+  }
+  get personalData(): any {
+    return JSON.parse(localStorage.getItem(personalDataKey));
+  }
 
-    tokenSubject = new BehaviorSubject(null);
+  tokenSubject = new BehaviorSubject(this.token);
 
-    set token(value) {
-      this.tokenSubject.next(value);
-      localStorage.setItem(tokenKey, value);
-    }
-    get token() {
-      return localStorage.getItem(tokenKey);
-    }
+  set token(value) {
+    this.tokenSubject.next(value);
+    localStorage.setItem(tokenKey, value);
+  }
+  get token() {
+    return localStorage.getItem(tokenKey);
+  }
 
-    requestSubject = new BehaviorSubject(null);
+  requestSubject = new BehaviorSubject(this.request);
 
-    set request(value: string) {
-      this.requestSubject.next(value);
-    }
-    get request() {
-      return this.requestSubject.getValue();
-    }
+  set request(value: string) {
+    this.requestSubject.next(value);
+    localStorage.setItem(request, value);
+  }
+  get request() {
+    // return this.requestSubject.getValue();
+    return localStorage.getItem(request);
+  }
 
-    statusSubject = new BehaviorSubject(null);
+  statusSubject = new BehaviorSubject(this.status);
 
-    set status(value: string) {
-      this.statusSubject.next(value);
-    }
-    get status() {
-      return this.statusSubject.getValue();
-    }
+  set status(value: string) {
+    this.statusSubject.next(value);
+    localStorage.setItem(status, value);
+  }
+  get status() {
+    // return this.statusSubject.getValue();
+    return localStorage.getItem(status);
+  }
 
-    removeToken(): void {
-      this.tokenSubject.next(null);
-      localStorage.removeItem(tokenKey);
-    }
+  removeToken(): void {
+    this.tokenSubject.next(null);
+    localStorage.removeItem(tokenKey);
+  }
 
 }

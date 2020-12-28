@@ -5,25 +5,25 @@
 
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
-        <input matInput  readonly [(ngModel)]="firstName">
+        <input matInput  readonly [disabled]="!isEditing" [(ngModel)]="firstName">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
-        <input matInput  readonly [(ngModel)]="surname">
+        <input matInput  readonly [disabled]="!isEditing" [(ngModel)]="surname">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
-        <input matInput [matDatepicker]="birthPicker" [(ngModel)]="birthDate" readonly (click)="birthPicker.open()">
+        <input matInput [matDatepicker]="birthPicker" [(ngModel)]="birthDate" readonly [disabled]="!isEditing" (click)="birthPicker.open()">
         <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
         <mat-datepicker #birthPicker [disabled]="!isEditing"></mat-datepicker>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>
-        <input matInput  [readonly]="!isEditing" [(ngModel)]="phoneNumber">
+        <input matInput  [disabled]="!isEditing" [(ngModel)]="phoneNumber">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.ACADEMIC_TITLE' | translate }}</span></mat-label>
-        <input matInput  [readonly]="!isEditing" [(ngModel)]="academicTitle">
+        <input matInput  [disabled]="!isEditing" [(ngModel)]="academicTitle">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.INSTITUTE' | translate }}</span></mat-label>
