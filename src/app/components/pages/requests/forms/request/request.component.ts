@@ -124,6 +124,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   // comments
   @ViewChild('comments', {read: MatInput}) comments: MatInput;
 
+  today = new Date();
   integerRegex = '^(0|[1-9][0-9]*)$';
   hourRegex = '^([0-9]|[0-1][0-9]|2[0-3])$';
   minuteRegex = '^([0-9]|[0-5][0-9])$';

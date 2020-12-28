@@ -59,7 +59,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(abroadDate.value) && validationFailed">
         <mat-label><span>{{ 'REQUEST.TRIP_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
-        <mat-date-range-input [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()">
+        <mat-date-range-input [min]="today" [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()">
           <input #abroadDateStart matStartDate placeholder="{{ 'REQUEST.TRIP_DATE_FROM' | translate }}" readonly>
           <input #abroadDateEnd matEndDate placeholder="{{ 'REQUEST.TRIP_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
@@ -88,7 +88,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(conferenceDate.value) && validationFailed">
         <mat-label><span>{{ 'REQUEST.CONFERENCE_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
-        <mat-date-range-input [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()">
+        <mat-date-range-input [min]="today" [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()">
           <input #conferenceDateStart matStartDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_FROM' | translate }}" readonly>
           <input #conferenceDateEnd matEndDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
@@ -161,7 +161,7 @@
         <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!departureDate.value && validationFailed">
           <mat-label>{{ 'REQUEST.DEPARTURE_DATE' | translate }}</mat-label>
           <span matPrefix class="asterisk">*</span>
-          <input matInput [matDatepicker]="departurePicker" #departureDate readonly (click)="departurePicker.open()">
+          <input matInput [min]="today" [matDatepicker]="departurePicker" #departureDate readonly (click)="departurePicker.open()">
           <mat-hint *ngIf="!departureDate.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
           <mat-datepicker #departurePicker [disabled]="useCase > 1"></mat-datepicker>
@@ -239,7 +239,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(abroadDateInsurance.value) && validationFailed">
         <mat-label><span>{{ 'REQUEST.TIME_ABROAD' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="!selfInsuredCheckbox.checked">*</span>
-        <mat-date-range-input [rangePicker]="insurancePicker" [disabled]="selfInsuredCheckbox.checked" #abroadDateInsurance (click)="insurancePicker.open()">
+        <mat-date-range-input [min]="today" [rangePicker]="insurancePicker" [disabled]="selfInsuredCheckbox.checked" #abroadDateInsurance (click)="insurancePicker.open()">
           <input #abroadDateInsuranceStart matStartDate placeholder="{{ 'REQUEST.TIME_ABROAD_FROM' | translate }}" readonly>
           <input #abroadDateInsuranceEnd matEndDate placeholder="{{ 'REQUEST.TIME_ABROAD_TO' | translate }}" readonly>
         </mat-date-range-input>
@@ -264,7 +264,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(requestPaymentDate.value) && validationFailed">
         <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
-        <mat-date-range-input [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate (click)="advancePaymentRequestPicker.open()">
+        <mat-date-range-input [min]="today" [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate (click)="advancePaymentRequestPicker.open()">
           <input #requestPaymentDateStart matStartDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_FROM' | translate }}" readonly>
           <input #requestPaymentDateEnd matEndDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
@@ -428,7 +428,7 @@
         <mat-select #conferenceFeePaymentTypeSelect [disabled]="useCase > 1">
           <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.id"><span>{{paymentType[enumLang]}}</span></mat-option>
         </mat-select>
-        <mat-hint *ngIf="!conferenceFeePaymentTypeSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
+        <mat-hint *ngIf="conferenceFeePaymentTypeSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!depositValue.value && validationFailed">
         <mat-label><span>{{ 'REQUEST.DEPOSIT' | translate }}</span></mat-label>
