@@ -3,6 +3,7 @@ import {DateAdapter, ThemePalette} from '@angular/material/core';
 import {TranslateService} from '@ngx-translate/core';
 import {DOCUMENT} from '@angular/common';
 import {LoginService} from '../../shared/security/LoginService';
+import {LocalStorageService} from '../../shared/security/LocalStorageService';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +17,8 @@ export class HeaderComponent implements OnInit {
   innerWidth = window.innerWidth;
   breakpointWidth = 860;
   belowBreakpoint = this.innerWidth < this.breakpointWidth;
+
+  fullName: string = null;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -40,7 +43,8 @@ export class HeaderComponent implements OnInit {
               @Inject(DOCUMENT) private document: Document,
               private translateService: TranslateService,
               private dateAdapter: DateAdapter<any>,
-              private loginService: LoginService
+              private loginService: LoginService,
+              private localStorageService: LocalStorageService
   ) {
 
   }
@@ -53,6 +57,10 @@ export class HeaderComponent implements OnInit {
       this.sidenav.mode = 'side';
       this.sidenav.open();
     }
+    this.localStorageService.personalDataSubject.subscribe(personalData =>
+      this.fullName = personalData.firstName + ' ' + personalData.surname
+    );
+
   }
 
   onMenuButtonClick() {

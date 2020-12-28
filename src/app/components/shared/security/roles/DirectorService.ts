@@ -1,7 +1,6 @@
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Observable} from 'rxjs';
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {Injectable} from '@angular/core';
-import { LocalStorageService } from '../LocalStorageService';
+import {LocalStorageService} from '../LocalStorageService';
 
 
 @Injectable()
@@ -11,6 +10,6 @@ export class DirectorService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.localStorageService.personalData.employeeType === 2;
-    return this.localStorageService.personalDataSubject.getValue().employeeType === '2';
+    // return this.localStorageService.personalDataSubject.getValue().employeeType === '2';
   }
 }

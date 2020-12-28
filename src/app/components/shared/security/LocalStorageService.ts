@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
 
 
 const personalDataKey = 'personal_data';
@@ -10,15 +11,15 @@ const status = 'status';
 @Injectable({
   providedIn: 'root'
 })
-export class LocalStorageService{
+export class LocalStorageService {
 
-  personalDataSubject = new BehaviorSubject(this.personalData);
+  personalDataSubject = new BehaviorSubject<PersonalDataInterface>(this.personalData);
 
-  set personalData(value: any) {
+  set personalData(value: PersonalDataInterface) {
     this.personalDataSubject.next(value);
     localStorage.setItem(personalDataKey, JSON.stringify(value));
   }
-  get personalData(): any {
+  get personalData(): PersonalDataInterface {
     return JSON.parse(localStorage.getItem(personalDataKey));
   }
 
