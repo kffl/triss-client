@@ -60,7 +60,7 @@
         <mat-label><span>{{ 'REQUEST.TRIP_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk">*</span>
         <mat-date-range-input [min]="today" [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()">
-          <input #abroadDateStart matStartDate placeholder="{{ 'REQUEST.TRIP_DATE_FROM' | translate }}" readonly>
+          <input #abroadDateStart matStartDate placeholder="{{ 'REQUEST.TRIP_DATE_FROM' | translate }}" readonly (dateChange)="startDateChanged()">
           <input #abroadDateEnd matEndDate placeholder="{{ 'REQUEST.TRIP_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
         <mat-hint *ngIf="isObjectEmpty(abroadDate.value)">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
