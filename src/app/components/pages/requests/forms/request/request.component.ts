@@ -25,7 +25,7 @@ import {InstituteInterface} from '../../../../../extra/institute-interface/insti
 import {RequestDataService} from '../../../../../services/request-data.service';
 import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
 import {DialogService} from '../../../../../services/dialog.service';
-import {RestService, Enum} from '../../../../../services/rest-service';
+import {Enum, RestService} from '../../../../../services/rest-service';
 import {Observable} from 'rxjs';
 import {SafeHttpClient} from '../../../../shared/security/SafeHttpClient';
 import {StatusEnum} from '../../../../../extra/status-enum/status-enum';
@@ -236,11 +236,13 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   getStatus() {
-    this.status = parseInt(this.localStorageService.status, 10);
-    this.restService.getStatuses().subscribe(statuses => {
-      this.statusEnum = statuses.find(status => this.status === status.id);
-      this.showStatus();
-    });
+    if (this.useCase !== UseCaseEnum.Create) {
+      this.status = parseInt(this.localStorageService.status, 10);
+      this.restService.getStatuses().subscribe(statuses => {
+        this.statusEnum = statuses.find(status => this.status === status.id);
+        this.showStatus();
+      });
+    }
   }
 
   showStatus() {
