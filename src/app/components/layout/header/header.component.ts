@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {DOCUMENT} from '@angular/common';
 import {LoginService} from '../../shared/security/LoginService';
 import {LocalStorageService} from '../../shared/security/LocalStorageService';
+import {find} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -57,10 +58,9 @@ export class HeaderComponent implements OnInit {
       this.sidenav.mode = 'side';
       this.sidenav.open();
     }
-    this.localStorageService.personalDataSubject.subscribe(personalData =>
-      this.fullName = personalData.firstName + ' ' + personalData.surname
-    );
-
+    this.localStorageService.personalDataSubject
+      .pipe(find(personalData => personalData != null))
+      .subscribe(personalData => this.fullName = personalData.firstName + ' ' + personalData.surname);
   }
 
   onMenuButtonClick() {
