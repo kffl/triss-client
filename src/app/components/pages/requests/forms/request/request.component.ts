@@ -746,10 +746,10 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
-  startDateChanged() {
-    const startDate: Date = this.abroadDate.value.start;
-    const days: number = Math.ceil((startDate.getTime() - this.today.getTime()) / (1000 * 60 * 60 * 24));
-    if (days < 5) {
+  tripStartDateChanged() {
+    const tripStartDate: Date = this.abroadDate.value.start;
+    const daysBetweenNowAndStart: number = Math.ceil((tripStartDate.getTime() - this.today.getTime()) / (1000 * 60 * 60 * 24));
+    if (daysBetweenNowAndStart < 5) {
       this.selfInsuredCheckbox.checked = true;
       this.selfInsuredCheckbox.disabled = true;
     } else {
