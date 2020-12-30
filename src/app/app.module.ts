@@ -38,7 +38,7 @@ import {MatTableModule} from '@angular/material/table';
 import { GridComponent } from './components/shared/grid/grid.component';
 import { RestService } from './services/rest-service';
 import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CreateRequestComponent } from './components/pages/requests/views/create-request/create-request.component';
@@ -57,7 +57,8 @@ import { WildaService } from './components/shared/security/roles/WildaService';
 import { DirectorService } from './components/shared/security/roles/DirectorService';
 import { RectorService } from './components/shared/security/roles/RectorService';
 import { LocalStorageService } from './components/shared/security/LocalStorageService';
-import {HttpErrorInterceptor} from "./components/shared/security/HttpErrorInterceptor";
+import {HttpErrorInterceptor} from './components/shared/security/HttpErrorInterceptor';
+import {PaginatorIntl} from './extra/paginator-intl/paginator-intl';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -142,13 +143,17 @@ export function HttpLoaderFactory(http: HttpClient) {
     SafeHttpClient,
     {
       provide: MAT_DATE_LOCALE,
-      useValue: 'en-GB'
+      useValue: 'en-US'
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true,
       deps: [SecurityService]
+    },
+    {
+      provide: MatPaginatorIntl,
+      useClass: PaginatorIntl
     }
   ],
   bootstrap: [AppComponent],

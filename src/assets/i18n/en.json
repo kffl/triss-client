@@ -31,7 +31,20 @@
     "REQUESTS_LIST": "Submitted requests",
     "DIRECTOR_LIST": "Director's panel",
     "WILDA_LIST": "Wilda's panel",
-    "RECTOR_LIST": "Rector's panel"
+    "RECTOR_LIST": "Rector's panel",
+    "FIRST_NAME": "First name",
+    "SURNAME": "Surname",
+    "INSTITUTE": "Institute",
+    "COUNTRY": "Country",
+    "CITY": "City",
+    "STATUS": "Status",
+    "START_DATE": "Departure date",
+    "END_DATE": "Arrival date",
+    "FILTERS": "Filters",
+    "ITEMS_LABEL": "Requests per page:",
+    "OF_LABEL": "of",
+    "PREVIOUS_PAGE_LABEL": "Previous page",
+    "NEXT_PAGE_LABEL": "Next page"
   },
   "STATUS": {
     "STATUS": "Status:",

@@ -31,7 +31,20 @@
     "REQUESTS_LIST": "Złożone wnioski",
     "DIRECTOR_LIST": "Panel dyrektora",
     "WILDA_LIST": "Panel Wildy",
-    "RECTOR_LIST": "Panel rektora"
+    "RECTOR_LIST": "Panel rektora",
+    "FIRST_NAME": "Imię",
+    "SURNAME": "Nazwisko",
+    "INSTITUTE": "Instytut",
+    "COUNTRY": "Kraj",
+    "CITY": "Miasto",
+    "STATUS": "Status",
+    "START_DATE": "Data wyjazdu",
+    "END_DATE": "Data powrotu",
+    "FILTERS": "Filtry",
+    "ITEMS_LABEL": "Liczba wniosków na stronę:",
+    "OF_LABEL": "z",
+    "PREVIOUS_PAGE_LABEL": "Poprzednia strona",
+    "NEXT_PAGE_LABEL": "Następna strona"
   },
   "STATUS": {
     "STATUS": "Status:",
