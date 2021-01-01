@@ -25,7 +25,9 @@
     "BUTTON_SAVE": "Zapisz dane",
     "BUTTON_CANCEL": "Anuluj",
     "NOT_SET_TITLE": "Dane osobowe nie zostały uzupełnione",
-    "NOT_SET_CONTENT": "Po zamknięciu tego okna nastąpi przekierowanie do panelu danych osobowych w celu uzupełnienia brakujących danych."
+    "NOT_SET_CONTENT": "Po zamknięciu tego okna nastąpi przekierowanie do panelu danych osobowych w celu uzupełnienia brakujących danych.",
+    "NOT_VALID_TITLE": "Nie wszystkie pola zostały uzupełnione",
+    "NOT_VALID_CONTENT": "Uzupełnij wszystkie pola przed zapisaniem danych"
   },
   "LIST": {
     "REQUESTS_LIST": "Złożone wnioski",

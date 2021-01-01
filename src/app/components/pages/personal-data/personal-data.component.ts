@@ -95,7 +95,6 @@ export class PersonalDataComponent implements OnInit {
   }
 
   onSaveButton() {
-    this.spinner.show();
     const newPersonalData: PersonalDataInterface = {
       firstName: this.personalData.firstName,
       surname: this.personalData.surname,
@@ -107,6 +106,15 @@ export class PersonalDataComponent implements OnInit {
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
+    if ([newPersonalData.phoneNumber, newPersonalData.academicDegree, newPersonalData.instituteID]
+      .some(field => field == null || field === '')) {
+      this.dialogService.showSimpleDialog(
+        'PERSONAL_DATA.NOT_VALID_TITLE',
+        'PERSONAL_DATA.NOT_VALID_CONTENT'
+      );
+      return;
+    }
+    this.spinner.show();
     this.localStorageService.personalData = newPersonalData;
     this.restService.updatePersonalData(newPersonalData).subscribe(
       () => {
