@@ -15,14 +15,16 @@ export class WildaPanelComponent implements OnInit {
 
 
   headers = {
-    firstName: {description: 'Imię', type: 'text'},
-    surname: {description: 'Nazwisko', type: 'text'},
-    instituteName: {description: 'Instytut', type: 'text'},
-    country: {description: 'Kraj', type: 'text'},
-    city: {description: 'Miasto', type: 'text'},
-    statusPl: {description: 'Status', type: 'text'},
-    abroadStartDate: {description: 'Data wyjazdu', type: 'date'},
-    abroadEndDate: {description: 'Data powrotu', type: 'date'}};
+    firstName: {description: 'LIST.FIRST_NAME', type: 'text'},
+    surname: {description: 'LIST.SURNAME', type: 'text'},
+    instituteName: {description: 'LIST.INSTITUTE', type: 'text'},
+    country: {description: 'LIST.COUNTRY', type: 'text'},
+    city: {description: 'LIST.CITY', type: 'text'},
+    statusPl: {description: 'LIST.STATUS', type: 'text'},
+    statusEng: {description: 'LIST.STATUS', type: 'text'},
+    abroadStartDate: {description: 'LIST.START_DATE', type: 'date'},
+    abroadEndDate: {description: 'LIST.END_DATE', type: 'date'}
+  };
 
   ngOnInit(): void {
   }

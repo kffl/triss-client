@@ -247,9 +247,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   showStatus() {
     if (this.statusEnum == null) {
-      this.translateService.get('STATUS.CREATE').subscribe(value => {
-        this.statusText = value;
-      });
+      this.statusText = this.translateService.instant('STATUS.CREATE');
     } else {
       this.statusText = this.statusEnum[this.enumLang];
     }

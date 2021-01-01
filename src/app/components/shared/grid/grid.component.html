@@ -3,15 +3,15 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title>
-      Filtry
+      {{ 'LIST.FILTERS' | translate }}
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div class = "form">
     <div *ngFor = "let tableFilter of objectKeys(columnFilters)" >
-      {{columnFilters[tableFilter].description}}: 
+      {{ columnFilters[tableFilter].description | translate }}:
       <div [ngSwitch] = "columnFilters[tableFilter].type">
         <mat-form-field *ngSwitchCase="'text'" appearance="outline" class = "filter" >
-        <input matInput type="text" (keyup)="onFilterChange($event, tableFilter)" 
+        <input matInput type="text" (keyup)="onFilterChange($event, tableFilter)"
               (paste)="onFilterChange($event, tableFilter)" [id] = "tableFilter">
         </mat-form-field>
         <mat-form-field *ngSwitchCase="'date'" appearance="outline" class = "filter">
@@ -23,23 +23,23 @@
     </div>
   </div>
  </mat-expansion-panel>
- 
+
 <br/>
 <div *ngIf = "dataSource" class = "main-container mat-elevation-z8">
 
   <table mat-table [dataSource]="dataSource" matSort matSortDisableClear>
 
-    <ng-container [matColumnDef]="tableData" *ngFor="let tableData of objectKeys(columnHeader)">
+    <ng-container [matColumnDef]="tableData" *ngFor="let tableData of objectKeys(filteredColumnHeader)">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{columnHeader[tableData].description}}
+          {{ filteredColumnHeader[tableData].description | translate }}
         </th>
         <td mat-cell *matCellDef="let element; let i=index;">
            {{element[tableData]}}
         </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="objectKeys(columnHeader)"></tr>
-    <tr class="table-row" mat-row *matRowDef="let row; columns: objectKeys(columnHeader);" (click) = onRowClicked(row)></tr>
+    <tr mat-header-row *matHeaderRowDef="objectKeys(filteredColumnHeader)"></tr>
+    <tr class="table-row" mat-row *matRowDef="let row; columns: objectKeys(filteredColumnHeader);" (click) = onRowClicked(row)></tr>
   </table>
   <mat-paginator [length]="objectCount" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
 

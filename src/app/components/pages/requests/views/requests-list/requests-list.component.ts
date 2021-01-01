@@ -16,11 +16,13 @@ export class RequestsListComponent implements OnInit {
   }
 
   headers = {
-    country: {description: 'Kraj', type: 'text'},
-    city: {description: 'Miasto', type: 'text'},
-    statusPl: {description: 'Status', type: 'text'},
-    abroadStartDate: {description: 'Data wyjazdu', type: 'date'},
-    abroadEndDate: {description: 'Data powrotu', type: 'date'}};
+    country: {description: 'LIST.COUNTRY', type: 'text'},
+    city: {description: 'LIST.CITY', type: 'text'},
+    statusPl: {description: 'LIST.STATUS', type: 'text'},
+    statusEng: {description: 'LIST.STATUS', type: 'text'},
+    abroadStartDate: {description: 'LIST.START_DATE', type: 'date'},
+    abroadEndDate: {description: 'LIST.END_DATE', type: 'date'}
+  };
 
   ngOnInit(): void {
   }

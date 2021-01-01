@@ -9,6 +9,7 @@ import {Row} from '../../../extra/app-grid-models/row';
 import {RestService} from '../../../services/rest-service';
 import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
 import {SecurityService} from '../security/SecurityService';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-grid',
@@ -17,6 +18,7 @@ import {SecurityService} from '../security/SecurityService';
 })
 export class GridComponent implements OnInit, AfterViewInit {
   @Input() columnHeader;
+  filteredColumnHeader: any = null;
   @Input() source;
   @Input() pageInfo: PageInfo;
   @Input() pageSizeOptions = [10, 25, 50];
@@ -28,25 +30,56 @@ export class GridComponent implements OnInit, AfterViewInit {
   dataSource: CustomDataSource;
 
   objectCount = 100;
-  columnFilters: any = {};
+  columnFilters: any = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(
     private restService: RestService,
-    private securityService: SecurityService
-  ) { }
+    private securityService: SecurityService,
+    private translateService: TranslateService,
+  ) {
+    this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
+  }
+
+  onLangChange(lang: string) {
+    this.dataSource.loadData(this.actor, this.pageInfo);
+    this.filteredColumnHeader = Object.assign({}, this.columnHeader);
+    if (lang === 'pl') {
+      delete this.filteredColumnHeader.statusEng;
+    } else {
+      delete this.filteredColumnHeader.statusPl;
+    }
+    this.columnFilters = {};
+    for (const filter in this.filteredColumnHeader) {
+      if (this.filteredColumnHeader.hasOwnProperty(filter)) {
+        this.columnFilters[filter + 'Filter'] = this.filteredColumnHeader[filter];
+      }
+    }
+  }
 
   ngOnInit() {
     this.prepareInitPageInfo();
     this.loadCount();
-    for (const filter in this.columnHeader) {
-      if (this.columnHeader.hasOwnProperty(filter)) {
-        this.columnFilters[filter + 'Filter'] = this.columnHeader[filter];
+    this.dataSource = new CustomDataSource(this.restService);
+    this.onLangChange(this.translateService.currentLang);
+    this.dataSource.getRowSubject().subscribe(rows => this.processRows(rows));
+  }
+
+  processRows(rows: any[]) {
+    if (rows.length > 0) {
+      const currentLang = this.translateService.currentLang;
+      let locales: string;
+      if (currentLang === 'pl') {
+        locales = 'pl-PL';
+      } else {
+        locales = 'en-US';
       }
+      rows.forEach(row => {
+        row.abroadStartDate = new Date(row.abroadStartDate).toLocaleDateString(locales);
+        row.abroadEndDate = new Date(row.abroadEndDate).toLocaleDateString(locales);
+      });
     }
-    this.dataSource = new CustomDataSource(this.restService, this.securityService);
-    this.dataSource.loadData(this.actor, this.pageInfo);
   }
 
   ngAfterViewInit() {
@@ -112,5 +145,4 @@ export class GridComponent implements OnInit, AfterViewInit {
       this.objectCount = result;
     });
   }
-
 }
