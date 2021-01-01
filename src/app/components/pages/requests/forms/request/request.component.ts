@@ -33,6 +33,7 @@ import {SecurityService} from '../../../../shared/security/SecurityService';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
 import {first} from 'rxjs/operators';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 
 @Component({
@@ -156,6 +157,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     private restService: RestService,
     private securityService: SecurityService,
     private localStorageService: LocalStorageService,
+    private spinner: NgxSpinnerService
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
@@ -402,13 +404,16 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         }, 2000);
       },
       (error: HttpErrorResponse) => {
+        this.spinner.hide();
         this.dialogService.showErrorDialog(titleError, contentError, error);
-      });
+      },
+      () => this.spinner.hide());
   }
 
   rejectForm() {
     this.dialogService.showRejectDialog().beforeClosed().subscribe((result: RejectInfo) => {
       if (result.rejected) {
+        this.spinner.show();
         let restObservable: Observable<any> = null;
         let goBackUrl: string = null;
         switch (this.useCase) {
@@ -469,6 +474,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   approveForm(restObservable: Observable<any>, goBackUrl: string) {
+    this.spinner.show();
     this.approveRejectDialog(
       restObservable,
       goBackUrl,
@@ -657,6 +663,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   sendFormData(form: FormData) {
+    this.spinner.show();
     this.restService.sendFormData(form).subscribe(
       () => {
         this.dialogService.showSimpleDialog(
@@ -669,12 +676,14 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         }, 2000);
       },
       (error: HttpErrorResponse) => {
+        this.spinner.hide();
         this.dialogService.showErrorDialog(
           'DIALOG.REQUEST_NOT_SENT.TITLE',
           'DIALOG.REQUEST_NOT_SENT.CONTENT',
           error
         );
       },
+      () => this.spinner.hide()
     );
   }
 
