@@ -13,7 +13,7 @@ import {MatFormFieldAppearance} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatDatepickerInput, MatDateRangeInput, MatEndDate, MatStartDate} from '@angular/material/datepicker';
 import {MatSelect} from '@angular/material/select';
-import {MatCheckbox} from '@angular/material/checkbox';
+import {MatCheckbox, MatCheckboxChange} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -761,6 +761,14 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.selfInsuredCheckbox.disabled = true;
     } else {
       this.selfInsuredCheckbox.disabled = false;
+    }
+  }
+
+  selfInsuredCheckboxChanged(event: MatCheckboxChange) {
+    const selfInsured = event.checked;
+    if (selfInsured) {
+      this.abroadDateInsuranceStart.writeValue(null);
+      this.abroadDateInsuranceEnd.writeValue(null);
     }
   }
 }

@@ -247,7 +247,7 @@
         <mat-datepicker-toggle matSuffix [for]="insurancePicker"></mat-datepicker-toggle>
         <mat-date-range-picker #insurancePicker [disabled]="useCase > 1"></mat-date-range-picker>
       </mat-form-field>
-      <mat-checkbox class="example-margin" #selfInsuredCheckbox [disabled]="useCase > 1">
+      <mat-checkbox class="example-margin" #selfInsuredCheckbox [disabled]="useCase > 1" (change)="selfInsuredCheckboxChanged($event)">
         <span>{{ 'REQUEST.SELF_INSURED' | translate }}</span>
       </mat-checkbox>
     </div>
