@@ -753,7 +753,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     }
   }
 
-  tripStartDateChanged() {
+  tripDateChanged() {
     const tripStartDate: Date = this.abroadDate.value.start;
     const daysBetweenNowAndStart: number = Math.ceil((tripStartDate.getTime() - this.today.getTime()) / (1000 * 60 * 60 * 24));
     if (daysBetweenNowAndStart < 5) {
@@ -762,6 +762,8 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     } else {
       this.selfInsuredCheckbox.disabled = false;
     }
+    this.requestPaymentDateStart.writeValue(this.abroadDateStart.value);
+    this.requestPaymentDateEnd.writeValue(this.abroadDateEnd.value);
   }
 
   selfInsuredCheckboxChanged(event: MatCheckboxChange) {
