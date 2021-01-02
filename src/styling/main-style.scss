@@ -1838,7 +1838,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-label {
-  color: rgba(0, 0, 0, .38)
+  color: mix($primary-color, rgba(0, 0, 0, .7))
 }
 
 .mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-underline::before {
@@ -1893,8 +1893,12 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
   color: rgba(0, 0, 0, .54)
 }
 
-.mat-input-element:disabled, .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after {
+mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after {
   color: rgba(0, 0, 0, .38)
+}
+
+.mat-input-element:disabled {
+  color: black
 }
 
 .mat-input-element {
@@ -2104,7 +2108,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-select-disabled .mat-select-value {
-  color: rgba(0, 0, 0, .38)
+  color: black
 }
 
 .mat-select-arrow {

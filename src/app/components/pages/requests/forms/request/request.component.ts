@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -41,7 +40,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class RequestComponent implements OnInit, AfterViewInit {
 
   @Input() useCase: UseCaseEnum;
   @Input() actor: ActorEnum;
@@ -171,10 +170,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   ngAfterViewInit() {
     this.setAutocompletingFields();
     this.changeDetectorRef.detectChanges();
-  }
-
-  ngAfterViewChecked() {
-    this.removeDisableClassFromSelects();
   }
 
   onLangChange(lang) {
@@ -738,19 +733,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   cancelForm() {
     this.location.back();
-  }
-
-  removeDisableClassFromSelects() {
-    if (this.useCase !== UseCaseEnum.Create) {
-      const selectFormFields = document.getElementsByClassName('mat-form-field-type-mat-select');
-      for (const i of Array(selectFormFields.length).keys()) {
-        selectFormFields.item(i).classList.remove('mat-form-field-disabled');
-      }
-      const selects = document.getElementsByTagName('mat-select');
-      for (const i of Array(selects.length).keys()) {
-        selects.item(i).classList.remove('mat-select-disabled');
-      }
-    }
   }
 
   tripDateChanged() {
