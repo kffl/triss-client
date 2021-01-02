@@ -5,12 +5,12 @@
   .list {
     display: flex;
     flex-direction: column;
-    padding: 12px;
+    width: 100%;
     .item {
       padding: 0 20px 0;
     }
     .header {
-      padding-top: 16px;
+      padding-top: 20px;
       line-height: 1.25;
       font-size: 24px;
     }

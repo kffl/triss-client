@@ -8,7 +8,7 @@
   </mat-expansion-panel-header>
   <div class = "form">
     <div *ngFor = "let tableFilter of objectKeys(columnFilters)" >
-      {{ columnFilters[tableFilter].description | translate }}:
+      <span class="filter-name">{{ columnFilters[tableFilter].description | translate }}:</span>
       <div [ngSwitch] = "columnFilters[tableFilter].type">
         <mat-form-field *ngSwitchCase="'text'" appearance="outline" class = "filter" >
         <input matInput type="text" (keyup)="onFilterChange($event, tableFilter)"
@@ -27,20 +27,23 @@
 <br/>
 <div *ngIf = "dataSource" class = "main-container mat-elevation-z8">
 
-  <table mat-table [dataSource]="dataSource" matSort matSortDisableClear>
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" matSort matSortDisableClear>
 
-    <ng-container [matColumnDef]="tableData" *ngFor="let tableData of objectKeys(filteredColumnHeader)">
+      <ng-container [matColumnDef]="tableData" *ngFor="let tableData of objectKeys(filteredColumnHeader)">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ filteredColumnHeader[tableData].description | translate }}
         </th>
         <td mat-cell *matCellDef="let element; let i=index;">
-           {{element[tableData]}}
+          {{element[tableData]}}
         </td>
-    </ng-container>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="objectKeys(filteredColumnHeader)"></tr>
-    <tr class="table-row" mat-row *matRowDef="let row; columns: objectKeys(filteredColumnHeader);" (click) = onRowClicked(row)></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="objectKeys(filteredColumnHeader)"></tr>
+      <tr class="table-row" mat-row *matRowDef="let row; columns: objectKeys(filteredColumnHeader);" (click) = onRowClicked(row)></tr>
+    </table>
+  </div>
+
   <mat-paginator [length]="objectCount" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
 
 </div>

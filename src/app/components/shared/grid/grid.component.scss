@@ -3,7 +3,6 @@
 .main-container {
   width: 100%;
   table {
-    width: 100%;
     .table-row:hover {
       cursor: pointer;
       background-color: $link-hover-color;
@@ -19,17 +18,43 @@
   }
 }
 
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  .mat-table {
+    width: 100%;
+    max-width: 100%;
+    display: table;
+    border-collapse: collapse;
+  }
+  .mat-row, .mat-header-row {
+    display: table-row;
+  }
+  .mat-cell, .mat-header-cell {
+    display: table-cell;
+    line-break: unset;
+    width: auto;
+    overflow: hidden;
+    vertical-align: middle;
+    padding-right: 8px;
+  }
+}
+
 
 .form {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  .filter-name {
+    margin-left: 16px;
+  }
   mat-form-field {
     flex: 1 1 0;
     display: block;
-    padding: 5px;
-    min-width: min(425px, calc(100vw - 20px));
+    padding: 10px;
+    width: 300px;
     input {
       color: black;
     }
