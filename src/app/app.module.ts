@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -59,6 +59,7 @@ import { RectorService } from './components/shared/security/roles/RectorService'
 import { LocalStorageService } from './components/shared/security/LocalStorageService';
 import {HttpErrorInterceptor} from './components/shared/security/HttpErrorInterceptor';
 import {PaginatorIntl} from './extra/paginator-intl/paginator-intl';
+import {NgxSpinnerModule} from 'ngx-spinner';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -127,7 +128,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCheckboxModule,
     DigitOnlyModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    NgxSpinnerModule
   ],
   providers: [
     MatDatepickerModule,
@@ -157,7 +159,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [InfoDialogComponent, RejectDialogComponent]
+  entryComponents: [InfoDialogComponent, RejectDialogComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
 export class AppModule {

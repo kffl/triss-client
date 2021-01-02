@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -13,7 +12,7 @@ import {MatFormFieldAppearance} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatDatepickerInput, MatDateRangeInput, MatEndDate, MatStartDate} from '@angular/material/datepicker';
 import {MatSelect} from '@angular/material/select';
-import {MatCheckbox} from '@angular/material/checkbox';
+import {MatCheckbox, MatCheckboxChange} from '@angular/material/checkbox';
 import {TranslateService} from '@ngx-translate/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -33,6 +32,7 @@ import {SecurityService} from '../../../../shared/security/SecurityService';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
 import {first} from 'rxjs/operators';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 
 @Component({
@@ -40,7 +40,7 @@ import {first} from 'rxjs/operators';
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class RequestComponent implements OnInit, AfterViewInit {
 
   @Input() useCase: UseCaseEnum;
   @Input() actor: ActorEnum;
@@ -156,6 +156,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     private restService: RestService,
     private securityService: SecurityService,
     private localStorageService: LocalStorageService,
+    private spinner: NgxSpinnerService
   ) {
     this.onLangChange(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
@@ -169,10 +170,6 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   ngAfterViewInit() {
     this.setAutocompletingFields();
     this.changeDetectorRef.detectChanges();
-  }
-
-  ngAfterViewChecked() {
-    this.removeDisableClassFromSelects();
   }
 
   onLangChange(lang) {
@@ -402,13 +399,16 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         }, 2000);
       },
       (error: HttpErrorResponse) => {
+        this.spinner.hide();
         this.dialogService.showErrorDialog(titleError, contentError, error);
-      });
+      },
+      () => this.spinner.hide());
   }
 
   rejectForm() {
     this.dialogService.showRejectDialog().beforeClosed().subscribe((result: RejectInfo) => {
       if (result.rejected) {
+        this.spinner.show();
         let restObservable: Observable<any> = null;
         let goBackUrl: string = null;
         switch (this.useCase) {
@@ -469,6 +469,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   approveForm(restObservable: Observable<any>, goBackUrl: string) {
+    this.spinner.show();
     this.approveRejectDialog(
       restObservable,
       goBackUrl,
@@ -657,6 +658,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
   }
 
   sendFormData(form: FormData) {
+    this.spinner.show();
     this.restService.sendFormData(form).subscribe(
       () => {
         this.dialogService.showSimpleDialog(
@@ -669,12 +671,14 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
         }, 2000);
       },
       (error: HttpErrorResponse) => {
+        this.spinner.hide();
         this.dialogService.showErrorDialog(
           'DIALOG.REQUEST_NOT_SENT.TITLE',
           'DIALOG.REQUEST_NOT_SENT.CONTENT',
           error
         );
       },
+      () => this.spinner.hide()
     );
   }
 
@@ -731,20 +735,7 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
     this.location.back();
   }
 
-  removeDisableClassFromSelects() {
-    if (this.useCase !== UseCaseEnum.Create) {
-      const selectFormFields = document.getElementsByClassName('mat-form-field-type-mat-select');
-      for (const i of Array(selectFormFields.length).keys()) {
-        selectFormFields.item(i).classList.remove('mat-form-field-disabled');
-      }
-      const selects = document.getElementsByTagName('mat-select');
-      for (const i of Array(selects.length).keys()) {
-        selects.item(i).classList.remove('mat-select-disabled');
-      }
-    }
-  }
-
-  tripStartDateChanged() {
+  tripDateChanged() {
     const tripStartDate: Date = this.abroadDate.value.start;
     const daysBetweenNowAndStart: number = Math.ceil((tripStartDate.getTime() - this.today.getTime()) / (1000 * 60 * 60 * 24));
     if (daysBetweenNowAndStart < 5) {
@@ -752,6 +743,16 @@ export class RequestComponent implements OnInit, AfterViewInit, AfterViewChecked
       this.selfInsuredCheckbox.disabled = true;
     } else {
       this.selfInsuredCheckbox.disabled = false;
+    }
+    this.requestPaymentDateStart.writeValue(this.abroadDateStart.value);
+    this.requestPaymentDateEnd.writeValue(this.abroadDateEnd.value);
+  }
+
+  selfInsuredCheckboxChanged(event: MatCheckboxChange) {
+    const selfInsured = event.checked;
+    if (selfInsured) {
+      this.abroadDateInsuranceStart.writeValue(null);
+      this.abroadDateInsuranceEnd.writeValue(null);
     }
   }
 }

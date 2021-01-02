@@ -1,4 +1,5 @@
 {
+  "TITLE": "Triss - Poznan University of Technology",
   "HEADER": {
     "TITLE": "Triss",
     "LANGUAGE": "Change language:",
@@ -25,7 +26,9 @@
     "BUTTON_SAVE": "Save",
     "BUTTON_CANCEL": "Cancel",
     "NOT_SET_TITLE": "Personal data was not set",
-    "NOT_SET_CONTENT": "After closing this dialog you will be redirected to the personal data panel to set your data."
+    "NOT_SET_CONTENT": "After closing this dialog you will be redirected to the personal data panel to set your data.",
+    "NOT_VALID_TITLE": "Not all fields have been completed",
+    "NOT_VALID_CONTENT": "Complete all fields before saving data"
   },
   "LIST": {
     "REQUESTS_LIST": "Submitted requests",
@@ -126,6 +129,7 @@
     "DOCUMENT_TYPE": "Document type",
     "DOCUMENT_SERIAL_NUMBER": "Series and number",
     "COMMENTS": "Type your comments here",
+    "COMMENTS_READ": "Comments",
     "REQUIRED_FIELD": "This field is required"
   },
   "DIALOG": {

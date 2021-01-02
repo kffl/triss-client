@@ -10,6 +10,7 @@ import {DialogService} from '../../../services/dialog.service';
 import {RestService} from '../../../services/rest-service';
 import {SecurityService} from '../../shared/security/SecurityService';
 import {LocalStorageService} from '../../shared/security/LocalStorageService';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-personal-data',
@@ -30,16 +31,18 @@ export class PersonalDataComponent implements OnInit {
   phoneNumber: string;
   academicTitle: string;
   instituteSelect: InstituteInterface = {
-    id: 1,
-    name: 'garbage',
-    active: false};
+    id: null,
+    name: null,
+    active: null
+  };
 
   constructor(
     private restService: RestService,
     private securityService: SecurityService,
     private requestService: RequestDataService,
     private dialogService: DialogService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -103,6 +106,15 @@ export class PersonalDataComponent implements OnInit {
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
+    if ([newPersonalData.phoneNumber, newPersonalData.academicDegree, newPersonalData.instituteID]
+      .some(field => field == null || field === '')) {
+      this.dialogService.showSimpleDialog(
+        'PERSONAL_DATA.NOT_VALID_TITLE',
+        'PERSONAL_DATA.NOT_VALID_CONTENT'
+      );
+      return;
+    }
+    this.spinner.show();
     this.localStorageService.personalData = newPersonalData;
     this.restService.updatePersonalData(newPersonalData).subscribe(
       () => {
@@ -112,11 +124,13 @@ export class PersonalDataComponent implements OnInit {
         ).beforeClosed().subscribe(() => this.isEditing = false);
       },
       (error: HttpErrorResponse) => {
+        this.spinner.hide();
         this.dialogService.showErrorDialog(
           'DIALOG.PERSONAL_DATA_FAILED.TITLE',
           'DIALOG.PERSONAL_DATA_FAILED.CONTENT',
           error
         );
-      });
+      },
+      () => this.spinner.hide());
   }
 }

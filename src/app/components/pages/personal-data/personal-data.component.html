@@ -5,11 +5,11 @@
 
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.FIRST_NAME' | translate }}</span></mat-label>
-        <input matInput  readonly [disabled]="!isEditing" [(ngModel)]="firstName">
+        <input matInput  disabled [(ngModel)]="firstName">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.SURNAME' | translate }}</span></mat-label>
-        <input matInput  readonly [disabled]="!isEditing" [(ngModel)]="surname">
+        <input matInput  disabled [(ngModel)]="surname">
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
