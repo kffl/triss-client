@@ -297,6 +297,7 @@
                  [disabled]="useCase > 1"
                  (input)="setAmountSum(requestPaymentDays.value, requestPaymentDaysAmount.value, requestPaymentDaysAmountSum)"
                  #requestPaymentDaysAmount>
+          <span matSuffix>PLN</span>
           <mat-hint *ngIf="!requestPaymentDaysAmount.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
@@ -304,6 +305,7 @@
           <input matInput
                  #requestPaymentDaysAmountSum
                  disabled>
+          <span matSuffix>PLN</span>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentAccommodation.value && validationFailed">
           <mat-label><span>{{ 'REQUEST.ACCOMMODATION' | translate }}</span></mat-label>
@@ -331,6 +333,7 @@
                  [disabled]="useCase > 1"
                  (input)="setAmountSum(requestPaymentAccommodation.value, requestPaymentAccommodationLimit.value, requestPaymentAccommodationSum)"
                  #requestPaymentAccommodationLimit>
+          <span matSuffix>PLN</span>
           <mat-hint *ngIf="!requestPaymentAccommodationLimit.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
         </mat-form-field>
         <mat-form-field [appearance]="formFieldsStyle">
@@ -338,6 +341,7 @@
           <input matInput
                  #requestPaymentAccommodationSum
                  disabled>
+          <span matSuffix>PLN</span>
         </mat-form-field>
         <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentTravelDiet.value && validationFailed">
           <mat-label><span>{{ 'REQUEST.TRAVEL_DIET' | translate }}</span></mat-label>
@@ -352,6 +356,7 @@
                  matInput
                  [disabled]="useCase > 1"
                  #requestPaymentTravelDiet>
+          <span matSuffix>PLN</span>
           <mat-hint *ngIf="!requestPaymentTravelDiet.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
         </mat-form-field>
         <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle" [class.invalid-field]="!requestPaymentLocalTransportCosts.value && validationFailed">
@@ -367,6 +372,8 @@
                  matInput
                  [disabled]="useCase > 1"
                  #requestPaymentLocalTransportCosts>
+          <span matSuffix>PLN</span>
+          <mat-hint *ngIf="!requestPaymentLocalTransportCosts.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
         </mat-form-field>
         <mat-form-field class="two-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.OTHER_COSTS' | translate }}</span></mat-label>
@@ -388,10 +395,12 @@
                  matInput
                  [disabled]="useCase > 1"
                  #requestPaymentOtherExpensesValue>
+          <span matSuffix>PLN</span>
         </mat-form-field>
         <mat-form-field class="three-columns-form-field" [appearance]="formFieldsStyle">
           <mat-label><span>{{ 'REQUEST.SUMMARIZED_COSTS' | translate }}</span></mat-label>
           <input matInput #requestPaymentSummarizedCosts disabled>
+          <span matSuffix>PLN</span>
         </mat-form-field>
       </div>
     </div>
@@ -417,6 +426,7 @@
                [disabled]="useCase > 1"
                placeholder="{{ 'REQUEST.CONFERENCE_FEE_PLACEHOLDER' | translate }}"
                #conferenceFeeValue>
+        <span matSuffix>PLN</span>
         <mat-hint *ngIf="!conferenceFeeValue.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="conferenceFeePaymentTypeSelect.value == null && validationFailed">
@@ -440,6 +450,7 @@
                [disabled]="useCase > 1"
                placeholder="{{ 'REQUEST.DEPOSIT_PLACEHOLDER' | translate }}"
                #depositValue>
+        <span matSuffix>PLN</span>
         <mat-hint *ngIf="!depositValue.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="depositPaymentTypeSelect.value == null && validationFailed">
