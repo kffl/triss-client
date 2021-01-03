@@ -68,7 +68,7 @@ export class PersonalDataComponent implements OnInit {
   loadPersonalData() {
     this.firstName = this.personalData.firstName;
     this.surname = this.personalData.surname;
-    this.birthDate = new Date(this.personalData.birthDate);
+    this.birthDate = this.personalData.birthDate == null ? null : new Date(this.personalData.birthDate);
     this.phoneNumber = this.personalData.phoneNumber;
     this.academicTitle = this.personalData.academicDegree;
   }
@@ -106,7 +106,7 @@ export class PersonalDataComponent implements OnInit {
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
-    if ([newPersonalData.phoneNumber, newPersonalData.academicDegree, newPersonalData.instituteID]
+    if ([newPersonalData.phoneNumber, newPersonalData.academicDegree, newPersonalData.instituteID, newPersonalData.birthDate]
       .some(field => field == null || field === '')) {
       this.dialogService.showSimpleDialog(
         'PERSONAL_DATA.NOT_VALID_TITLE',
