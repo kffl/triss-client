@@ -11,14 +11,18 @@
     "REQUESTS": "Wnioski",
     "NEW_REQUESTS": "Stwórz wniosek",
     "REQUESTS_LIST": "Złożone wnioski",
-    "DIRECTOR_PANEL": "Panel dyrektora",
+    "DIRECTOR_PANEL": "Panel Dyrektora",
     "WILDA_PANEL": "Panel Wildy",
-    "RECTOR_PANEL": "Panel rektora"
+    "RECTOR_PANEL": "Panel Rektora"
   },
   "FOOTER": {
     "PUT": "Politechnika Poznańska"
   },
   "MAIN_VIEW": {
+    "HEADER": "Serwis Triss",
+    "FIRST_PARAGRAPH": "Witaj w serwisie Triss. Podstawowym celem serwisu Triss jest ułatwienie wypełniania formularzy związynych z delegacjami.",
+    "SECOND_PARAGRAPH": "Serwis umożliwia także wpisanie danych osobowych, by przyspieszyć proces składanie wniosku.",
+    "THIRD_PARAGRAPH": "Aby przejść do wybranego widoku, wybierz jego nazwę w menu po lewej stronie ekranu."
   },
   "PERSONAL_DATA": {
     "TITLE": "Dane osobowe",
@@ -32,9 +36,9 @@
   },
   "LIST": {
     "REQUESTS_LIST": "Złożone wnioski",
-    "DIRECTOR_LIST": "Panel dyrektora",
+    "DIRECTOR_LIST": "Panel Dyrektora",
     "WILDA_LIST": "Panel Wildy",
-    "RECTOR_LIST": "Panel rektora",
+    "RECTOR_LIST": "Panel Rektora",
     "FIRST_NAME": "Imię",
     "SURNAME": "Nazwisko",
     "INSTITUTE": "Instytut",

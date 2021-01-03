@@ -19,6 +19,10 @@
     "PUT": "Poznan University of Technology"
   },
   "MAIN_VIEW": {
+    "HEADER": "Triss Web Service",
+    "FIRST_PARAGRAPH": "Welcome to Triss. The primary purpose of the Triss website is to simplify filling requests related to official trips abroad.",
+    "SECOND_PARAGRAPH": "The website also allows user to enter personal data to speed up application process",
+    "THIRD_PARAGRAPH": "To go to the selected view, select its name in the menu on the left side of the screen."
   },
   "PERSONAL_DATA": {
     "TITLE": "Personal data",
