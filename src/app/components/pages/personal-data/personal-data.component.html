@@ -13,7 +13,7 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
-        <input matInput [matDatepicker]="birthPicker" [(ngModel)]="birthDate" readonly [disabled]="!isEditing" (click)="birthPicker.open()">
+        <input matInput [matDatepicker]="birthPicker" [(ngModel)]="birthDate" readonly [disabled]="!isEditing" (click)="birthPicker.open()" [max]="today">
         <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
         <mat-datepicker #birthPicker [disabled]="!isEditing"></mat-datepicker>
       </mat-form-field>

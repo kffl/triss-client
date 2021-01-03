@@ -26,6 +26,7 @@ export class PersonalDataComponent implements OnInit {
   allInstitutes: InstituteInterface[];
   personalDataReadySubject = new BehaviorSubject(false);
 
+  today = new Date();
   firstName: string;
   surname: string;
   birthDate: Date = new Date();
