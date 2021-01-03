@@ -211,6 +211,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   getFormData() {
     if (this.useCase !== UseCaseEnum.Create) {
+      this.spinner.show();
       const requestId = parseInt(this.localStorageService.request, 10);
       this.restService.getApplication(this.actor, requestId).subscribe(
         (form: FormData) => {
@@ -224,8 +225,12 @@ export class RequestComponent implements OnInit, AfterViewInit {
             'DIALOG.REQUEST_NOT_SENT.CONTENT',
             error
           );
+          this.spinner.hide();
         },
-        () => this.setTransportQuantity()
+        () => {
+          this.setTransportQuantity();
+          this.spinner.hide();
+        }
       );
     } else {
       this.getSelectEnums();
