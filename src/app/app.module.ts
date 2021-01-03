@@ -60,6 +60,7 @@ import { LocalStorageService } from './components/shared/security/LocalStorageSe
 import {HttpErrorInterceptor} from './components/shared/security/HttpErrorInterceptor';
 import {PaginatorIntl} from './extra/paginator-intl/paginator-intl';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import { YesNoDialogComponent } from './components/shared/yes-no-dialog/yes-no-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -88,7 +89,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReqeustDirectorComponent,
     ReqeustWildaComponent,
     RequestRectorComponent,
-    RejectDialogComponent
+    RejectDialogComponent,
+    YesNoDialogComponent
   ],
   imports: [
     MatNativeDateModule,
@@ -159,7 +161,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [InfoDialogComponent, RejectDialogComponent],
+  entryComponents: [InfoDialogComponent, RejectDialogComponent, YesNoDialogComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 

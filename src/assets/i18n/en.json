@@ -70,7 +70,6 @@
     "BUTTON_CANCEL": "Cancel",
     "BUTTON_REJECT": "Reject the request",
     "BUTTON_SEND": "Send the request",
-    "BUTTON_APPROVE": "Mark as verified",
     "BUTTON_ACCEPT": "Accept request",
     "FIRST_NAME": "First name",
     "SURNAME": "Surname",
@@ -169,6 +168,20 @@
       "TITLE": "Error saving data",
       "CONTENT": "Error code: "
     },
-    "CLOSE": "Close"
+    "PERSONAL_DATA_CONFIRM_SAVE": {
+      "TITLE": "Save changes?",
+      "CONTENT": "Choose 'Yes' to confirm saving changes"
+    },
+    "REQUEST_ACCEPT_CONFIRM": {
+      "TITLE": "Accept request?",
+      "CONTENT": "Choose 'Yes' to confirm accepting request"
+    },
+    "REQUEST_SEND_CONFIRM": {
+      "TITLE": "Send request?",
+      "CONTENT": "Choose 'Yes' to confirm sending request"
+    },
+    "CLOSE": "Close",
+    "YES": "Yes",
+    "NO": "No"
   }
 }

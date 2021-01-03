@@ -59,7 +59,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(abroadDate.value) && validationFailed">
         <mat-label><span>{{ 'REQUEST.TRIP_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
-        <mat-date-range-input [min]="today" [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()" [disabled]="useCase > 1">
+        <mat-date-range-input [min]="tomorrow" [rangePicker]="abroadPicker" #abroadDate (click)="abroadPicker.open()" [disabled]="useCase > 1">
           <input #abroadDateStart matStartDate placeholder="{{ 'REQUEST.TRIP_DATE_FROM' | translate }}" readonly (dateChange)="tripDateChanged()">
           <input #abroadDateEnd matEndDate placeholder="{{ 'REQUEST.TRIP_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
@@ -88,7 +88,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(conferenceDate.value) && validationFailed">
         <mat-label><span>{{ 'REQUEST.CONFERENCE_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
-        <mat-date-range-input [min]="today" [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()" [disabled]="useCase > 1">
+        <mat-date-range-input [min]="tomorrow" [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()" [disabled]="useCase > 1">
           <input #conferenceDateStart matStartDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_FROM' | translate }}" readonly>
           <input #conferenceDateEnd matEndDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
@@ -161,7 +161,7 @@
         <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!departureDate.value && validationFailed">
           <mat-label>{{ 'REQUEST.DEPARTURE_DATE' | translate }}</mat-label>
           <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
-          <input matInput [min]="today" [matDatepicker]="departurePicker" #departureDate readonly [disabled]="useCase > 1" (click)="departurePicker.open()">
+          <input matInput [min]="tomorrow" [matDatepicker]="departurePicker" #departureDate readonly [disabled]="useCase > 1" (click)="departurePicker.open()">
           <mat-hint *ngIf="!departureDate.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
           <mat-datepicker #departurePicker [disabled]="useCase > 1"></mat-datepicker>
@@ -236,10 +236,10 @@
         <mat-label><span>{{ 'REQUEST.DEPARTURE_COUNTRY' | translate }}</span></mat-label>
         <input matInput #departureCountry disabled>
       </mat-form-field>
-      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(abroadDateInsurance.value) && validationFailed">
+      <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="isObjectEmpty(abroadDateInsurance.value) && validationFailed && !selfInsuredCheckbox.checked">
         <mat-label><span>{{ 'REQUEST.TIME_ABROAD' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="!selfInsuredCheckbox.checked && useCase === 1">*</span>
-        <mat-date-range-input [min]="today" [rangePicker]="insurancePicker" [disabled]="useCase > 1 || selfInsuredCheckbox.checked" #abroadDateInsurance (click)="insurancePicker.open()">
+        <mat-date-range-input [min]="tomorrow" [rangePicker]="insurancePicker" [disabled]="useCase > 1 || selfInsuredCheckbox.checked" #abroadDateInsurance (click)="insurancePicker.open()">
           <input #abroadDateInsuranceStart matStartDate placeholder="{{ 'REQUEST.TIME_ABROAD_FROM' | translate }}" readonly>
           <input #abroadDateInsuranceEnd matEndDate placeholder="{{ 'REQUEST.TIME_ABROAD_TO' | translate }}" readonly>
         </mat-date-range-input>
@@ -506,7 +506,7 @@
         <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
       </button></a>
       <a *ngIf="useCase === 3"><button (click)="sendToRector()" mat-flat-button color="primary">
-        <span>{{ 'REQUEST.BUTTON_APPROVE' | translate }}</span>
+        <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
       </button></a>
       <a *ngIf="useCase === 4"><button (click)="sendBackToWilda()" mat-flat-button color="primary">
         <span>{{ 'REQUEST.BUTTON_ACCEPT' | translate }}</span>
