@@ -13,25 +13,33 @@
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label>{{ 'REQUEST.BIRTHDATE' | translate }}</mat-label>
-        <input matInput [matDatepicker]="birthPicker" [(ngModel)]="birthDate" readonly [disabled]="!isEditing" (click)="birthPicker.open()">
+        <span matPrefix class="asterisk" *ngIf="this.isEditing">*</span>
+        <input matInput [matDatepicker]="birthPicker" [(ngModel)]="birthDate" readonly [disabled]="!isEditing" (click)="birthPicker.open()" [max]="today">
         <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
         <mat-datepicker #birthPicker [disabled]="!isEditing"></mat-datepicker>
+        <mat-hint *ngIf="this.isEditing && !birthDate">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.PHONE_NUMBER' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk" *ngIf="this.isEditing">*</span>
         <input matInput  [disabled]="!isEditing" [(ngModel)]="phoneNumber">
+        <mat-hint *ngIf="this.isEditing && !phoneNumber">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.ACADEMIC_TITLE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk" *ngIf="this.isEditing">*</span>
         <input matInput  [disabled]="!isEditing" [(ngModel)]="academicTitle">
+        <mat-hint *ngIf="this.isEditing && !academicTitle">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
       </mat-form-field>
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.INSTITUTE' | translate }}</span></mat-label>
+        <span matPrefix class="asterisk" *ngIf="this.isEditing">*</span>
         <mat-select  [disabled]="!isEditing" [(ngModel)]="instituteSelect.id">
           <mat-option *ngFor="let institute of allInstitutes" [value]="institute.id" [disabled]="!institute.active">
             <span>{{institute.name}}</span>
           </mat-option>
         </mat-select>
+        <mat-hint *ngIf="this.isEditing && instituteSelect.id == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
       </mat-form-field>
 
     </div>

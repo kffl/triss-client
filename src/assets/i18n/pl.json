@@ -11,14 +11,18 @@
     "REQUESTS": "Wnioski",
     "NEW_REQUESTS": "Stwórz wniosek",
     "REQUESTS_LIST": "Złożone wnioski",
-    "DIRECTOR_PANEL": "Panel dyrektora",
+    "DIRECTOR_PANEL": "Panel Dyrektora",
     "WILDA_PANEL": "Panel Wildy",
-    "RECTOR_PANEL": "Panel rektora"
+    "RECTOR_PANEL": "Panel Rektora"
   },
   "FOOTER": {
     "PUT": "Politechnika Poznańska"
   },
   "MAIN_VIEW": {
+    "HEADER": "Serwis Triss",
+    "FIRST_PARAGRAPH": "Witaj w serwisie Triss. Podstawowym celem serwisu Triss jest ułatwienie wypełniania formularzy związynych z delegacjami.",
+    "SECOND_PARAGRAPH": "Serwis umożliwia także wpisanie danych osobowych, by przyspieszyć proces składanie wniosku.",
+    "THIRD_PARAGRAPH": "Aby przejść do wybranego widoku, wybierz jego nazwę w menu po lewej stronie ekranu."
   },
   "PERSONAL_DATA": {
     "TITLE": "Dane osobowe",
@@ -32,9 +36,9 @@
   },
   "LIST": {
     "REQUESTS_LIST": "Złożone wnioski",
-    "DIRECTOR_LIST": "Panel dyrektora",
+    "DIRECTOR_LIST": "Panel Dyrektora",
     "WILDA_LIST": "Panel Wildy",
-    "RECTOR_LIST": "Panel rektora",
+    "RECTOR_LIST": "Panel Rektora",
     "FIRST_NAME": "Imię",
     "SURNAME": "Nazwisko",
     "INSTITUTE": "Instytut",
@@ -70,7 +74,6 @@
     "BUTTON_CANCEL": "Anuluj",
     "BUTTON_REJECT": "Odrzuć wniosek",
     "BUTTON_SEND": "Wyślij wniosek",
-    "BUTTON_APPROVE": "Oznacz jako zweryfikowany",
     "BUTTON_ACCEPT": "Zaakceptuj wniosek",
     "FIRST_NAME": "Imię",
     "SURNAME": "Nazwisko",
@@ -146,7 +149,7 @@
       "CONTENT": "Kod błędu: "
     },
     "REQUEST_APPROVED": {
-      "TITLE": "Zaakceptiowano wniosek",
+      "TITLE": "Zaakceptowano wniosek",
       "CONTENT": "Wniosek został zaakceptowany"
     },
     "REQUEST_APPROVE_FAIL": {
@@ -169,6 +172,20 @@
       "TITLE": "Nie udało się zapisać danych",
       "CONTENT": "Kod błędu: "
     },
-    "CLOSE": "Zamknij"
+    "PERSONAL_DATA_CONFIRM_SAVE": {
+      "TITLE": "Zapisać zmiany?",
+      "CONTENT": "Wybierz 'Tak' aby potwierdzić zapisanie zmian"
+    },
+    "REQUEST_ACCEPT_CONFIRM": {
+      "TITLE": "Zaakceptować wniosek?",
+      "CONTENT": "Wybierz 'Tak' aby potwierdzić akceptację wniosku"
+    },
+    "REQUEST_SEND_CONFIRM": {
+      "TITLE": "Wysłać wniosek?",
+      "CONTENT": "Wybierz 'Tak' aby potwierdzić wysłanie wniosku"
+    },
+    "CLOSE": "Zamknij",
+    "YES": "Tak",
+    "NO": "Nie"
   }
 }

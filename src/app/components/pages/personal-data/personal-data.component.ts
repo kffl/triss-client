@@ -11,6 +11,7 @@ import {RestService} from '../../../services/rest-service';
 import {SecurityService} from '../../shared/security/SecurityService';
 import {LocalStorageService} from '../../shared/security/LocalStorageService';
 import {NgxSpinnerService} from 'ngx-spinner';
+import {Result} from '../../shared/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'app-personal-data',
@@ -25,6 +26,7 @@ export class PersonalDataComponent implements OnInit {
   allInstitutes: InstituteInterface[];
   personalDataReadySubject = new BehaviorSubject(false);
 
+  today = new Date();
   firstName: string;
   surname: string;
   birthDate: Date = new Date();
@@ -68,7 +70,7 @@ export class PersonalDataComponent implements OnInit {
   loadPersonalData() {
     this.firstName = this.personalData.firstName;
     this.surname = this.personalData.surname;
-    this.birthDate = new Date(this.personalData.birthDate);
+    this.birthDate = this.personalData.birthDate == null ? null : new Date(this.personalData.birthDate);
     this.phoneNumber = this.personalData.phoneNumber;
     this.academicTitle = this.personalData.academicDegree;
   }
@@ -106,7 +108,7 @@ export class PersonalDataComponent implements OnInit {
       employeeId: this.personalData.employeeId,
       id: this.personalData.id
     };
-    if ([newPersonalData.phoneNumber, newPersonalData.academicDegree, newPersonalData.instituteID]
+    if ([newPersonalData.phoneNumber, newPersonalData.academicDegree, newPersonalData.instituteID, newPersonalData.birthDate]
       .some(field => field == null || field === '')) {
       this.dialogService.showSimpleDialog(
         'PERSONAL_DATA.NOT_VALID_TITLE',
@@ -114,23 +116,28 @@ export class PersonalDataComponent implements OnInit {
       );
       return;
     }
-    this.spinner.show();
-    this.localStorageService.personalData = newPersonalData;
-    this.restService.updatePersonalData(newPersonalData).subscribe(
-      () => {
-        this.dialogService.showSimpleDialog(
-          'DIALOG.PERSONAL_DATA_SAVED.TITLE',
-          'DIALOG.PERSONAL_DATA_SAVED.CONTENT'
-        ).beforeClosed().subscribe(() => this.isEditing = false);
-      },
-      (error: HttpErrorResponse) => {
-        this.spinner.hide();
-        this.dialogService.showErrorDialog(
-          'DIALOG.PERSONAL_DATA_FAILED.TITLE',
-          'DIALOG.PERSONAL_DATA_FAILED.CONTENT',
-          error
-        );
-      },
-      () => this.spinner.hide());
+    this.dialogService.showYesNoDialog('DIALOG.PERSONAL_DATA_CONFIRM_SAVE.TITLE', 'DIALOG.PERSONAL_DATA_CONFIRM_SAVE.CONTENT')
+      .beforeClosed().subscribe((result: Result) => {
+      if (result.confirmed) {
+        this.spinner.show();
+        this.localStorageService.personalData = newPersonalData;
+        this.restService.updatePersonalData(newPersonalData).subscribe(
+          () => {
+            this.dialogService.showSimpleDialog(
+              'DIALOG.PERSONAL_DATA_SAVED.TITLE',
+              'DIALOG.PERSONAL_DATA_SAVED.CONTENT'
+            ).beforeClosed().subscribe(() => this.isEditing = false);
+          },
+          (error: HttpErrorResponse) => {
+            this.spinner.hide();
+            this.dialogService.showErrorDialog(
+              'DIALOG.PERSONAL_DATA_FAILED.TITLE',
+              'DIALOG.PERSONAL_DATA_FAILED.CONTENT',
+              error
+            );
+          },
+          () => this.spinner.hide());
+      }
+    });
   }
 }

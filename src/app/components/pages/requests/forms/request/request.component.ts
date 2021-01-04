@@ -33,6 +33,7 @@ import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
 import {first} from 'rxjs/operators';
 import {NgxSpinnerService} from 'ngx-spinner';
+import {Result} from '../../../../shared/yes-no-dialog/yes-no-dialog.component';
 
 
 @Component({
@@ -125,6 +126,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   @ViewChild('comments', {read: MatInput}) comments: MatInput;
 
   today = new Date();
+  tomorrow: Date = new Date(this.today.getTime() + (1000 * 60 * 60 * 24));
   integerRegex = '^(0|[1-9][0-9]*)$';
   hourRegex = '^([0-9]|[0-1][0-9]|2[0-3])$';
   minuteRegex = '^([0-9]|[0-5][0-9])$';
@@ -211,6 +213,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   getFormData() {
     if (this.useCase !== UseCaseEnum.Create) {
+      this.spinner.show();
       const requestId = parseInt(this.localStorageService.request, 10);
       this.restService.getApplication(this.actor, requestId).subscribe(
         (form: FormData) => {
@@ -224,8 +227,12 @@ export class RequestComponent implements OnInit, AfterViewInit {
             'DIALOG.REQUEST_NOT_SENT.CONTENT',
             error
           );
+          this.spinner.hide();
         },
-        () => this.setTransportQuantity()
+        () => {
+          this.setTransportQuantity();
+          this.spinner.hide();
+        }
       );
     } else {
       this.getSelectEnums();
@@ -274,7 +281,12 @@ export class RequestComponent implements OnInit, AfterViewInit {
     if (!isFormValid) {
       this.validationFailedDialog();
     } else {
-      this.sendFormData(formValues);
+      this.dialogService.showYesNoDialog('DIALOG.REQUEST_SEND_CONFIRM.TITLE', 'DIALOG.REQUEST_SEND_CONFIRM.CONTENT')
+        .beforeClosed().subscribe((result: Result) => {
+        if (result.confirmed) {
+          this.sendFormData(formValues);
+        }
+      });
     }
   }
 
@@ -450,22 +462,37 @@ export class RequestComponent implements OnInit, AfterViewInit {
     const financialSource: FinancialSource = this.getParsedFinancialSourceData();
     const isValidFinancialSource = this.validateFinancialSource(financialSource);
     if (isValidFinancialSource) {
-      this.formData.financialSource = financialSource;
-      this.formData.application.status = this.status;
-      this.approveForm(this.restService.approveAsDirector(this.formData), AppRoutes.requestsListDirector);
+      this.dialogService.showYesNoDialog('DIALOG.REQUEST_ACCEPT_CONFIRM.TITLE', 'DIALOG.REQUEST_ACCEPT_CONFIRM.CONTENT')
+        .beforeClosed().subscribe((result: Result) => {
+        if (result.confirmed) {
+          this.formData.financialSource = financialSource;
+          this.formData.application.status = this.status;
+          this.approveForm(this.restService.approveAsDirector(this.formData), AppRoutes.requestsListDirector);
+        }
+      });
     } else {
       this.validationFailedDialog();
     }
   }
 
   sendToRector() {
-    this.formData.application.status = this.status;
-    this.approveForm(this.restService.approveAsWilda(this.formData), AppRoutes.requestsListWilda);
+    this.dialogService.showYesNoDialog('DIALOG.REQUEST_ACCEPT_CONFIRM.TITLE', 'DIALOG.REQUEST_ACCEPT_CONFIRM.CONTENT')
+      .beforeClosed().subscribe((result: Result) => {
+      if (result.confirmed) {
+        this.formData.application.status = this.status;
+        this.approveForm(this.restService.approveAsWilda(this.formData), AppRoutes.requestsListWilda);
+      }
+    });
   }
 
   sendBackToWilda() {
-    this.formData.application.status = this.status;
-    this.approveForm(this.restService.approveAsRector(this.formData), AppRoutes.requestsListRector);
+    this.dialogService.showYesNoDialog('DIALOG.REQUEST_ACCEPT_CONFIRM.TITLE', 'DIALOG.REQUEST_ACCEPT_CONFIRM.CONTENT')
+      .beforeClosed().subscribe((result: Result) => {
+      if (result.confirmed) {
+        this.formData.application.status = this.status;
+        this.approveForm(this.restService.approveAsRector(this.formData), AppRoutes.requestsListRector);
+      }
+    });
   }
 
   approveForm(restObservable: Observable<any>, goBackUrl: string) {
