@@ -4,7 +4,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {PersonalDataInterface} from '../../../extra/personal-data-interface/personal-data.interface';
 import {InstituteInterface} from '../../../extra/institute-interface/institute.interface';
 import {BehaviorSubject} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {find} from 'rxjs/operators';
 import {RequestDataService} from '../../../services/request-data.service';
 import {DialogService} from '../../../services/dialog.service';
 import {RestService} from '../../../services/rest-service';
@@ -12,6 +12,7 @@ import {SecurityService} from '../../shared/security/SecurityService';
 import {LocalStorageService} from '../../shared/security/LocalStorageService';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Result} from '../../shared/yes-no-dialog/yes-no-dialog.component';
+import {PersonalDataService} from '../../../services/personal-data.service';
 
 @Component({
   selector: 'app-personal-data',
@@ -23,7 +24,7 @@ export class PersonalDataComponent implements OnInit {
   formFieldsStyle: MatFormFieldAppearance = 'fill';
   isEditing = false;
   personalData: PersonalDataInterface;
-  allInstitutes: InstituteInterface[];
+  allInstitutes: InstituteInterface[] = null;
   personalDataReadySubject = new BehaviorSubject(false);
 
   today = new Date();
@@ -44,7 +45,8 @@ export class PersonalDataComponent implements OnInit {
     private requestService: RequestDataService,
     private dialogService: DialogService,
     private localStorageService: LocalStorageService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private personalDataService: PersonalDataService
   ) { }
 
   ngOnInit(): void {
@@ -53,16 +55,17 @@ export class PersonalDataComponent implements OnInit {
   }
 
   getPersonalData() {
-    this.localStorageService.personalDataSubject.subscribe(personalData => {
+    this.personalDataService.getPersonalData().subscribe(personalData => {
       this.personalData = personalData;
       this.loadPersonalData();
       this.personalDataReadySubject.next(true);
+      this.personalDataReadySubject.complete();
     });
   }
 
   getInstitutes() {
-    this.restService.getInstitutes().subscribe(institutes => {
-      this.allInstitutes = institutes;
+    this.requestService.getInstitutes().subscribe(institutes => {
+      this.allInstitutes = institutes.map(institute => Object.assign({}, institute));
       this.loadInstituteData();
     });
   }
@@ -76,12 +79,10 @@ export class PersonalDataComponent implements OnInit {
   }
 
   loadInstituteData() {
-    this.personalDataReadySubject.pipe(take(2)).subscribe(ready => {
-      if (ready) {
-        const searchedInstitute = this.allInstitutes.find(institute => institute.id === this.personalData.instituteID);
-        if (searchedInstitute != null) {
-          this.instituteSelect = searchedInstitute;
-        }
+    this.personalDataReadySubject.pipe(find(ready => ready)).subscribe(() => {
+      const searchedInstitute = this.allInstitutes.find(institute => institute.id === this.personalData.instituteID);
+      if (searchedInstitute != null) {
+        this.instituteSelect = searchedInstitute;
       }
     });
   }
@@ -120,7 +121,7 @@ export class PersonalDataComponent implements OnInit {
       .beforeClosed().subscribe((result: Result) => {
       if (result.confirmed) {
         this.spinner.show();
-        this.localStorageService.personalData = newPersonalData;
+        this.personalDataService.personalData = newPersonalData;
         this.restService.updatePersonalData(newPersonalData).subscribe(
           () => {
             this.dialogService.showSimpleDialog(

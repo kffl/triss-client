@@ -4,7 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {DOCUMENT} from '@angular/common';
 import {LoginService} from '../../shared/security/LoginService';
 import {LocalStorageService} from '../../shared/security/LocalStorageService';
-import {find} from 'rxjs/operators';
+import {PersonalDataService} from '../../../services/personal-data.service';
 
 @Component({
   selector: 'app-header',
@@ -45,7 +45,8 @@ export class HeaderComponent implements OnInit {
               private translateService: TranslateService,
               private dateAdapter: DateAdapter<any>,
               private loginService: LoginService,
-              private localStorageService: LocalStorageService
+              private localStorageService: LocalStorageService,
+              private personalDataService: PersonalDataService
   ) {
 
   }
@@ -58,8 +59,7 @@ export class HeaderComponent implements OnInit {
       this.sidenav.mode = 'side';
       this.sidenav.open();
     }
-    this.localStorageService.personalDataSubject
-      .pipe(find(personalData => personalData != null))
+    this.personalDataService.getPersonalData()
       .subscribe(personalData => this.fullName = personalData.firstName + ' ' + personalData.surname);
   }
 

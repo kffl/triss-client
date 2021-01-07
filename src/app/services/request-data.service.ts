@@ -1,9 +1,44 @@
 import {Injectable} from '@angular/core';
+import {Enum, RestService} from './rest-service';
+import {BehaviorSubject} from 'rxjs';
+import {InstituteInterface} from '../extra/institute-interface/institute.interface';
+import {find, first} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RequestDataService {
+
+  private institutesSubject = new BehaviorSubject<InstituteInterface[]>(null);
+  private statusesSubject = new BehaviorSubject<Enum[]>(null);
+  private vehiclesSubject = new BehaviorSubject<Enum[]>(null);
+  private documentTypesSubject = new BehaviorSubject<Enum[]>(null);
+  private paymentTypesSubject = new BehaviorSubject<Enum[]>(null);
+
+  constructor(
+    private restService: RestService
+  ) {
+    this.restService.getInstitutes().pipe(first()).subscribe(institutes => this.institutesSubject.next(institutes));
+    this.restService.getStatuses().pipe(first()).subscribe(statuses => this.statusesSubject.next(statuses));
+    this.restService.getVehicles().pipe(first()).subscribe(vehicles => this.vehiclesSubject.next(vehicles));
+    this.restService.getDocumentTypes().pipe(first()).subscribe(documentTypes => this.documentTypesSubject.next(documentTypes));
+    this.restService.getPaymentTypes().pipe(first()).subscribe(paymentTypes => this.paymentTypesSubject.next(paymentTypes));
+  }
+
+  setInstitutes(institutes: InstituteInterface[]) {
+    this.institutesSubject.next(institutes);
+  }
+
+  getInstitutes = () => this.institutesSubject.pipe(find(institutes => institutes != null));
+
+  getStatuses = () => this.statusesSubject.pipe(find(statuses => statuses != null));
+
+  getVehicles = () => this.vehiclesSubject.pipe(find(vehicles => vehicles != null));
+
+  getDocumentTypes = () => this.documentTypesSubject.pipe(find(documentTypes => documentTypes != null));
+
+  getPaymentTypes = () => this.paymentTypesSubject.pipe(find(paymentTypes => paymentTypes != null));
+
 
   formatDate(date: Date): string {
     return date ?

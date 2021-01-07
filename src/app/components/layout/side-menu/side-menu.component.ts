@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {AppRoutes} from '../../../extra/routes/appRoutes';
 import {LocalStorageService} from '../../shared/security/LocalStorageService';
+import {PersonalDataService} from '../../../services/personal-data.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -14,16 +15,15 @@ export class SideMenuComponent implements OnInit, AfterViewInit {
 
   role: number;
 
-  constructor(private localStorageService: LocalStorageService ) {
+  constructor(
+    private localStorageService: LocalStorageService,
+    private personalDataService: PersonalDataService
+  ) {
   }
 
 
   ngOnInit(): void {
-    this.localStorageService.personalDataSubject.subscribe((newPersonalData) => {
-      if (newPersonalData != null) {
-        this.role = newPersonalData.employeeType;
-      }
-    });
+    this.personalDataService.getPersonalData().subscribe(newPersonalData => this.role = newPersonalData.employeeType);
   }
 
   ngAfterViewInit() {

@@ -2,21 +2,21 @@ import {Inject} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {LocalStorageService} from './LocalStorageService';
 import {RestService} from '../../../services/rest-service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {SecurityService} from './SecurityService';
+import {PersonalDataService} from '../../../services/personal-data.service';
 
 export class LoginService {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private localStorageService: LocalStorageService,
-    private restService: RestService
+    private restService: RestService,
+    private personalDataService: PersonalDataService
   ) {}
 
 
   public login(): void {
     this.restService.getPersonalData().subscribe(personalData => {
-      this.localStorageService.personalData = personalData; // role.toString();
+      this.personalDataService.personalData = personalData; // role.toString();
     });
   }
 

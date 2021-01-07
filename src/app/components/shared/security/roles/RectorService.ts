@@ -1,15 +1,15 @@
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {Injectable} from '@angular/core';
-import {LocalStorageService} from '../LocalStorageService';
+import {PersonalDataService} from '../../../../services/personal-data.service';
+import {Observable} from 'rxjs';
 
 
 @Injectable()
 export class RectorService implements CanActivate {
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(private personalDataService: PersonalDataService) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.localStorageService.personalData.employeeType === 3;
-    // return this.localStorageService.personalDataSubject.getValue().employeeType === 3;
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return this.personalDataService.hasRole(3);
   }
 }
