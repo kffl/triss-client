@@ -19,10 +19,12 @@ export class RequestDataService {
     private restService: RestService
   ) {
     this.restService.getInstitutes().pipe(first()).subscribe(institutes => this.institutesSubject.next(institutes));
-    this.restService.getStatuses().pipe(first()).subscribe(statuses => this.statusesSubject.next(statuses));
-    this.restService.getVehicles().pipe(first()).subscribe(vehicles => this.vehiclesSubject.next(vehicles));
-    this.restService.getDocumentTypes().pipe(first()).subscribe(documentTypes => this.documentTypesSubject.next(documentTypes));
-    this.restService.getPaymentTypes().pipe(first()).subscribe(paymentTypes => this.paymentTypesSubject.next(paymentTypes));
+    this.restService.getEnumGroup().pipe(first()).subscribe(enumGroup => {
+      this.statusesSubject.next(enumGroup.statuses);
+      this.vehiclesSubject.next(enumGroup.vehicles);
+      this.documentTypesSubject.next(enumGroup.documentTypes);
+      this.paymentTypesSubject.next(enumGroup.paymentTypes);
+    });
   }
 
   setInstitutes(institutes: InstituteInterface[]) {
