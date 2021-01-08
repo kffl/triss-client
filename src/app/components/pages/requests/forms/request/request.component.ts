@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  Input,
+  Input, OnDestroy,
   OnInit,
   QueryList,
   ViewChild,
@@ -25,15 +25,16 @@ import {RequestDataService} from '../../../../../services/request-data.service';
 import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.component';
 import {DialogService} from '../../../../../services/dialog.service';
 import {Enum, RestService} from '../../../../../services/rest-service';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {SafeHttpClient} from '../../../../shared/security/SafeHttpClient';
 import {StatusEnum} from '../../../../../extra/status-enum/status-enum';
 import {SecurityService} from '../../../../shared/security/SecurityService';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
 import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
-import {first} from 'rxjs/operators';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Result} from '../../../../shared/yes-no-dialog/yes-no-dialog.component';
+import {PersonalDataService} from '../../../../../services/personal-data.service';
+import {find} from 'rxjs/operators';
 
 
 @Component({
@@ -41,7 +42,25 @@ import {Result} from '../../../../shared/yes-no-dialog/yes-no-dialog.component';
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent implements OnInit, AfterViewInit {
+export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private translateService: TranslateService,
+    private http: SafeHttpClient,
+    private router: Router,
+    private location: Location,
+    private requestService: RequestDataService,
+    private dialogService: DialogService,
+    private restService: RestService,
+    private securityService: SecurityService,
+    private localStorageService: LocalStorageService,
+    private spinner: NgxSpinnerService,
+    private personalDataService: PersonalDataService
+  ) {
+    this.onLangChange(this.translateService.currentLang);
+    this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
+  }
 
   @Input() useCase: UseCaseEnum;
   @Input() actor: ActorEnum;
@@ -147,22 +166,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   statusText: string = null;
   declineReason: string = null;
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private translateService: TranslateService,
-    private http: SafeHttpClient,
-    private router: Router,
-    private location: Location,
-    private requestService: RequestDataService,
-    private dialogService: DialogService,
-    private restService: RestService,
-    private securityService: SecurityService,
-    private localStorageService: LocalStorageService,
-    private spinner: NgxSpinnerService
-  ) {
-    this.onLangChange(this.translateService.currentLang);
-    this.translateService.onLangChange.subscribe(generator => this.onLangChange(generator.lang));
-  }
+  transportReady = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
     this.getFormData();
@@ -172,6 +176,13 @@ export class RequestComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.setAutocompletingFields();
     this.changeDetectorRef.detectChanges();
+  }
+
+  ngOnDestroy() {
+    if (this.useCase !== UseCaseEnum.Create) {
+      this.localStorageService.removeRequest();
+      this.localStorageService.removeStatus();
+    }
   }
 
   onLangChange(lang) {
@@ -188,13 +199,13 @@ export class RequestComponent implements OnInit, AfterViewInit {
 
   setAutocompletingFields() {
     if (this.useCase === UseCaseEnum.Create) {
-      this.localStorageService.personalDataSubject.pipe(first()).subscribe(personalData => {
+      this.personalDataService.getPersonalData().subscribe(personalData => {
         if (Object.values(personalData).some(value => value == null || value === '')) {
           this.dialogService.showSimpleDialog('PERSONAL_DATA.NOT_SET_TITLE', 'PERSONAL_DATA.NOT_SET_CONTENT').afterClosed().subscribe(() =>
             this.router.navigateByUrl(AppRoutes.personalData)
           );
         } else {
-          this.restService.getInstitutes().subscribe(institutes => {
+          this.requestService.getInstitutes().subscribe(institutes => {
             this.employeeInstitute = institutes.find(institute => personalData.instituteID === institute.id);
             this.institute.value = this.employeeInstitute.name;
           });
@@ -242,7 +253,7 @@ export class RequestComponent implements OnInit, AfterViewInit {
   getStatus() {
     if (this.useCase !== UseCaseEnum.Create) {
       this.status = parseInt(this.localStorageService.status, 10);
-      this.restService.getStatuses().subscribe(statuses => {
+      this.requestService.getStatuses().subscribe(statuses => {
         this.statusEnum = statuses.find(status => this.status === status.id);
         this.showStatus();
       });
@@ -258,17 +269,17 @@ export class RequestComponent implements OnInit, AfterViewInit {
   }
 
   getSelectEnums() {
-    this.restService.getVehicles()
+    this.requestService.getVehicles()
       .subscribe(vehicles => {
         this.vehicles = vehicles;
         this.loadTransportData();
       });
-    this.restService.getDocumentTypes()
+    this.requestService.getDocumentTypes()
       .subscribe(identityDocuments => {
         this.identityDocuments = identityDocuments;
         this.loadIdentityDocument();
       });
-    this.restService.getPaymentTypes()
+    this.requestService.getPaymentTypes()
       .subscribe(paymentTypes => {
         this.paymentTypes = paymentTypes;
         this.loadPaymentTypes();
@@ -288,11 +299,6 @@ export class RequestComponent implements OnInit, AfterViewInit {
         }
       });
     }
-  }
-
-  setTransportQuantity() {
-    this.transportMeansNumber = this.formData.transport.length;
-    this.transportMeansArray = Array.from(Array(this.transportMeansNumber).keys()).map(val => val + 1);
   }
 
   loadFormData() {
@@ -368,23 +374,43 @@ export class RequestComponent implements OnInit, AfterViewInit {
     }
   }
 
+  setTransportQuantity() {
+    this.transportMeansNumber = this.formData.transport.length;
+    this.transportMeansArray = Array.from(Array(this.transportMeansNumber).keys()).map(val => val + 1);
+    this.changeDetectorRef.detectChanges();
+    this.transportReady.next(true);
+    this.transportReady.complete();
+  }
+
   loadTransportData() {
     if (this.useCase !== UseCaseEnum.Create) {
-      this.vehicleSelect.toArray().map((item, i) => item.value = this.formData.transport[i].vehicleSelect);
-      this.routeFrom.toArray().map((item, i) => item.value = this.formData.transport[i].destinationFrom);
-      this.routeTo.toArray().map((item, i) => item.value = this.formData.transport[i].destinationTo);
-      this.departureDate.toArray().map((item, i) => item.value = new Date(this.formData.transport[i].departureDay));
-      this.departureHour.toArray().map((item, i) => item.value = String(this.formData.transport[i].departureHour));
-      this.departureMinute.toArray().map((item, i) => item.value = String(this.formData.transport[i].departureMinute));
-      this.carrier.toArray().map((item, i) => item.value = this.formData.transport[i].carrier);
+      this.transportReady.pipe(find(ready => ready)).subscribe(() => {
+        this.vehicleSelect.toArray().map((item, i) => item.value = this.formData.transport[i].vehicleSelect);
+        this.routeFrom.toArray().map((item, i) => item.value = this.formData.transport[i].destinationFrom);
+        this.routeTo.toArray().map((item, i) => item.value = this.formData.transport[i].destinationTo);
+        this.departureDate.toArray().map((item, i) => item.value = new Date(this.formData.transport[i].departureDay));
+        this.departureHour.toArray().map((item, i) => item.value = String(this.formData.transport[i].departureHour));
+        this.departureMinute.toArray().map((item, i) => item.value = String(this.formData.transport[i].departureMinute));
+        this.carrier.toArray().map((item, i) => item.value = this.formData.transport[i].carrier);
+      });
     }
   }
 
   getDeclineReason() {
-    this.declineReason =
-      this.formData.application.directorComments ||
-      this.formData.application.wildaComments ||
-      this.formData.application.rectorComments;
+    switch (this.status) {
+      case StatusEnum.rejectedByDirector: {
+        this.declineReason = this.formData.application.directorComments;
+        break;
+      }
+      case StatusEnum.rejectedByWilda: {
+        this.declineReason = this.formData.application.wildaComments;
+        break;
+      }
+      case StatusEnum.rejectedByRector: {
+        this.declineReason = this.formData.application.rectorComments;
+        break;
+      }
+    }
   }
 
   validationFailedDialog() {

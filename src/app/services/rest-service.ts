@@ -14,6 +14,13 @@ export interface Enum {
   nameEng: string;
 }
 
+export interface EnumGroup {
+  statuses: Enum[];
+  vehicles: Enum[];
+  paymentTypes: Enum[];
+  documentTypes: Enum[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -97,24 +104,9 @@ export class RestService {
     return this.http.post<any>(this.getUrl(mapping), pageInfo);
   }
 
-  getStatuses(): Observable<Enum[]> {
-    const mapping = '/enum/status';
-    return this.http.get<Enum[]>(this.getUrl(mapping));
-  }
-
-  getVehicles(): Observable<Enum[]> {
-    const mapping = '/enum/vehicle';
-    return this.http.get<Enum[]>(this.getUrl(mapping));
-  }
-
-  getDocumentTypes(): Observable<Enum[]> {
-    const mapping = '/enum/documentType';
-    return this.http.get<Enum[]>(this.getUrl(mapping));
-  }
-
-  getPaymentTypes(): Observable<Enum[]> {
-    const mapping = '/enum/paymentType';
-    return this.http.get<Enum[]>(this.getUrl(mapping));
+  getEnumGroup(): Observable<EnumGroup> {
+    const mapping = '/enum';
+    return this.http.get<EnumGroup>(this.getUrl(mapping));
   }
 
   getPersonalData(): Observable<PersonalDataInterface> {
