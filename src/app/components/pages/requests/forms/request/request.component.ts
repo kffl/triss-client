@@ -2,7 +2,8 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  Input, OnDestroy,
+  Input,
+  OnDestroy,
   OnInit,
   QueryList,
   ViewChild,
@@ -168,6 +169,8 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
 
   transportReady = new BehaviorSubject<boolean>(false);
 
+  isAccepting = false;
+
   ngOnInit(): void {
     this.getFormData();
     this.getStatus();
@@ -253,11 +256,18 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
   getStatus() {
     if (this.useCase !== UseCaseEnum.Create) {
       this.status = parseInt(this.localStorageService.status, 10);
+      this.isAccepting = this.checkIfIsAccepting();
       this.requestService.getStatuses().subscribe(statuses => {
         this.statusEnum = statuses.find(status => this.status === status.id);
         this.showStatus();
       });
     }
+  }
+
+  checkIfIsAccepting(): boolean {
+    return (this.status === StatusEnum.waitingForDirector && this.useCase === UseCaseEnum.Director) ||
+      (this.status === StatusEnum.waitingForWilda && this.useCase === UseCaseEnum.WildaApprove) ||
+      (this.status === StatusEnum.waitingForRector && this.useCase === UseCaseEnum.Rector);
   }
 
   showStatus() {
