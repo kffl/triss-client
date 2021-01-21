@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="form">
+  <div class="form" (input)="saveFormDataToLocalStorage()" (paste)="saveFormDataToLocalStorage()">
 
     <div class="title-wth-status">
       <div class="title main-title">
@@ -89,7 +89,7 @@
         <mat-label><span>{{ 'REQUEST.CONFERENCE_DATE' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
         <mat-date-range-input [min]="tomorrow" [rangePicker]="conferencePicker" #conferenceDate (click)="conferencePicker.open()" [disabled]="useCase > 1">
-          <input #conferenceDateStart matStartDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_FROM' | translate }}" readonly>
+          <input #conferenceDateStart matStartDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_FROM' | translate }}" readonly (dateChange)="saveFormDataToLocalStorage()">
           <input #conferenceDateEnd matEndDate placeholder="{{ 'REQUEST.CONFERENCE_DATE_TO' | translate }}" readonly>
         </mat-date-range-input>
         <mat-hint *ngIf="isObjectEmpty(conferenceDate.value)">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
@@ -138,7 +138,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="vehicleSelect.value == null && validationFailed">
         <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
         <mat-label><span>{{ 'REQUEST.TRANSPORT_MEAN_TYPE' | translate }}</span></mat-label>
-        <mat-select #vehicleSelect [disabled]="useCase > 1">
+        <mat-select #vehicleSelect [disabled]="useCase > 1" (selectionChange)="saveFormDataToLocalStorage()">
           <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.id"><span>{{vehicle[enumLang]}}</span></mat-option>
         </mat-select>
         <mat-hint *ngIf="vehicleSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
@@ -161,7 +161,7 @@
         <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="!departureDate.value && validationFailed">
           <mat-label>{{ 'REQUEST.DEPARTURE_DATE' | translate }}</mat-label>
           <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
-          <input matInput [min]="tomorrow" [matDatepicker]="departurePicker" #departureDate readonly [disabled]="useCase > 1" (click)="departurePicker.open()">
+          <input matInput [min]="tomorrow" [matDatepicker]="departurePicker" #departureDate readonly [disabled]="useCase > 1" (click)="departurePicker.open()" (dateChange)="saveFormDataToLocalStorage()">
           <mat-hint *ngIf="!departureDate.value">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="departurePicker"></mat-datepicker-toggle>
           <mat-datepicker #departurePicker [disabled]="useCase > 1"></mat-datepicker>
@@ -240,7 +240,7 @@
         <mat-label><span>{{ 'REQUEST.TIME_ABROAD' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="!selfInsuredCheckbox.checked && useCase === 1">*</span>
         <mat-date-range-input [min]="tomorrow" [rangePicker]="insurancePicker" [disabled]="useCase > 1 || selfInsuredCheckbox.checked" #abroadDateInsurance (click)="insurancePicker.open()">
-          <input #abroadDateInsuranceStart matStartDate placeholder="{{ 'REQUEST.TIME_ABROAD_FROM' | translate }}" readonly>
+          <input #abroadDateInsuranceStart matStartDate placeholder="{{ 'REQUEST.TIME_ABROAD_FROM' | translate }}" readonly (dateChange)="saveFormDataToLocalStorage()">
           <input #abroadDateInsuranceEnd matEndDate placeholder="{{ 'REQUEST.TIME_ABROAD_TO' | translate }}" readonly>
         </mat-date-range-input>
         <mat-hint *ngIf="isObjectEmpty(abroadDateInsurance.value) && !selfInsuredCheckbox.checked">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
@@ -264,7 +264,7 @@
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.REQUEST_PAYMENT_DATE' | translate }}</span></mat-label>
         <mat-date-range-input [rangePicker]="advancePaymentRequestPicker" #requestPaymentDate disabled>
-          <input #requestPaymentDateStart matStartDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_FROM' | translate }}">
+          <input #requestPaymentDateStart matStartDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_FROM' | translate }}" (dateChange)="saveFormDataToLocalStorage()">
           <input #requestPaymentDateEnd matEndDate placeholder="{{ 'REQUEST.REQUEST_PAYMENT_DATE_TO' | translate }}">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="advancePaymentRequestPicker"></mat-datepicker-toggle>
@@ -432,7 +432,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="conferenceFeePaymentTypeSelect.value == null && validationFailed">
         <mat-label><span>{{ 'REQUEST.PAYMENT_FORM' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
-        <mat-select #conferenceFeePaymentTypeSelect [disabled]="useCase > 1">
+        <mat-select #conferenceFeePaymentTypeSelect [disabled]="useCase > 1" (selectionChange)="saveFormDataToLocalStorage()">
           <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.id"><span>{{paymentType[enumLang]}}</span></mat-option>
         </mat-select>
         <mat-hint *ngIf="conferenceFeePaymentTypeSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
@@ -456,7 +456,7 @@
       <mat-form-field [appearance]="formFieldsStyle" [class.invalid-field]="depositPaymentTypeSelect.value == null && validationFailed">
         <mat-label><span>{{ 'REQUEST.PAYMENT_FORM' | translate }}</span></mat-label>
         <span matPrefix class="asterisk" *ngIf="useCase === 1">*</span>
-        <mat-select #depositPaymentTypeSelect [disabled]="useCase > 1">
+        <mat-select #depositPaymentTypeSelect [disabled]="useCase > 1" (selectionChange)="saveFormDataToLocalStorage()">
           <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.id"><span>{{paymentType[enumLang]}}</span></mat-option>
         </mat-select>
         <mat-hint *ngIf="depositPaymentTypeSelect.value == null">{{ 'REQUEST.REQUIRED_FIELD' | translate }}</mat-hint>
@@ -470,7 +470,7 @@
     <div class="form-group identity-document">
       <mat-form-field [appearance]="formFieldsStyle">
         <mat-label><span>{{ 'REQUEST.DOCUMENT_TYPE' | translate }}</span></mat-label>
-        <mat-select #identityDocumentTypeSelect [disabled]="useCase > 1">
+        <mat-select #identityDocumentTypeSelect [disabled]="useCase > 1" (selectionChange)="saveFormDataToLocalStorage()">
           <mat-option *ngFor="let identityDocument of identityDocuments" [value]="identityDocument.id"><span>{{identityDocument[enumLang]}}</span></mat-option>
         </mat-select>
       </mat-form-field>

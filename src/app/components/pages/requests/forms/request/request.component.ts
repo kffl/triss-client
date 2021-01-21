@@ -168,16 +168,31 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
   declineReason: string = null;
 
   transportReady = new BehaviorSubject<boolean>(false);
+  viewAfterInit = new BehaviorSubject<boolean>(false);
 
   isAccepting = false;
 
   ngOnInit(): void {
-    this.getFormData();
+    if (this.useCase === UseCaseEnum.Create) {
+      this.formData = this.localStorageService.formData;
+      if (this.formData) {
+        this.getFormData();
+      } else {
+        this.getSelectEnums();
+      }
+    } else {
+      this.getFormData();
+    }
     this.getStatus();
   }
 
   ngAfterViewInit() {
+    this.viewAfterInit.next(true);
+    this.viewAfterInit.complete();
     this.setAutocompletingFields();
+    if (this.useCase === UseCaseEnum.Create && this.formData) {
+      this.loadFormData();
+    }
     this.changeDetectorRef.detectChanges();
   }
 
@@ -186,6 +201,10 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
       this.localStorageService.removeRequest();
       this.localStorageService.removeStatus();
     }
+  }
+
+  saveFormDataToLocalStorage() {
+    this.localStorageService.formData = this.getParsedFormData();
   }
 
   onLangChange(lang) {
@@ -250,6 +269,7 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
       );
     } else {
       this.getSelectEnums();
+      this.setTransportQuantity();
     }
   }
 
@@ -313,74 +333,82 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loadFormData() {
     // basic-info
-    this.firstName.value = this.formData.application.firstName;
-    this.surname.value = this.formData.application.surname;
-    this.academicTitle.value = this.formData.application.academicDegree;
-    this.institute.value = this.formData.institute.name;
-    this.phoneNumber.value = this.formData.application.phoneNumber;
-    this.firstNameInsurance.value = this.formData.application.firstName;
-    this.surnameInsurance.value = this.formData.application.surname;
-    this.destinationCountry.value = this.formData.place.country;
-    this.destinationCity.value = this.formData.place.city;
-    this.abroadDateStart.writeValue(new Date(this.formData.application.abroadStartDate));
-    this.abroadDateEnd.writeValue(new Date(this.formData.application.abroadEndDate));
-    this.purpose.value = this.formData.application.purpose;
-    this.conference.value = this.formData.application.conference;
-    this.subject.value = this.formData.application.subject;
-    this.conferenceDateStart.writeValue(new Date(this.formData.application.conferenceStartDate));
-    this.conferenceDateEnd.writeValue(new Date(this.formData.application.conferenceEndDate));
+    this.requestService.secureInputWrite(this.firstName, this.formData.application.firstName);
+    this.requestService.secureInputWrite(this.surname, this.formData.application.surname);
+    this.requestService.secureInputWrite(this.academicTitle, this.formData.application.academicDegree);
+    this.requestService.secureInputWrite(this.institute, this.formData.institute.name);
+    this.requestService.secureInputWrite(this.phoneNumber, this.formData.application.phoneNumber);
+    this.requestService.secureInputWrite(this.firstNameInsurance, this.formData.application.firstName);
+    this.requestService.secureInputWrite(this.surnameInsurance, this.formData.application.surname);
+    this.requestService.secureInputWrite(this.destinationCountry, this.formData.place.country);
+    this.requestService.secureInputWrite(this.destinationCity, this.formData.place.city);
+    this.requestService.secureRangeDateWrite(this.abroadDateStart, this.formData.application.abroadStartDate);
+    this.requestService.secureRangeDateWrite(this.abroadDateEnd, this.formData.application.abroadEndDate);
+    this.requestService.secureInputWrite(this.purpose, this.formData.application.purpose);
+    this.requestService.secureInputWrite(this.conference, this.formData.application.conference);
+    this.requestService.secureInputWrite(this.subject, this.formData.application.subject);
+    this.requestService.secureRangeDateWrite(this.conferenceDateStart, this.formData.application.conferenceStartDate);
+    this.requestService.secureRangeDateWrite(this.conferenceDateEnd, this.formData.application.conferenceEndDate);
     // financial-source
-    if (this.useCase !== UseCaseEnum.EmployeeRead) {
+    if (this.useCase !== UseCaseEnum.EmployeeRead && this.useCase !== UseCaseEnum.Create) {
       this.allocationAccount.value = this.formData.financialSource.allocationAccount;
       this.MPK.value = this.formData.financialSource.mpk;
       this.financialSource.value = this.formData.financialSource.financialSource;
       this.project.value = this.formData.financialSource.project;
     }
     // insurance
-    this.firstNameInsurance.value = this.formData.application.firstName;
-    this.surnameInsurance.value = this.formData.application.surname;
-    this.birthDate.value = new Date(this.formData.application.birthDate);
-    this.departureCountry.value = this.formData.place.country;
+    this.requestService.secureInputWrite(this.firstNameInsurance, this.formData.application.firstName);
+    this.requestService.secureInputWrite(this.surnameInsurance, this.formData.application.surname);
+    this.requestService.secureSingleDateWrite(this.birthDate, this.formData.application.birthDate);
+    this.requestService.secureInputWrite(this.departureCountry, this.formData.place.country);
     const selfInsured = this.formData.application.selfInsured;
     if (!selfInsured) {
-      this.abroadDateInsuranceStart.writeValue(new Date(this.formData.application.abroadStartDateInsurance));
-      this.abroadDateInsuranceEnd.writeValue(new Date(this.formData.application.abroadEndDateInsurance));
+      this.requestService.secureRangeDateWrite(this.abroadDateInsuranceStart, this.formData.application.abroadStartDateInsurance);
+      this.requestService.secureRangeDateWrite(this.abroadDateInsuranceEnd, this.formData.application.abroadEndDateInsurance);
     }
     this.selfInsuredCheckbox.checked = selfInsured;
     // advance-payment-request
-    this.requestPaymentDestination.value = this.formData.place.country;
-    this.requestPaymentDateStart.writeValue(new Date(this.formData.advanceApplication.startDate));
-    this.requestPaymentDateEnd.writeValue(new Date(this.formData.advanceApplication.endDate));
-    this.requestPaymentDays.value = String(this.formData.advanceApplication.residenceDietQuantity);
-    this.requestPaymentDaysAmount.value = String(this.formData.advanceApplication.residenceDietAmount);
-    this.requestPaymentAccommodation.value = String(this.formData.advanceApplication.accommodationQuantity);
-    this.requestPaymentAccommodationLimit.value = String(this.formData.advanceApplication.accommodationLimit);
-    this.requestPaymentTravelDiet.value = String(this.formData.advanceApplication.travelDietAmount);
-    this.requestPaymentLocalTransportCosts.value = String(this.formData.advanceApplication.travelCosts);
-    this.requestPaymentOtherExpensesDescription.value = String(this.formData.advanceApplication.otherCostsDescription || '');
-    this.requestPaymentOtherExpensesValue.value = String(this.formData.advanceApplication.otherCostsAmount || '');
-    this.requestPaymentDaysAmountSum.value = String(this.formData.advanceApplication.residenceDietSum);
-    this.requestPaymentAccommodationSum.value = String(this.formData.advanceApplication.accommodationSum);
-    this.requestPaymentSummarizedCosts.value = String(this.formData.advanceApplication.advanceSum);
+    this.requestService.secureInputWrite(this.requestPaymentDestination, this.formData.place.country);
+    this.requestService.secureRangeDateWrite(this.requestPaymentDateStart, this.formData.advanceApplication.startDate);
+    this.requestService.secureRangeDateWrite(this.requestPaymentDateEnd, this.formData.advanceApplication.endDate);
+    this.requestService.secureInputWrite(this.requestPaymentDays, this.formData.advanceApplication.residenceDietQuantity);
+    this.requestService.secureInputWrite(this.requestPaymentDaysAmount, this.formData.advanceApplication.residenceDietAmount);
+    this.requestService.secureInputWrite(this.requestPaymentAccommodation, this.formData.advanceApplication.accommodationQuantity);
+    this.requestService.secureInputWrite(this.requestPaymentAccommodationLimit, this.formData.advanceApplication.accommodationLimit);
+    this.requestService.secureInputWrite(this.requestPaymentTravelDiet, this.formData.advanceApplication.travelDietAmount);
+    this.requestService.secureInputWrite(this.requestPaymentLocalTransportCosts, this.formData.advanceApplication.travelCosts);
+    this.requestService.secureInputWrite(this.requestPaymentOtherExpensesDescription, this.formData.advanceApplication.otherCostsDescription);
+    this.requestService.secureInputWrite(this.requestPaymentOtherExpensesValue, this.formData.advanceApplication.otherCostsAmount);
+    this.requestService.secureInputWrite(this.requestPaymentDaysAmountSum, this.formData.advanceApplication.residenceDietSum);
+    this.requestService.secureInputWrite(this.requestPaymentAccommodationSum, this.formData.advanceApplication.accommodationSum);
+    this.requestService.secureInputWrite(this.requestPaymentSummarizedCosts, this.formData.advanceApplication.advanceSum);
     // comments
-    this.comments.value = this.formData.application.comments;
+    this.requestService.secureInputWrite(this.comments, this.formData.application.comments);
     // decline-reason
     this.getDeclineReason();
   }
 
   loadPaymentTypes() {
-    if (this.useCase !== UseCaseEnum.Create) {
-      this.conferenceFeeValue.value = String(this.formData.advancePayments.conferenceFeeValue);
-      this.conferenceFeePaymentTypeSelect.value = this.formData.advancePayments.conferenceFeePaymentTypeSelect;
-      this.depositValue.value = String(this.formData.advancePayments.accommodationFeeValue);
-      this.depositPaymentTypeSelect.value = this.formData.advancePayments.accommodationFeePaymentTypeSelect;
+    if (this.formData) {
+      this.viewAfterInit.pipe(find(ready => ready)).subscribe(() => {
+        this.requestService.secureInputWrite(this.conferenceFeeValue,
+          this.formData.advancePayments.conferenceFeeValue);
+        this.requestService.secureSelectWrite(this.conferenceFeePaymentTypeSelect,
+          this.formData.advancePayments.conferenceFeePaymentTypeSelect);
+        this.requestService.secureInputWrite(this.depositValue,
+          this.formData.advancePayments.accommodationFeeValue);
+        this.requestService.secureSelectWrite(this.depositPaymentTypeSelect,
+          this.formData.advancePayments.accommodationFeePaymentTypeSelect);
+      });
     }
   }
 
   loadIdentityDocument() {
-    if (this.useCase !== UseCaseEnum.Create) {
-      this.identityDocumentTypeSelect.value = this.formData.application.identityDocumentType;
-      this.identityDocumentSerialNumber.value = this.formData.application.identityDocumentNumber;
+    if (this.formData) {
+      this.viewAfterInit.pipe(find(ready => ready)).subscribe(() => {
+        this.requestService.secureSelectWrite(this.identityDocumentTypeSelect, this.formData.application.identityDocumentType);
+        this.requestService.secureInputWrite(this.identityDocumentSerialNumber, this.formData.application.identityDocumentNumber);
+      });
     }
   }
 
@@ -393,15 +421,22 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadTransportData() {
-    if (this.useCase !== UseCaseEnum.Create) {
+    if (this.formData) {
       this.transportReady.pipe(find(ready => ready)).subscribe(() => {
-        this.vehicleSelect.toArray().map((item, i) => item.value = this.formData.transport[i].vehicleSelect);
-        this.routeFrom.toArray().map((item, i) => item.value = this.formData.transport[i].destinationFrom);
-        this.routeTo.toArray().map((item, i) => item.value = this.formData.transport[i].destinationTo);
-        this.departureDate.toArray().map((item, i) => item.value = new Date(this.formData.transport[i].departureDay));
-        this.departureHour.toArray().map((item, i) => item.value = String(this.formData.transport[i].departureHour));
-        this.departureMinute.toArray().map((item, i) => item.value = String(this.formData.transport[i].departureMinute));
-        this.carrier.toArray().map((item, i) => item.value = this.formData.transport[i].carrier);
+        this.vehicleSelect.toArray().map((item, i) =>
+          this.requestService.secureSelectWrite(item, this.formData.transport[i].vehicleSelect));
+        this.routeFrom.toArray().map((item, i) =>
+          this.requestService.secureInputWrite(item, this.formData.transport[i].destinationFrom));
+        this.routeTo.toArray().map((item, i) =>
+          this.requestService.secureInputWrite(item, this.formData.transport[i].destinationTo));
+        this.departureDate.toArray().map((item, i) =>
+          this.requestService.secureSingleDateWrite(item, this.formData.transport[i].departureDay));
+        this.departureHour.toArray().map((item, i) =>
+          this.requestService.secureInputWrite(item, this.formData.transport[i].departureHour));
+        this.departureMinute.toArray().map((item, i) =>
+          this.requestService.secureInputWrite(item, this.formData.transport[i].departureMinute));
+        this.carrier.toArray().map((item, i) =>
+          this.requestService.secureInputWrite(item, this.formData.transport[i].carrier));
       });
     }
   }
@@ -809,6 +844,7 @@ export class RequestComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.requestPaymentDateStart.writeValue(this.abroadDateStart.value);
     this.requestPaymentDateEnd.writeValue(this.abroadDateEnd.value);
+    this.saveFormDataToLocalStorage();
   }
 
   selfInsuredCheckboxChanged(event: MatCheckboxChange) {

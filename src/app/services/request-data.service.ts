@@ -82,4 +82,25 @@ export class RequestDataService {
     const num = this.getNumberFromInput(str);
     return num == null ? '' : String(num > maxValue ? maxValue : num);
   }
+
+  secureInputWrite(input: any, value: any) {
+    if (value != null) {
+      input.value = value.toString();
+    }
+  }
+  secureSingleDateWrite(input: any, value: any) {
+    if (value != null) {
+      input.value = new Date(value);
+    }
+  }
+  secureRangeDateWrite(input: any, value: any) {
+    if (value != null) {
+      input.writeValue(new Date(value));
+    }
+  }
+  secureSelectWrite(input: any, value: number) {
+    if (value != null) {
+      input.value = value;
+    }
+  }
 }

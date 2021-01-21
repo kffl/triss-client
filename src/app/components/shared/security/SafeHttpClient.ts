@@ -1,10 +1,8 @@
-import {Inject, Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {SecurityService} from './SecurityService';
 import {LocalStorageService} from './LocalStorageService';
-import {catchError} from 'rxjs/operators';
-import {DOCUMENT} from "@angular/common";
 
 
 @Injectable({
@@ -12,10 +10,10 @@ import {DOCUMENT} from "@angular/common";
   })
 export class SafeHttpClient {
 
-  private securityService: SecurityService;
-
-  constructor(private http: HttpClient,
-              private localStorageService: LocalStorageService) { }
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService
+  ) { }
 
   public post<T>(url: string, body: any | null): Observable<T> {
     // TODO : this would be helpful, when we will want to response in Flux,
@@ -48,7 +46,7 @@ export class SafeHttpClient {
       })
     };
 
-    return this.http.post<T>(url, body, httpOptions)
+    return this.http.post<T>(url, body, httpOptions);
   }
 
   get<T>(url: string): Observable<T> {
