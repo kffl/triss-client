@@ -2,8 +2,8 @@ import {Component, HostListener, Inject, Input, OnInit} from '@angular/core';
 import {DateAdapter, ThemePalette} from '@angular/material/core';
 import {TranslateService} from '@ngx-translate/core';
 import {DOCUMENT} from '@angular/common';
-import {LoginService} from '../../shared/security/LoginService';
-import {LocalStorageService} from '../../shared/security/LocalStorageService';
+import {LoginService} from '../../../services/security/LoginService';
+import {LocalStorageService} from '../../../services/security/LocalStorageService';
 import {PersonalDataService} from '../../../services/personal-data.service';
 
 @Component({

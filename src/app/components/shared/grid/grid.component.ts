@@ -8,7 +8,7 @@ import {CustomDataSource} from './data-source';
 import {Row} from '../../../extra/app-grid-models/row';
 import {RestService} from '../../../services/rest-service';
 import {ActorEnum} from '../../../extra/actor-enum/actor-enum';
-import {SecurityService} from '../security/SecurityService';
+import {SecurityService} from '../../../services/security/SecurityService';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

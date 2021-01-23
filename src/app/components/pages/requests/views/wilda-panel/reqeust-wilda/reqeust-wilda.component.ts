@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UseCaseEnum} from '../../../../../../extra/use-case-enum/use-case-enum';
 import {StatusEnum} from '../../../../../../extra/status-enum/status-enum';
-import {LocalStorageService} from '../../../../../shared/security/LocalStorageService';
+import {LocalStorageService} from '../../../../../../services/security/LocalStorageService';
 import {ActorEnum} from '../../../../../../extra/actor-enum/actor-enum';
 
 @Component({

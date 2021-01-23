@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {AppRoutes} from '../../../extra/routes/appRoutes';
-import {LocalStorageService} from '../../shared/security/LocalStorageService';
+import {LocalStorageService} from '../../../services/security/LocalStorageService';
 import {PersonalDataService} from '../../../services/personal-data.service';
 
 @Component({
