@@ -3,7 +3,7 @@ import {PageInfo} from '../../../../../extra/app-grid-models/models';
 import {Row} from '../../../../../extra/app-grid-models/row';
 import {Router} from '@angular/router';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
-import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
+import {LocalStorageService} from '../../../../../services/security/LocalStorageService';
 
 @Component({
   selector: 'app-panel-template',

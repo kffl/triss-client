@@ -1,8 +1,8 @@
 import {Inject} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {LocalStorageService} from './LocalStorageService';
-import {RestService} from '../../../services/rest-service';
-import {PersonalDataService} from '../../../services/personal-data.service';
+import {RestService} from '../rest-service';
+import {PersonalDataService} from '../personal-data.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 
 export class LoginService {
