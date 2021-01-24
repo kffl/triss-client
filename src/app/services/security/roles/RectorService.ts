@@ -1,15 +1,15 @@
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {PersonalDataService} from '../../../../services/personal-data.service';
+import {PersonalDataService} from '../../personal-data.service';
+import {Observable} from 'rxjs';
 
 
 @Injectable()
-export class WildaService implements CanActivate {
+export class RectorService implements CanActivate {
 
   constructor(private personalDataService: PersonalDataService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.personalDataService.hasRole(1);
+    return this.personalDataService.hasRole(3);
   }
 }

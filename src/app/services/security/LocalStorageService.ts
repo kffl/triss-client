@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {FormData} from '../../../extra/request-interface/request-interface';
+import {FormData} from '../../extra/request-interface/request-interface';
 
 const tokenKey = 'access_token';
 const request = 'request';

@@ -6,7 +6,7 @@ import {FormData} from '../extra/request-interface/request-interface';
 import {PageInfo} from '../extra/app-grid-models/models';
 import {ActorEnum} from '../extra/actor-enum/actor-enum';
 import {environment} from '../../environments/environment';
-import {SafeHttpClient} from '../components/shared/security/SafeHttpClient';
+import {SafeHttpClient} from './security/SafeHttpClient';
 
 export interface Enum {
   id: number;

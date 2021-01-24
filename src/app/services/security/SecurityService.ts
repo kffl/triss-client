@@ -2,12 +2,9 @@ import {Inject, Injectable} from '@angular/core';
 import {Params} from '@angular/router';
 import {DOCUMENT} from '@angular/common';
 import {LocalStorageService} from './LocalStorageService';
-import {HttpErrorResponse} from '@angular/common/http';
 
-
-
-const production = false;
-const port = '4200';
+// const production = false;
+// const port = '4200';
 
 @Injectable({
     providedIn: 'root'

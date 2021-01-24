@@ -27,11 +27,11 @@ import {RejectInfo} from '../../../../shared/reject-dialog/reject-dialog.compone
 import {DialogService} from '../../../../../services/dialog.service';
 import {Enum, RestService} from '../../../../../services/rest-service';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {SafeHttpClient} from '../../../../shared/security/SafeHttpClient';
+import {SafeHttpClient} from '../../../../../services/security/SafeHttpClient';
 import {StatusEnum} from '../../../../../extra/status-enum/status-enum';
-import {SecurityService} from '../../../../shared/security/SecurityService';
+import {SecurityService} from '../../../../../services/security/SecurityService';
 import {ActorEnum} from '../../../../../extra/actor-enum/actor-enum';
-import {LocalStorageService} from '../../../../shared/security/LocalStorageService';
+import {LocalStorageService} from '../../../../../services/security/LocalStorageService';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Result} from '../../../../shared/yes-no-dialog/yes-no-dialog.component';
 import {PersonalDataService} from '../../../../../services/personal-data.service';

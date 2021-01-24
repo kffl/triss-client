@@ -12,10 +12,10 @@ import {WildaPanelComponent} from './components/pages/requests/views/wilda-panel
 import {ReqeustDirectorComponent} from './components/pages/requests/views/director-panel/reqeust-director/reqeust-director.component';
 import {ReqeustWildaComponent} from './components/pages/requests/views/wilda-panel/reqeust-wilda/reqeust-wilda.component';
 import {RequestRectorComponent} from './components/pages/requests/views/rector-panel/request-rector/request-rector.component';
-import {UserService} from './components/shared/security/roles/UserService';
-import {WildaService} from './components/shared/security/roles/WildaService';
-import { DirectorService } from './components/shared/security/roles/DirectorService';
-import { RectorService } from './components/shared/security/roles/RectorService';
+import {UserService} from './services/security/roles/UserService';
+import {WildaService} from './services/security/roles/WildaService';
+import { DirectorService } from './services/security/roles/DirectorService';
+import { RectorService } from './services/security/roles/RectorService';
 
 const routes: Routes = [
   {path: AppRoutes.home, component: MainViewComponent},

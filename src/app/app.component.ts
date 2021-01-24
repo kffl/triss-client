@@ -4,9 +4,9 @@ import {DateAdapter} from '@angular/material/core';
 import {Title} from '@angular/platform-browser';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
-import {SecurityService} from './components/shared/security/SecurityService';
-import {LoginService} from './components/shared/security/LoginService';
-import {LocalStorageService} from './components/shared/security/LocalStorageService';
+import {SecurityService} from './services/security/SecurityService';
+import {LoginService} from './services/security/LoginService';
+import {LocalStorageService} from './services/security/LocalStorageService';
 import {RequestDataService} from './services/request-data.service';
 
 @Component({
