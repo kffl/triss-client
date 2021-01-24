@@ -20,10 +20,10 @@ export class SecurityService {
 
   public processParams(params: Params): void {
 
-    const mode = params.state;
-    if (mode !== undefined) {  // we are on localhost:port
-      this.redirectToLocalHost(params, port);
-    }
+    // const mode = params.state;
+    // if (mode !== undefined) {  // we are on localhost:port
+    //   this.redirectToLocalHost(params, port);
+    // }
 
     const token = params.access_token;
     if (token !== undefined) {
@@ -32,21 +32,21 @@ export class SecurityService {
   }
 
   public redirectToELogin(): void {
-    if (production) {
+   // if (production) {
       this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl';
-    } else {
-      this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl&additional_data=dev';
-    }
+   // } else {
+   //   this.document.location.href = 'https://elogin.put.poznan.pl/?do=Authorize&system=triss-dev.esys.put.poznan.pl&additional_data=dev';
+   // }
   }
 
-  private redirectToLocalHost(params: Params, port: string): void {
-      this.document.location.href = 'http://localhost:' + port + '/?access_token=' +
-        params.access_token.toString() +
-        '&token_type=' +
-        params.token_type.toString() +
-        '&expires_in=' +
-        params.expires_in.toString();
-  }
+  // private redirectToLocalHost(params: Params, port: string): void {
+  //     this.document.location.href = 'http://localhost:' + port + '/?access_token=' +
+  //       params.access_token.toString() +
+  //       '&token_type=' +
+  //       params.token_type.toString() +
+  //       '&expires_in=' +
+  //       params.expires_in.toString();
+  // }
 
   private saveToken(token: any) {
     this.localStorageService.token = token;
